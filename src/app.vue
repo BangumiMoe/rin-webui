@@ -1,22 +1,20 @@
-<style src="./css/shared.css"></style>
-<style src="./css/app.css"></style>
+<style src="./less/colors.less"></style>
+<style src="./less/framework.less"></style>
+<style src="./less/app.less"></style>
 
 <template>
-  <div id="app">
-    <star></star>
-    <h1>VuePack</h1>
-    <nav>
-      <a v-link="{path: '/'}">Home</a>
-      <a v-link="{path: '/about'}">About</a>
-    </nav>
+  <div id="app" class="rin-row">
     <router-view></router-view>
+    <nav-toolbar></nav-toolbar>
+    <nav-logo></nav-logo>
   </div>
 </template>
 
 <script>
   export default {
     components: {
-      star: require('./components/star')
+      'nav-toolbar': require('./components/nav-toolbar'),
+      'nav-logo': require('./components/nav-logo'),
     }
-  }
+  };
 </script>

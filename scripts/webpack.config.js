@@ -9,18 +9,14 @@ module.exports = {
     publicPath: '/build/'
   },
   resolve: {
-    extensions: ['', '.js', '.vue']
+    extensions: ['', '.js', '.vue', '.jpg', '.png']
   },
   module: {
     loaders: [
-      {
-        test: /\.js$/, loaders: ['babel'],
-        exclude: [/node_modules/]
-      },
-      {
-        test: /\.vue$/,
-        loaders: ['vue']
-      }
+      { test: /\.js$/,            loaders: ['babel'], exclude: [/node_modules/] },
+      { test: /\.vue$/,           loaders: ['vue'] },
+      { test: /\.less$/,          loader: 'style!css!less' },
+      { test: /\.(png|jpg|gif)$/, loader: 'file?name=[hash].[ext]?' }// loader: 'file?name=[name].[ext]?[hash]' }
     ]
   },
   vue: {
@@ -34,8 +30,7 @@ module.exports = {
       require('postcss-nested')()
     ]
   },
-  plugins: [
-  ],
+  plugins: [],
   babel: {
     presets: ['es2015', 'stage-0'],
     plugins: ['transform-runtime']
