@@ -4,7 +4,7 @@
 
 ## 技术栈
 
-`vue.js` `jquery`
+`vue.js` `jQuery` `less` `gulp`
 
 ## 设计稿
 
