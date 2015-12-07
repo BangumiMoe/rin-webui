@@ -8,4 +8,4 @@
 
 ## 设计稿
 
-[/doc/bangumi-moe-design-draft1.pdf](/BangumiMoe/rin-webui/blob/master/doc/bangumi-moe-design-draft1.pdf)
+[/doc/bangumi-moe-design-draft1.pdf](/doc/bangumi-moe-design-draft1.pdf)
