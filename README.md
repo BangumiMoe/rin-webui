@@ -4,7 +4,7 @@
 
 ## 技术栈
 
-`vue.js` `jQuery` `less` `gulp`
+`vue.js` `jQuery` `less` `webpack + vue-loader`
 
 ## 设计稿
 
