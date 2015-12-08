@@ -13,6 +13,7 @@
         top: 48px;
         right: -46px;
         height: 68px;
+        max-width: 1024px;
         transform:rotate(270deg);
       }
     }
