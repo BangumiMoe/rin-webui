@@ -8,7 +8,13 @@
 
 ## 设计稿
 
-[/doc/bangumi-moe-design-draft1.pdf](/doc/bangumi-moe-design-draft1.pdf)
+[/doc/bangumi-moe-design-draft1.1.pdf](/doc/bangumi-moe-design-draft1.1.pdf)
+
+## Tips
+
+* Do `git rebase` before `git push`
+
+* Write down instructions about your esteemed works.
 
 ## 开发
 
