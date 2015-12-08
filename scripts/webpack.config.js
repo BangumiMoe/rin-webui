@@ -21,14 +21,9 @@ module.exports = {
   },
   vue: {
     loaders: {
-      css: 'style!css!postcss',
+      css: 'style!css!less',
       js: 'babel'
     }
-  },
-  postcss: function () {
-    return [
-      require('postcss-nested')()
-    ]
   },
   plugins: [],
   babel: {
