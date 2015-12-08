@@ -45,7 +45,6 @@
     "postcss-nested": "^1.0.0",
     "style-loader": "^0.13.0",
     "file-loader": "^0.8.4",
-    "less-loader": "^2.2.0",
     "vue": "^1.0.10",
     "vue-hot-reload-api": "^1.2.2",
     "vue-html-loader": "^1.0.0",
