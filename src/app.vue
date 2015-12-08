@@ -7,7 +7,6 @@
     <router-view></router-view>
     <nav-toolbar></nav-toolbar>
     <nav-logo></nav-logo>
-    <modal-normal></modal-normal>
   </div>
 </template>
 
