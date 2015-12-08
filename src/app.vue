@@ -15,6 +15,7 @@
     components: {
       'nav-toolbar': require('./components/nav-toolbar'),
       'nav-logo': require('./components/nav-logo'),
+      'modal-normal':require('./components/modal-normal'),
     }
   };
 </script>
