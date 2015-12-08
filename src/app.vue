@@ -7,6 +7,7 @@
     <router-view></router-view>
     <nav-toolbar></nav-toolbar>
     <nav-logo></nav-logo>
+    <modal-normal></modal-normal>
   </div>
 </template>
 
@@ -15,6 +16,7 @@
     components: {
       'nav-toolbar': require('./components/nav-toolbar'),
       'nav-logo': require('./components/nav-logo'),
+      'modal-normal':require('./components/modal-normal'),
     }
   };
 </script>
