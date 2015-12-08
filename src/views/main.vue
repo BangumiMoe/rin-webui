@@ -19,6 +19,7 @@
 
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);">
+    <rin-loader></rin-loader>
 
     <div>
         <ul class="rin-list">
@@ -38,7 +39,7 @@
             
           </li>
         </ul>
-    </div> 
+    </div>
     
     
   </div>
@@ -64,6 +65,10 @@
     },
     ready: function() {
       this.update_lastest_torrents();
+    },
+    components: {
+      'rin-loader':require('../components/rin-loader')
     }
+      
   };
 </script>

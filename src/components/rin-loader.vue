@@ -12,10 +12,14 @@
   .rin-loader {
     display: block;
     height: 100%;
-    width: 100%;
     background: white;
-    opacity: 0.99;
-    position: absolute;
+    opacity: 0.88;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 128px;
+    z-index: 10;
     
     .rin-wrapper {
       position: relative;
@@ -76,6 +80,11 @@
       return {
         progress: 0.0
       };
-    }
+    },
+    methods: {
+      start: function() {
+        
+      }
+    } 
   };
 </script>
