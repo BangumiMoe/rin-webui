@@ -13,10 +13,7 @@
         top: 48px;
         right: -46px;
         height: 68px;
-        -ms-transform:rotate(270deg);
-        -moz-transform:rotate(270deg);
-        -webkit-transform:rotate(270deg);
-        -o-transform:rotate(270deg);
+        transform:rotate(270deg);
       }
     }
     
@@ -25,16 +22,13 @@
       right: 6px;
       bottom: 1em;
       writing-mode: vertical-lr;
-      -ms-transform:rotate(180deg);
-      -moz-transform:rotate(180deg);
-      -webkit-transform:rotate(180deg);
-      -o-transform:rotate(180deg);
+      transform:rotate(180deg);
     }
   }
 </style>
 
 <template>
-<div id="rin-logo" class="rin-main-bar rin-col rin-right">
+<div id="rin-logo" class="rin-main-bar rin-col">
 
   <span class="logo">
     <img src="../assets/logo-20150506.png" />

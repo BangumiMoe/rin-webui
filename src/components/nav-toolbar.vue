@@ -28,7 +28,7 @@
 </style>
 
 <template>
-<div id="rin-toolbar" class="rin-main-bar rin-col rin-right">
+<div id="rin-toolbar" class="rin-main-bar rin-col">
 
   <span class="rin-logo">
     <img src="../assets/user-demo.png" />
