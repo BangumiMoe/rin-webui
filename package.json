@@ -41,8 +41,6 @@
     "less-loader": "^2.2.0",
     "express": "^4.13.3",
     "html-webpack-plugin": "^1.7.0",
-    "postcss-loader": "^0.8.0",
-    "postcss-nested": "^1.0.0",
     "style-loader": "^0.13.0",
     "file-loader": "^0.8.4",
     "vue": "^1.0.10",
