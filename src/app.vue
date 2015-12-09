@@ -5,6 +5,7 @@
 <template>
   <div id="app" class="rin-row">
     <router-view></router-view>
+    
     <nav-toolbar></nav-toolbar>
     <nav-logo></nav-logo>
   </div>

@@ -11,22 +11,21 @@
   
   .rin-loader {
     display: block;
-    height: 100%;
     background: white;
-    opacity: 0.88;
-    position: fixed;
+    opacity: 0.8;
+    position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
-    right: 128px;
+    right: 0;
     z-index: 10;
     
     .rin-wrapper {
       position: relative;
-      top: 50%;
       overflow: hidden;
-      width: 512px;
-      margin: -64px auto 0 auto;
+      width: 25%;
+      margin: 0 auto;
+      margin-top: 256px;
 
       .rin-moe {
         position: relative;
@@ -38,25 +37,33 @@
         }
       }   
       
-      .rin-water-1, .rin-water-2 {
+      .rin-water-1, .rin-water-2, .rin-water-3 {
         position: absolute;
         bottom: 0;
         
-        height: 50px;
-        width: 1024px;
+        height: 40%;
+        width: 500%;
         background: url("../assets/rin-loader-water.png") repeat-x bottom;
         
         left: 0;
-        animation: waves-l2r 9.6s linear infinite;
-        z-index: 0.8;
+        animation: waves-l2r 19.2s linear infinite;
+        z-index: 1;
       }
       
       .rin-water-2 {
-        height: 64px;
-        width: 2048px;
-        animation: waves-l2r 6.4s linear infinite;
+        height: 60%;
+        width: 1000%;
+        animation: waves-l2r 12.8s linear infinite;
         z-index: 2;
         opacity: 0.8;
+      }
+      
+      .rin-water-3 {
+        height: 0;
+        width: 1500%;
+        animation: waves-l2r 9.6s linear infinite;
+        z-index: 3;
+        opacity: 0.9;
       }
     }
     
@@ -70,21 +77,13 @@
     <div class="rin-moe"><img src="../assets/rin-loader-moe.png" /></div>
     <div class="rin-water-1"></div>
     <div class="rin-water-2"></div>
+    <div class="rin-water-3" :style="{height: progress + '%'}"></div>
   </div>
 </div>
 </template>
 
 <script>
   export default {
-    data () {
-      return {
-        progress: 0.0
-      };
-    },
-    methods: {
-      start: function() {
-        
-      }
-    } 
+    progs: ['progress']
   };
 </script>
