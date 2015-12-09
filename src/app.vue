@@ -5,9 +5,10 @@
 <template>
   <div id="app" class="rin-row">
     <router-view></router-view>
-    
+
     <nav-toolbar></nav-toolbar>
     <nav-logo></nav-logo>
+    <rin-modal></rin-modal>
   </div>
 </template>
 
@@ -16,7 +17,13 @@
     components: {
       'nav-toolbar': require('./components/nav-toolbar'),
       'nav-logo': require('./components/nav-logo'),
-      'modal-normal':require('./components/modal-normal'),
+      'rin-modal':require('./components/rin-modal'),
+    },
+    events:{
+      "open-modal":function(){
+        this.$broadcast("open-modal");
+
+      }
     }
   };
 </script>
