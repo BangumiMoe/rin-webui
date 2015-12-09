@@ -12,7 +12,7 @@
 
 ## Tips
 
-* Do `git rebase` before `git push`
+* Do `git pull --rebase` before `git push`
 
 * Write down instructions about your esteemed works.
 
