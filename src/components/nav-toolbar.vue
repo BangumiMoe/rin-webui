@@ -6,6 +6,7 @@
     color: @color-secondary-1-0;
 
     .rin-logo {
+      cursor: pointer;
       display: inline-block;
       margin: 16px 4px;
       img {
@@ -16,6 +17,7 @@
     }
 
     .rin-search {
+      cursor: pointer;
       position: absolute;
       right: 8px;
       bottom: 8px;

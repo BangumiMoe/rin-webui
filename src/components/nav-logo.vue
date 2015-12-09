@@ -7,6 +7,7 @@
     
     .logo {
       display: block;
+      cursor: pointer;
       
       img {
         position: absolute;

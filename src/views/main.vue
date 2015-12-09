@@ -1,13 +1,10 @@
 <style lang="less">
 @import "../less/colors.less";
 #rin-main {
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
+  height: 100%;
+  overflow: hidden;
   
   .rin-list {
-    
     li {
       height: 3em;
       line-height: 3em;
@@ -15,14 +12,18 @@
     }
   }
   
+  .rin-wrapper {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
 }
 </style>
 
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);">
     <div is="rin-loader" v-if="busy" :progress="progress" transition="rin-fade"></div>
-
-    <div v-if="!busy" transition="rin-fade">
+    <div class="rin-wrapper" v-if="!busy" transition="rin-fade">
         <ul class="rin-list">
           <li v-for="(index, t) in torrent.lastest">
 

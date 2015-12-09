@@ -20,13 +20,15 @@
     right: 0;
     z-index: 10;
     
-    .rin-wrapper {
-      position: relative;
-      overflow: hidden;
+    .wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
       width: 25%;
-      margin: 0 auto;
-      margin-top: 256px;
-
+      min-width: 128px;
+      transform: translateX(-50%) translateY(-50%);
+      overflow: hidden;
+      
       .rin-moe {
         position: relative;
         z-index: 10;
@@ -42,7 +44,7 @@
         bottom: 0;
         
         height: 40%;
-        width: 500%;
+        width: 99%;
         background: url("../assets/rin-loader-water.png") repeat-x bottom;
         
         left: 0;
@@ -52,7 +54,7 @@
       
       .rin-water-2 {
         height: 60%;
-        width: 1000%;
+        width: 99%;
         animation: waves-l2r 12.8s linear infinite;
         z-index: 2;
         opacity: 0.8;
@@ -60,7 +62,7 @@
       
       .rin-water-3 {
         height: 0;
-        width: 1500%;
+        width: 99%;
         animation: waves-l2r 9.6s linear infinite;
         z-index: 3;
         opacity: 0.9;
@@ -73,7 +75,7 @@
 
 <template>
 <div class="rin-loader">
-  <div class="rin-wrapper">
+  <div class="wrapper">
     <div class="rin-moe"><img src="../assets/rin-loader-moe.png" /></div>
     <div class="rin-water-1"></div>
     <div class="rin-water-2"></div>
