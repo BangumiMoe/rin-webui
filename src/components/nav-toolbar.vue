@@ -9,6 +9,18 @@
       cursor: pointer;
       display: inline-block;
       margin: 16px 4px;
+
+      .img-wrap {
+        background-color: @color-secondary-1-4;
+        height: 270px;
+        z-index: 2;
+        position: absolute;
+        margin: 0px;
+        left: 0px;
+        right: 0px;
+        padding-left: 4px;
+      }
+
       img {
         border-radius: 28px;
         border: 4px solid @color-secondary-1-1;
@@ -32,9 +44,12 @@
 <template>
 <div id="rin-toolbar" class="rin-main-bar rin-col">
 
-  <span class="rin-logo">
-    <img src="../assets/user-demo.png" />
-  </span>
+  <div class="rin-logo">
+    <div class="img-wrap">
+      <img src="../assets/user-demo.png" />
+    </div>
+    <info-box v-bind:class="{'show': infobox.visible}" :user="user"></info-box>
+  </div>
 
   <span class="rin-search" v-on:mouseenter="searchBarShow" v-on:mouseleave="searchBarHide" v-on:click="searchBarToggle">
     <i class="material-icons">&#xE8B6;</i>
@@ -56,6 +71,9 @@
         searchBar: {
           visible: false,
           fixed: false
+        },
+        infobox:{
+          visible: false
         }
       };
     },
@@ -68,10 +86,11 @@
       },
       searchBarToggle: function (event) {
         this.searchBar.fixed = !this.searchBar.fixed;
-      },
+      }
     },
     components: {
-      'search-bar': require('./nav-toolbar-search')
+      'search-bar': require('./nav-toolbar-search'),
+      'info-box': require('./nav-toolbar-infobox')
     }
   };
 
