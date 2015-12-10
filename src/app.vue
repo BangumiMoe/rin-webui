@@ -22,7 +22,9 @@
     events:{
       "open-modal":function(){
         this.$broadcast("open-modal");
-
+      },
+      "close-modal-blur":function(){
+        this.$broadcast("close-modal-blur");
       }
     }
   };

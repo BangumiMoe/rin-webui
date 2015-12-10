@@ -8,6 +8,7 @@
     top:0;
     left:0;
     #rin-modal{
+      overflow-y: scroll;
       width: 100%;
       height:60%;
       left:0;
@@ -49,11 +50,11 @@
         opacity: 0;
       }
       .modal-button-ok{
-        background-color: #55C14E;
+        background-color: rgb(81, 175, 97);
         circle.animate {
           stroke-dasharray: 1000;
           stroke-dashoffset: 1000;
-          transition: stroke-dashoffset 5s ;
+          transition: stroke-dashoffset 5s ease 0.7s;
 
         }
         circle.normal {
@@ -61,11 +62,16 @@
         }
       }
       .modal-button-cancel{
-        background-color: #B9B9B9;
+        background-color: #737373;
         path.animate {
           stroke-dasharray: 1000;
           stroke-dashoffset: 1000;
-          transition: stroke-dashoffset 5s ;
+        }
+        path.animate.cross-1{
+          transition: stroke-dashoffset 2.5s ease 1.3s;
+        }
+        path.animate.cross-2{
+          transition: stroke-dashoffset 2.5s ease 0.7s;
         }
         path.normal {
           transition: opacity 0.7s;
@@ -93,14 +99,65 @@
 
     }
   }
+.modal-animate-enter{
+  animation: bg-fadein .5s;
+}
+.modal-animate-enter#rin-modal{
+  opacity: 0;
+  animation: modal-fadein .5s ease .5s;
+}
+.modal-animate-leave{
+  animation: bg-fadeout .5s ease .5s;
+}
+.modal-animate-leave#rin-modal{
+  animation: modal-fadeout .5s;
+}
+@keyframes bg-fadein{
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes modal-fadein{
+  0% {
+    opacity: 1;
+    height: 60px;
+  }
+  100% {
+    height: 60%;
+    opacity: 1;
+
+  }
+}
+@keyframes bg-fadeout{
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes modal-fadeout{
+  0% {
+    opacity: 1;
+    height: 60%;
+  }
+  100% {
+    height: 60px;
+    opacity: 1;
+
+  }
+}
 
 
 
 </style>
 
 <template>
-  <div id="modal-wrapper" v-if="modalCtrl.visible">
-    <div id="rin-modal" class="clearfix">
+  <div id="modal-wrapper" v-if="modalCtrl.visible" transition="modal-animate">
+    <div id="rin-modal" class="clearfix" v-if="modalCtrl.visible" transition="modal-animate">
       <div class="alert-line alert-line-up alert-line-scroll"></div>
       <div class="modal-content">
           这里显示提示内容
@@ -114,9 +171,10 @@
 
       </button>
       <button type="button" name="button" class="modal-button modal-button-cancel" v-on:click="closeModal">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 130 130" overflow="visible" enable-background="new 0 0 130 130" width="50px" height="50px">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 130 130" overflow="visible" enable-background="new 0 0 130 130" width="40px" height="40px">
        <path class="normal" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M0 0 L130 130 M130 0 L0 130"></path>
-       <path class="animate" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M0 0 L130 130 M130 0 L0 130"></path>
+       <path class="animate cross-1" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M0 0 L130 130 "></path>
+       <path class="animate cross-2" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M130 0 L0 130"></path>
 
    </svg>
       </button>
@@ -145,10 +203,16 @@
     },
     methods:{
       "closeModal":function(){
+        let self=this;
         this.modalCtrl.visible=false;
+        setTimeout(function() {
+          self.$dispatch("close-modal-blur");
+        }, 500);
+
       },
       "openModal":function(){
         this.modalCtrl.visible=true;
+
       }
     }
   };
