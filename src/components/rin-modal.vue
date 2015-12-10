@@ -128,7 +128,7 @@
 .modal-animate-enter{
   animation: bg-fadein .5s;
   .modal-content-inner{
-    overflow-y: hidden;
+    overflow-y: hidden !important;
   }
 }
 .modal-animate-enter#rin-modal{
@@ -140,12 +140,9 @@
   .modal-content-inner{
     overflow-y: hidden !important;
   }
-  .modal-content{
-    overflow-y: hidden !important;
-  }
-  .modal-animate-leave#rin-modal{
-    animation: modal-fadeout .5s;
-  }
+}
+.modal-animate-leave#rin-modal{
+  animation: modal-fadeout .5s;
 }
 @keyframes loading{
   0% {

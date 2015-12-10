@@ -29,7 +29,7 @@
 
 ### Modal 框
 
-通过发起 `open-modal` 事件来调出Modal框。
+通过发起 `open-modal` 事件来调出 Modal 框。
 
 rin-modal 组件通过根组件的事件转发，实现了全局监听。从而在各组件内可以使用形如 `this.$dispatch("open-modal", opts)` 的方式调用 Modal 框。
 
@@ -43,7 +43,8 @@ opts 参数如下：
   danger: false //是否为紧急通知（红黑条）    
 }
 ```
-复杂逻辑调用示例请参考：./src/components/modal-demo.vue
+
+复杂逻辑调用示例请参考：[/src/components/modal-demo.vue](/src/components/modal-demo.vue)
 
 目前仅实现了动画及样式，相关调用逻辑正在完善中。
 
