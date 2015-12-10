@@ -73,7 +73,7 @@
       'rin-loader': RLoader
     },
     events:{
-      "open-modal":function(){
+      "open-modal-blur":function(){
         this.modalBlur=true;
       },
       "close-modal-blur":function(){

@@ -33,7 +33,7 @@
 <div id="rin-logo" class="rin-main-bar rin-col" >
 
   <span class="logo" >
-    <img src="../assets/logo-20150506.png" />
+    <img src="../assets/logo-20150506.png" v-on:click="modalDemoSimple"/>
   </span>
 
   <span class="copyright" v-on:click="modalDemo">
@@ -48,11 +48,17 @@
     methods:{
       modalDemo: function (event) {
         this.$dispatch("open-modal",{
+          modalId:"modal-demo",
           danger:false,
-          noCancel:true,
+          noCancel:false
+        });
+      },
+      modalDemoSimple:function(event){
+        this.$dispatch("open-modal",{
           title:"你好，世界~",
           content:"唉，我也替你们着急呀，真的。 你们就——我以为整天的—— 你们有一个好——全世界跑到什么地方，你们比其他的西方记者，跑得还快！但是问来问去的问题呀，都too simple!啊~ sometimes naive! ？！ <br>the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog"
-        });
+
+        })
       }
     }
   };

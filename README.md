@@ -43,10 +43,11 @@ opts 参数如下：
   danger: false //是否为紧急通知（红黑条）    
 }
 ```
+复杂逻辑调用示例请参考：./src/components/modal-demo.vue
 
 目前仅实现了动画及样式，相关调用逻辑正在完善中。
 
-__开发阶段可点击 copyright 调出 Modal 框示例。__
+__开发阶段可点击 copyright 和 logo 调出 Modal 框示例。__
 
 ## API
 

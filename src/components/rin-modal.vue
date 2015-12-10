@@ -51,10 +51,11 @@
           font-size: 22px;
           padding-left: 10%;
           max-height: 100%;
-          overflow-y: scroll;
+          overflow-y: auto;
           p{
             line-height: 1.3;
           }
+
         }
       }
       .modal-button{
@@ -82,9 +83,11 @@
           stroke-dasharray: 1000;
           stroke-dashoffset: 1000;
         }
-        circle.normal {
-
+        circle.loading{
+          transform-origin: 50% 50%;
+          animation:loading 1s infinite linear;
         }
+
       }
       .modal-button-cancel{
         background-color: #737373;
@@ -124,6 +127,9 @@
   }
 .modal-animate-enter{
   animation: bg-fadein .5s;
+  .modal-content-inner{
+    overflow-y: hidden;
+  }
 }
 .modal-animate-enter#rin-modal{
   opacity: 0;
@@ -131,9 +137,20 @@
 }
 .modal-animate-leave{
   animation: bg-fadeout .5s ease .5s;
+  .modal-content-inner{
+    overflow-y: hidden;
+  }
+  #rin-modal{
+    animation: modal-fadeout .5s;
+  }
 }
-.modal-animate-leave#rin-modal{
-  animation: modal-fadeout .5s;
+@keyframes loading{
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 @keyframes bg-fadein{
   0% {
@@ -184,17 +201,19 @@
       <div class="alert-line alert-line-up alert-line-scroll" v-bind:class="[modalCtrl.danger ? 'black-red-up' : 'black-yellow-up' ]"></div>
       <div class="modal-content">
           <div class="modal-content-inner">
+            <slot>
             <h1>{{modalContent.title}}</h1>
             <p>
               {{{modalContent.content}}}
             </p>
+            <slot>
           </div>
       </div>
-      <button type="button" name="button" class="modal-button modal-button-ok" v-bind:class="{'only-button':modalCtrl.noCancel}" v-on:click="doOK">
+      <button type="button" name="button" class="modal-button modal-button-ok" v-bind:class="{'only-button':modalCtrl.noCancel}" v-on:click="doOK" vi-disabled="modalCtrl.loading">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 135 135" overflow="visible" enable-background="new 0 0 135 135" width="50px" height="50px">
-       <circle class="normal" fill="none" stroke-linecap="round" stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="65" r="58"></circle>
-       <circle class="animate" fill="none" stroke-linecap="round"  stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="65" r="58"></circle>
-
+       <circle v-bind:class="{'normal':!modalCtrl.loading}" fill="none" stroke-linecap="round" stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="65" r="58"></circle>
+       <circle class="animate" v-if="!modalCtrl.loading" fill="none" stroke-linecap="round"  stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="65" r="58"></circle>
+       <circle class="loading" transition="loading" v-if="modalCtrl.loading" fill="none" stroke-linecap="round" stroke="#51af61" stroke-width="15" stroke-miterlimit="15" cx="64.8" cy="65" r="58" stroke-dashoffset="900" stroke-dasharray="1000"></circle>
    </svg>
 
       </button>
@@ -214,12 +233,14 @@
 
 <script>
   export default {
+    props:['modal-id'],
     data () {
       return {
         modalCtrl: {
           visible: false,
           danger:false,
-          noCancel:false
+          noCancel:false,
+          loading:false
         },
         modalContent:{
           title:"Hello Modal",
@@ -229,19 +250,39 @@
     },
     events:{
       "open-modal":function(opt){
-        this.openModal(opt);
+        console.log(this.modalId,opt.modalId);
+        if (this.modalId==opt.modalId){
+
+          this.openModal(opt);
+          console.log("Ready2Show");
+        }
       },
       "close-modal":function(){
         this.closeModal();
+      },
+      "modal-start-loading":function(){
+        console.log("Ready2Loading");
+        this.startLoading();
+      },
+      "modal-stop-loading":function(){
+        console.log("Ready2StopLoading");
+        this.stopLoading();
       }
     },
     methods:{
+      "startLoading":function(){
+        this.modalCtrl.loading=true;
+      },
+      "stopLoading":function(){
+        this.modalCtrl.loading=false;
+      },
       "closeModal":function(){
         let self=this;
         this.modalCtrl.visible=false;
-
+        self.$dispatch("modal-closed");
         setTimeout(function() {
           self.$dispatch("close-modal-blur");
+
           self.modalCtrl.danger=false;
         }, 500);
 
@@ -253,14 +294,19 @@
           this.modalContent.title=opt.title;
           this.modalContent.content=opt.content;
         }
+        this.$dispatch("open-modal-blur");
         this.modalCtrl.visible=true;
 
       },
       "doOK":function(){
-        if (this.modalCtrl.noCancel){
+        var evt="modal-ok-click";
+        if (this.modalCtrl.noCancel &&! this.modalCtrl.loading){
           this.closeModal();
         }
-        this.$broadcast("modal-ok-click");
+        if (this.modalCtrl.loading){
+          evt="modal-ok-click-loading";
+        }
+        this.$dispatch(evt);
       }
     }
   };
