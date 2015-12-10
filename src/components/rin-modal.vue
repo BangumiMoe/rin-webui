@@ -140,7 +140,10 @@
   .modal-content-inner{
     overflow-y: hidden;
   }
-  #rin-modal{
+  .modal-content{
+    overflow-y: hidden;
+  }
+  .modal-animate-leave#rin-modal{
     animation: modal-fadeout .5s;
   }
 }
@@ -206,7 +209,7 @@
             <p>
               {{{modalContent.content}}}
             </p>
-            <slot>
+          </slot>
           </div>
       </div>
       <button type="button" name="button" class="modal-button modal-button-ok" v-bind:class="{'only-button':modalCtrl.noCancel}" v-on:click="doOK" vi-disabled="modalCtrl.loading">
@@ -282,7 +285,7 @@
         self.$dispatch("modal-closed");
         setTimeout(function() {
           self.$dispatch("close-modal-blur");
-
+          self.modalCtrl.loading=false;
           self.modalCtrl.danger=false;
         }, 500);
 
