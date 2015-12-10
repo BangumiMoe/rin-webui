@@ -74,7 +74,6 @@
     },
     events:{
       "open-modal":function(){
-        console.log("kkk");
         this.modalBlur=true;
       },
       "close-modal-blur":function(){
