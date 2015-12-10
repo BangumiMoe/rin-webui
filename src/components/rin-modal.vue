@@ -138,10 +138,10 @@
 .modal-animate-leave{
   animation: bg-fadeout .5s ease .5s;
   .modal-content-inner{
-    overflow-y: hidden;
+    overflow-y: hidden !important;
   }
   .modal-content{
-    overflow-y: hidden;
+    overflow-y: hidden !important;
   }
   .modal-animate-leave#rin-modal{
     animation: modal-fadeout .5s;
