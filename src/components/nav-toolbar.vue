@@ -78,12 +78,18 @@
       };
     },
     methods: {
+      // Definition: 搜索栏显示事件.
       searchBarShow: function (event) {
         this.searchBar.visible = true;
+        this.$broadcast("recentProgramRequest");  // 广播至 search-bar.
       },
+
+      // Definition: 搜索栏隐藏事件.
       searchBarHide: function (event) {
         this.searchBar.visible = false;
       },
+
+      // Definition: 搜索图标点击 Toggle 事件.
       searchBarToggle: function (event) {
         this.searchBar.fixed = !this.searchBar.fixed;
       }
