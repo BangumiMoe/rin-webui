@@ -4,12 +4,12 @@
   .rin-infobox p{
     white-space: nowrap;
     color: aliceblue;
-    margin-left: 5px;
+    margin-left: 10px;
   }
 
   .rin-logo .rin-infobox {
-    border-radius: 4px;
-    width: 0px;
+    border-radius: 20px;
+    width: 220px;
     height: 150px;
     background-color: @color-secondary-1-0;
     color: blue;
@@ -20,19 +20,18 @@
   }
 
   .rin-logo:hover .rin-infobox {
-    left: -210px;
-    width: 200px;
+    left: -235px;
   }
 
   .rin-logo .rin-infobox:after {
     content: "";
     width: 0; 
     height: 0; 
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-left: 10px solid @color-secondary-1-0;
+    border-top: 25px solid transparent;
+    border-bottom: 30px solid transparent;
+    border-left: 15px solid @color-secondary-1-0;
     position: absolute;
-    top: 20px;
+    top: 8px;
     right: -10px;
     display: block;
   }
