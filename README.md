@@ -29,11 +29,11 @@
 
 ### Modal 框
 
-通过发起`open-modal`事件来调出Modal框。
+通过发起 `open-modal` 事件来调出Modal框。
 
-rin-modal 组件通过根组件的事件转发，实现了全局监听。从而在各组件内可以使用形如 `this.$dispatch("open-modal", option)` 的方式调用 Modal 框。
+rin-modal 组件通过根组件的事件转发，实现了全局监听。从而在各组件内可以使用形如 `this.$dispatch("open-modal", opts)` 的方式调用 Modal 框。
 
-Options 选项如下：
+opts 参数如下：
 
 ```js
 {
@@ -52,8 +52,10 @@ __开发阶段可点击 copyright 调出 Modal 框示例。__
 
 ### Torrent APIv2
 
-此处 API 是针对新 UI 使用的 API，与旧版 API 相比它减少了前端的 HTTP 请求次数，将用户、团队和 tag 信息在一次请求中返回结果。 
+此处 API 是针对新 UI 使用的 API，与旧版 API 相比它减少了前端的 HTTP 请求次数，将用户、团队和 tag 信息在一次请求中返回结果。
 
 `/api/v2/torrent/page/:pageNum`
 
 `/api/v2/torrent/:torrent_id`
+
+Torrent 的其他列表部分之后更新。
