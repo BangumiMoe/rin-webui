@@ -24,3 +24,13 @@
 |npm run dev|Run webpack and server with hot-reload enabled|
 |npm run dev:win|Run dev server on Win32 platform|
 |npm run build|Build assets for production use, dumped in `./build`|
+
+## 开发文档
+ * ### Modal框
+ 通过发起`open-modal`事件来调出Modal框。
+
+ rin-modal组件通过根组件的事件转发，实现了全局监听。从而在各组件内可以使用形如`this.$dispatch("open-modal",[option])`的方式调用Modal框。
+
+ 目前仅实现了动画及样式，相关调用逻辑正在完善中。
+
+ *开发阶段可点击copyright调出Modal框示例。
