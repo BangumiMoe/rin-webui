@@ -1,5 +1,7 @@
 # rin-webui
 
+[![Build Status][travis-image]][travis-url]
+
 萌番组前端界面
 
 ## 技术栈
@@ -61,3 +63,7 @@ __开发阶段可点击 copyright 和 logo 调出 Modal 框示例。__
 `/api/v2/torrent/:torrent_id`
 
 Torrent 的其他列表部分之后更新。
+
+
+[travis-url]: https://travis-ci.org/BangumiMoe/rin-webui
+[travis-image]: http://img.shields.io/travis/BangumiMoe/rin-webui.svg
