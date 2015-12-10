@@ -29,7 +29,16 @@
  * ### Modal框
  通过发起`open-modal`事件来调出Modal框。
 
- rin-modal组件通过根组件的事件转发，实现了全局监听。从而在各组件内可以使用形如`this.$dispatch("open-modal",[option])`的方式调用Modal框。
+ rin-modal组件通过根组件的事件转发，实现了全局监听。从而在各组件内可以使用形如`this.$dispatch("open-modal",option)`的方式调用Modal框。
+
+ >option:  
+ {
+   title: "标题",  
+   content:"内容",  
+   noCancel:false,//是否隐藏取消按钮  
+   danger:false //是否为紧急通知（红黑条）    
+   }   
+
 
  目前仅实现了动画及样式，相关调用逻辑正在完善中。
 

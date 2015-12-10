@@ -47,7 +47,12 @@
   export default {
     methods:{
       modalDemo: function (event) {
-        this.$dispatch("open-modal");
+        this.$dispatch("open-modal",{
+          danger:false,
+          noCancel:true,
+          title:"你好，世界~",
+          content:"唉，我也替你们着急呀，真的。 你们就——我以为整天的—— 你们有一个好——全世界跑到什么地方，你们比其他的西方记者，跑得还快！但是问来问去的问题呀，都too simple!啊~ sometimes naive! ？！ <br>the quick brown fox jumps over the lazy dog the quick brown fox jumps over the lazy dog"
+        });
       }
     }
   };

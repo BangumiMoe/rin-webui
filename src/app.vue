@@ -20,8 +20,8 @@
       'rin-modal':require('./components/rin-modal'),
     },
     events:{
-      "open-modal":function(){
-        this.$broadcast("open-modal");
+      "open-modal":function(opt){
+        this.$broadcast("open-modal",opt);
       },
       "close-modal-blur":function(){
         this.$broadcast("close-modal-blur");

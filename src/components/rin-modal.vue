@@ -19,10 +19,22 @@
         position:absolute;
         width:100%;
         height:30px;
-        background: linear-gradient(to 135deg, /* or 90deg */
-          yellow 25%, black 0, black 50%,
-          yellow 0, yellow 75%, black 0);
-    background-size: 200px 200px;
+      }
+      .black-yellow-up{
+        background: linear-gradient(to 135deg,yellow 25%, black 0, black 50%,yellow 0, yellow 75%, black 0);
+        background-size: 200px 200px;
+      }
+      .black-yellow-down{
+        background: linear-gradient(to 135deg,black 25%, yellow 0, yellow 50%,black 0, black 75%, yellow 0);
+        background-size: 200px 200px;
+      }
+      .black-red-up{
+        background: linear-gradient(to 135deg,red 25%, black 0, black 50%,red 0, red 75%, black 0);
+        background-size: 200px 200px;
+      }
+      .black-red-down{
+        background: linear-gradient(to 135deg,black 25%, red 0, red 50%,black 0, black 75%, red 0);
+        background-size: 200px 200px;
       }
       .clearfix{
         overflow: auto;
@@ -31,9 +43,19 @@
       .modal-content{
         height: calc(~"100% - 100px");
         width:calc(~"80% - 100px");
-        background: white;
+        background: rgba(255,255,255,0.5);
         padding:50px;
         float:left;
+        .modal-content-inner{
+          color: white;
+          font-size: 22px;
+          padding-left: 10%;
+          max-height: 100%;
+          overflow-y: scroll;
+          p{
+            line-height: 1.3;
+          }
+        }
       }
       .modal-button{
         float: left;
@@ -43,10 +65,15 @@
         outline:none;
 
       }
+      .only-button{
+        width: 20%;
+      }
       .modal-button-ok:hover circle.animate{
+        transition: stroke-dashoffset 2s ease 0.3s;
         stroke-dashoffset: 0;
       }
       .modal-button-ok:hover circle.normal{
+        transition: opacity 0.3s;
         opacity: 0;
       }
       .modal-button-ok{
@@ -54,11 +81,9 @@
         circle.animate {
           stroke-dasharray: 1000;
           stroke-dashoffset: 1000;
-          transition: stroke-dashoffset 5s ease 0.7s;
-
         }
         circle.normal {
-          transition: opacity 0.7s;
+
         }
       }
       .modal-button-cancel{
@@ -67,20 +92,18 @@
           stroke-dasharray: 1000;
           stroke-dashoffset: 1000;
         }
-        path.animate.cross-1{
-          transition: stroke-dashoffset 2.5s ease 1.3s;
-        }
-        path.animate.cross-2{
-          transition: stroke-dashoffset 2.5s ease 0.7s;
-        }
-        path.normal {
-          transition: opacity 0.7s;
-        }
       }
       .modal-button-cancel:hover path.animate{
         stroke-dashoffset: 0;
       }
+      .modal-button-cancel:hover path.animate.cross-1{
+        transition: stroke-dashoffset 1s ease 0.5s;
+      }
+      .modal-button-cancel:hover path.animate.cross-2{
+        transition: stroke-dashoffset 1s ease 0.3s;
+      }
       .modal-button-cancel:hover path.normal{
+        transition: opacity 0.3s;
         opacity: 0;
       }
       .alert-line-up{
@@ -158,19 +181,24 @@
 <template>
   <div id="modal-wrapper" v-if="modalCtrl.visible" transition="modal-animate">
     <div id="rin-modal" class="clearfix" v-if="modalCtrl.visible" transition="modal-animate">
-      <div class="alert-line alert-line-up alert-line-scroll"></div>
+      <div class="alert-line alert-line-up alert-line-scroll" v-bind:class="[modalCtrl.danger ? 'black-red-up' : 'black-yellow-up' ]"></div>
       <div class="modal-content">
-          这里显示提示内容
+          <div class="modal-content-inner">
+            <h1>{{modalContent.title}}</h1>
+            <p>
+              {{{modalContent.content}}}
+            </p>
+          </div>
       </div>
-      <button type="button" name="button" class="modal-button modal-button-ok">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 130 130" overflow="visible" enable-background="new 0 0 130 130" width="50px" height="50px">
-       <circle class="normal" fill="none" stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="64.8" r="59.8"></circle>
-       <circle class="animate" fill="none" stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="64.8" r="59.8"></circle>
+      <button type="button" name="button" class="modal-button modal-button-ok" v-bind:class="{'only-button':modalCtrl.noCancel}" v-on:click="doOK">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 135 135" overflow="visible" enable-background="new 0 0 135 135" width="50px" height="50px">
+       <circle class="normal" fill="none" stroke-linecap="round" stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="65" r="58"></circle>
+       <circle class="animate" fill="none" stroke-linecap="round"  stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="65" r="58"></circle>
 
    </svg>
 
       </button>
-      <button type="button" name="button" class="modal-button modal-button-cancel" v-on:click="closeModal">
+      <button type="button" name="button" class="modal-button modal-button-cancel" v-on:click="closeModal" v-if="!modalCtrl.noCancel">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 130 130" overflow="visible" enable-background="new 0 0 130 130" width="40px" height="40px">
        <path class="normal" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M0 0 L130 130 M130 0 L0 130"></path>
        <path class="animate cross-1" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M0 0 L130 130 "></path>
@@ -178,7 +206,7 @@
 
    </svg>
       </button>
-      <div class="alert-line alert-line-down alert-line-scroll"></div>
+      <div class="alert-line alert-line-down alert-line-scroll " v-bind:class="[modalCtrl.danger ? 'black-red-down' : 'black-yellow-down' ]"></div>
     </div>
   </div>
 
@@ -189,13 +217,19 @@
     data () {
       return {
         modalCtrl: {
-          visible: false
+          visible: false,
+          danger:false,
+          noCancel:false
+        },
+        modalContent:{
+          title:"Hello Modal",
+          content:"Hi~~"
         }
       };
     },
     events:{
-      "open-modal":function(){
-        this.openModal();
+      "open-modal":function(opt){
+        this.openModal(opt);
       },
       "close-modal":function(){
         this.closeModal();
@@ -205,14 +239,28 @@
       "closeModal":function(){
         let self=this;
         this.modalCtrl.visible=false;
+
         setTimeout(function() {
           self.$dispatch("close-modal-blur");
+          self.modalCtrl.danger=false;
         }, 500);
 
       },
-      "openModal":function(){
+      "openModal":function(opt){
+        if (opt){
+          this.modalCtrl.danger=opt.danger;
+          this.modalCtrl.noCancel=opt.noCancel;
+          this.modalContent.title=opt.title;
+          this.modalContent.content=opt.content;
+        }
         this.modalCtrl.visible=true;
 
+      },
+      "doOK":function(){
+        if (this.modalCtrl.noCancel){
+          this.closeModal();
+        }
+        this.$broadcast("modal-ok-click");
       }
     }
   };
