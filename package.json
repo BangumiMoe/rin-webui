@@ -1,10 +1,10 @@
 {
   "name": "rin-webui",
-  "version": "0.0.43",
+  "version": "0.0.45",
   "description": "Vue and Webpack with hot-reload PostCSS scaffolding",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npm run build",
     "dev": "NODE_ENV=development HOT=1 VUEPACK_PORT=3030 node scripts/devServer.js",
     "build": "rm -rf ./build && webpack -p --config scripts/webpack.config.prod.js",
     "publish:demo": "npm run build && surge -d vuepack.surge.sh -p build",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/egoist/vuepack.git"
+    "url": "git+https://github.com/BangumiMoe/rin-webui.git"
   },
   "keywords": [
     "vue",
@@ -23,12 +23,12 @@
     "mvvm",
     "starter"
   ],
-  "author": "EGOIST <0x142857@gmail.com>",
+  "author": "BangumiMoe <prpr@bangumi.moe>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/egoist/vuepack/issues"
+    "url": "https://github.com/BangumiMoe/rin-webui/issues"
   },
-  "homepage": "https://github.com/egoist/vuepack#readme",
+  "homepage": "https://github.com/BangumiMoe/rin-webui#readme",
   "devDependencies": {
     "babel-core": "^6.3.13",
     "babel-loader": "^6.2.0",
