@@ -1,12 +1,13 @@
 {
   "name": "rin-webui",
   "version": "0.0.45",
-  "description": "Vue and Webpack with hot-reload PostCSS scaffolding",
+  "description": "new frontend design for rin-pr",
   "main": "index.js",
   "scripts": {
     "test": "npm run build",
     "dev": "NODE_ENV=development HOT=1 VUEPACK_PORT=3030 node scripts/devServer.js",
     "build": "rm -rf ./build && webpack -p --config scripts/webpack.config.prod.js",
+    "build:win": "rd /s /q build && node node_modules/webpack/bin/webpack -p --config scripts/webpack.config.prod.js",
     "publish:demo": "npm run build && surge -d vuepack.surge.sh -p build",
     "dev:win": "set NODE_ENV=development && set HOT=1 && set VUEPACK_PORT=3030 && node scripts/devServer.js"
   },
