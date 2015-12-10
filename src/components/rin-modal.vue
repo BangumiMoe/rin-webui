@@ -8,7 +8,7 @@
     top:0;
     left:0;
     #rin-modal{
-      overflow-y: scroll;
+      overflow-y: hidden;
       width: 100%;
       height:60%;
       left:0;
