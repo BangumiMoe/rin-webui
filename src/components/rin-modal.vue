@@ -1,13 +1,13 @@
 <style lang="less">
   @import "../less/colors.less";
-  #modal-wrapper{
+  .modal-wrapper{
     width: calc(~"100% - 128px");
     height:100%;
     position: fixed;
     background-color: rgba(0, 0, 0, 0.72);
     top:0;
     left:0;
-    #rin-modal{
+    .rin-modal{
       overflow-y: hidden;
       width: 100%;
       height:60%;
@@ -131,7 +131,7 @@
     overflow-y: hidden !important;
   }
 }
-.modal-animate-enter#rin-modal{
+.modal-animate-enter.rin-modal{
   opacity: 0;
   animation: modal-fadein .5s ease .5s;
 }
@@ -141,7 +141,7 @@
     overflow-y: hidden !important;
   }
 }
-.modal-animate-leave#rin-modal{
+.modal-animate-leave.rin-modal{
   animation: modal-fadeout .5s;
 }
 @keyframes loading{
@@ -196,8 +196,8 @@
 </style>
 
 <template>
-  <div id="modal-wrapper" v-if="modalCtrl.visible" transition="modal-animate">
-    <div id="rin-modal" class="clearfix" v-if="modalCtrl.visible" transition="modal-animate">
+  <div class="modal-wrapper" v-if="modalCtrl.visible" transition="modal-animate">
+    <div  class="clearfix rin-modal" v-if="modalCtrl.visible" transition="modal-animate">
       <div class="alert-line alert-line-up alert-line-scroll" v-bind:class="[modalCtrl.danger ? 'black-red-up' : 'black-yellow-up' ]"></div>
       <div class="modal-content">
           <div class="modal-content-inner">

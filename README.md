@@ -33,22 +33,22 @@
 
 通过发起 `open-modal` 事件来调出 Modal 框。
 
-rin-modal 组件通过根组件的事件转发，实现了全局监听。从而在各组件内可以使用形如 `this.$dispatch("open-modal", opts)` 的方式调用 Modal 框。
+rin-modal全局监听`open-modal`事件。在各组件内可以使用形如 `this.$dispatch("open-modal", opts)` 的方式调用 Modal 框。
 
 opts 参数如下：
 
 ```js
 {
-  title: "标题",  
-  content: "内容",  
+  modalId:"modal-id" //要调起的模态框id（复杂逻辑必填，全局唯一）
+  title: "标题",  //复杂逻辑可留空
+  content: "内容",  //复杂逻辑可留空
   noCancel: false, //是否隐藏取消按钮  
   danger: false //是否为紧急通知（红黑条）    
 }
 ```
-
+要在模态框内实现复杂逻辑，请将`rin-modal`作为逻辑组件的子组件。在组件模板内采用`<rin-modal modal-id="some-id"></rin-modal>`包裹模板内容。
 复杂逻辑调用示例请参考：[/src/components/modal-demo.vue](/src/components/modal-demo.vue)
 
-目前仅实现了动画及样式，相关调用逻辑正在完善中。
 
 __开发阶段可点击 copyright 和 logo 调出 Modal 框示例。__
 
