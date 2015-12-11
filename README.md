@@ -46,7 +46,7 @@ opts 参数如下：
   danger: false //是否为紧急通知（红黑条）    
 }
 ```
-要在模态框内实现复杂逻辑，请将`rin-modal`作为逻辑组件的子组件。在组件模板内采用`<rin-modal modal-id="some-id"></rin-modal>`包裹模板内容。
+要在模态框内实现复杂逻辑，请将 `rin-modal` 作为逻辑组件的子组件。在组件模板内采用 `<rin-modal modal-id="some-id"></rin-modal>` 包裹模板内容。
 复杂逻辑调用示例请参考：[/src/components/modal-demo.vue](/src/components/modal-demo.vue)
 
 
@@ -54,16 +54,31 @@ __开发阶段可点击 copyright 和 logo 调出 Modal 框示例。__
 
 ## API
 
+此处 API 是针对新 UI 使用的 API，与旧版 API 相比它减少了前端的 HTTP 请求次数。
+
 ### Torrent APIv2
 
-此处 API 是针对新 UI 使用的 API，与旧版 API 相比它减少了前端的 HTTP 请求次数，将用户、团队和 tag 信息在一次请求中返回结果。
+Torrent APIv2 主要变化是将用户、团队和 tag 信息在一次请求中返回结果。
 
 `/api/v2/torrent/page/:pageNum`
 
 `/api/v2/torrent/:torrent_id`
 
-Torrent 的其他列表部分之后更新。
+### Bangumi APIv2
 
+Bangumi APIv2 将 tag 信息在一次请求中返回结果。
+
+`/api/v2/bangumi/current`
+
+`/api/v2/bangumi/recent`
+
+### User APIv2
+
+User APIv2 的 session 请求将用户的团队，等待加入的团队在一次请求中返回结果。
+
+`/api/v2/user/session`
+
+其他可能需要用到的部分之后更新。
 
 [travis-url]: https://travis-ci.org/BangumiMoe/rin-webui
 [travis-image]: http://img.shields.io/travis/BangumiMoe/rin-webui.svg
