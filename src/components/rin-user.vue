@@ -1,9 +1,21 @@
 <script>
-  
-
   export default {
-	  data: {
-      user: null
+	  data () {
+      let user = {};
+      
+      for(var name of ['_id', 'emailHash', 'username']) {
+        user[name] = Cookies.get('rin-user-' + name);
+      }
+      
+      if(!user._id) {
+        user = {}
+      } else {
+        this.$dispatch('UserSignInOk', user);
+      }
+
+      return {
+        user: user
+      }
     },
     methods: {
       'signin' (username, password) {
@@ -11,6 +23,13 @@
         return self.$http.post('/api/user/signin', {username: username, password: SparkMD5.hash(password)}, function(data) {
           if(data.success) {
             self.user = data.user;
+            
+            for(var name of ['_id', 'emailHash', 'username']) {
+              let value = self.user[name];
+              console.log(name, value);
+              Cookies.set('rin-user-' + name, value);
+            }
+            
             self.$dispatch('UserSignInOk', self.user);
           } else {
             self.user = {};
