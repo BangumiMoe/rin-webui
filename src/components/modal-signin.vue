@@ -14,15 +14,27 @@
   <form>
     <div class="rin-message rin-error" v-if="message">{{ message }}</div>
   
-    <div class="rin-input">
-      <label for="signin_username">Username</label>
-      <input id="signin_username" type="text" v-model="username" placeholder="nickname or email">
+    <div class="rin-row">
+      <div class="rin-col">
+        <span class="rin-input">
+          <label for="signin_username">Username</label>
+          <input id="signin_username" type="text" v-model="username" placeholder="nickname or email">
+        </span>
+      </div>
+      
+      <div class="rin-col" style="margin-left:0.3em;">
+        <span class="rin-input">
+          <label for="signin_password">Password</label>
+          <input id="signin_password" type="password" v-model="password" placeholder="please input your passsword">
+        </span>
+      </div>
     </div>
     
-    <div class="rin-input">
-      <label for="signin_password">Password</label>
-      <input id="signin_password" type="password" v-model="password" placeholder="please input your passsword">
+    <div class="rin-checkbox">
+      <input id="signin_cookie" type="checkbox" checked="checked" v-model="cookie">
+      <label for="signin_cookie">本地保存账号信息</label>
     </div>
+    
   </form>
 
 </rin-modal>

@@ -26,7 +26,6 @@
             
             for(var name of ['_id', 'emailHash', 'username']) {
               let value = self.user[name];
-              console.log(name, value);
               Cookies.set('rin-user-' + name, value);
             }
             
@@ -38,19 +37,26 @@
         })
       },
       'signout' () {
-        let self = this;
+        /* let self = this;
         return self.$http.delete('/api/user/signout', null, function(data) {
           if(!data.success) {
             // TODO error handle
           }
           self.user = {};
           self.$dispatch('user_signouted');
-        });
+        });*/
+        
+        for(var name of ['_id', 'emailHash', 'username']) {
+          Cookies.remove('rin-user-' + name);
+        }
       }
     },
     events: {
       'rinUserSignIn' (form) {
         this.signin(form.username, form.password);
+      },
+      'rinUserSignOut' () {
+        this.signout();
       }
     }
   };

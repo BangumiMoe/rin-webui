@@ -98,7 +98,7 @@
         if(!this.user._id) {
           this.$dispatch('displaySigninForm');
         } else {
-          // TODO sign out
+          this.$dispatch('UserSignOut');
         }
       } 
     },
@@ -107,10 +107,13 @@
       'info-box': require('./nav-toolbar-infobox')
     },
     events: {
-      'UserSignInOk' (user) {
+      'UserSignInOK' (user) {
         this.user = user;
       },
       'UserSignInFailed' () {
+        this.user = {};
+      },
+      'UserSignOutOK' () {
         this.user = {};
       }
     }

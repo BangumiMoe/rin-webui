@@ -52,11 +52,15 @@
       'UserSignIn' (form) {
         this.$broadcast('rinUserSignIn', form);
       },
-      'UserSignInOk' (user) {
-        this.$broadcast('UserSignInOk', user);
+      'UserSignInOK' (user) {
+        this.$broadcast('UserSignInOK', user);
       },
       'UserSignInFailed' () {
         this.$broadcast('UserSignInFailed');
+      },
+      'UserSignOut' () {
+        this.$broadcast('rinUserSignOut');
+        this.$broadcast('UserSignOutOK');
       }
     }
   };
