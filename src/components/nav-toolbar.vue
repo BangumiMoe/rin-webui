@@ -45,7 +45,7 @@
 <div id="rin-toolbar" class="rin-main-bar rin-col">
 
   <div class="rin-logo">
-    <div class="img-wrap">
+    <div class="img-wrap" @click="beginSigin($event)">
       <img src="../assets/user-demo.png" />
     </div>
     <info-box v-bind:class="{'show': infobox.visible}" :user="user"></info-box>
@@ -62,12 +62,11 @@
 </template>
 
 <script>
+  import RUser from '../components/rin-user.vue'
   export default {
     data () {
       return {
-        user: {
-          username: 'Demo Rin User'
-        },
+        user: RUser.user,
         searchBar: {
           visible: false,
           fixed: false
@@ -92,7 +91,11 @@
       // Definition: 搜索图标点击 Toggle 事件.
       searchBarToggle: function (event) {
         this.searchBar.fixed = !this.searchBar.fixed;
-      }
+      },
+      
+      beginSigin (ev) {
+        this.$dispatch('displaySigninForm');
+      } 
     },
     components: {
       'search-bar': require('./nav-toolbar-search'),

@@ -44,6 +44,7 @@
 
 <script>
   import RLoader from '../components/rin-loader';
+  
   export default {
     data () {
       return {

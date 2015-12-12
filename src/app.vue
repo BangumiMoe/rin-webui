@@ -5,21 +5,26 @@
 <template>
   <div id="app" class="rin-row">
     <router-view></router-view>
-
+    
     <nav-toolbar></nav-toolbar>
     <nav-logo></nav-logo>
     <rin-modal></rin-modal>
     <modal-demo></modal-demo>
+    <modal-signin></modal-signin>
   </div>
 </template>
 
 <script>
   export default {
+    data: { 
+      displaySigninForm: false
+    },
     components: {
       'nav-toolbar': require('./components/nav-toolbar'),
       'nav-logo': require('./components/nav-logo'),
-      'rin-modal':require('./components/rin-modal'),
-      'modal-demo':require('./components/modal-demo')
+      'rin-modal': require('./components/rin-modal'),
+      'modal-demo':require('./components/modal-demo'),
+      'modal-signin':require('./components/modal-signin')
     },
     events:{
       "open-modal":function(opt){
@@ -30,6 +35,15 @@
       },
       "close-modal-blur":function(){
         this.$broadcast("close-modal-blur");
+        if(this.displaySigninForm) {
+          this.displaySigninForm = false;
+        }
+      },
+      'displaySigninForm' () {
+        if(this.displaySigninForm) { return; }
+        
+        this.displaySigninForm = true;
+        this.$dispatch("open-modal", {modalId: 'modal-signin' });
       }
     }
   };
