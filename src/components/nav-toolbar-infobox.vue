@@ -40,10 +40,7 @@
 
 <template>
   <div class="rin-infobox">
-    <p>username: <span>{{user.username}}</span></p>
-
-    <p> 信息 </p>
-    <p> 提示 </p>
+    <p>Hi, {{user.username || "Anonymous" }}!</p>
   </div>
 </template>
 

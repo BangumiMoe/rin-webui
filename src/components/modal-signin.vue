@@ -10,42 +10,52 @@
 
 <template>
 <rin-modal modal-id="modal-signin">
-  <h1>Welcome Signin Form</h1>
+  <h1>Welcome Bangumi.moe</h1>
   <form>
-    <div>
+    <div class="rin-message rin-error" v-if="message">{{ message }}</div>
+  
+    <div class="rin-input">
       <label for="signin_username">Username</label>
-      <input id="signin_username" type="text" v-model="username" placeholder="Username">
+      <input id="signin_username" type="text" v-model="username" placeholder="nickname or email">
     </div>
     
-    <div>
+    <div class="rin-input">
       <label for="signin_password">Password</label>
-      <input id="signin_password" type="password" v-model="password" placeholder="Password">
+      <input id="signin_password" type="password" v-model="password" placeholder="please input your passsword">
     </div>
   </form>
 
 </rin-modal>
-<rin-user></rin-user>
 </template>
 
 <script>
-  import RUser from './rin-user'
-  
   export default {
     components:{
       'rin-modal': require('./rin-modal'),
-      'rin-user': RUser
     },
     data () {
-      return { username: null, password: null };
+      return { username: null, password: null, message: null };
     },
     methods:{
       'cancel' () { return 0; }
     },
     events:{
       'modal-ok-click' () {
-        this.$dispatch('rinSingIn', {});
+        this.$dispatch('UserSignIn', {
+          username: this.username,
+          password: this.password
+        });
       },
-      'modal-closed' () {}
+      'modal-closed' () {},
+      
+      'UserSignInOk' (user) {
+        if(user.username == this.username) {
+          this.$broadcast('close-modal');
+        }
+      },
+      'UserSignInFailed' (msg) {
+        this.message = msg;
+      }
     }
   };
 </script>

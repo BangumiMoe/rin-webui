@@ -9,6 +9,7 @@
     <nav-toolbar></nav-toolbar>
     <nav-logo></nav-logo>
     <rin-modal></rin-modal>
+    <rin-user></rin-user>
     <modal-demo></modal-demo>
     <modal-signin></modal-signin>
   </div>
@@ -23,6 +24,7 @@
       'nav-toolbar': require('./components/nav-toolbar'),
       'nav-logo': require('./components/nav-logo'),
       'rin-modal': require('./components/rin-modal'),
+      'rin-user': require('./components/rin-user'),
       'modal-demo':require('./components/modal-demo'),
       'modal-signin':require('./components/modal-signin')
     },
@@ -39,11 +41,22 @@
           this.displaySigninForm = false;
         }
       },
+      
+      // display sign in form modal
       'displaySigninForm' () {
         if(this.displaySigninForm) { return; }
-        
         this.displaySigninForm = true;
         this.$dispatch("open-modal", {modalId: 'modal-signin' });
+      },
+      
+      'UserSignIn' (form) {
+        this.$broadcast('rinUserSignIn', form);
+      },
+      'UserSignInOk' (user) {
+        this.$broadcast('UserSignInOk', user);
+      },
+      'UserSignInFailed' () {
+        this.$broadcast('UserSignInFailed');
       }
     }
   };

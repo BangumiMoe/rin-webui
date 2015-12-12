@@ -1,21 +1,21 @@
 <script>
+  
+
   export default {
 	  data: {
       user: null
     },
     methods: {
       'signin' (username, password) {
-        console.log(this);
+        let self = this;
         return self.$http.post('/api/user/signin', {username: username, password: SparkMD5.hash(password)}, function(data) {
           if(data.success) {
             self.user = data.user;
+            self.$dispatch('UserSignInOk', self.user);
           } else {
             self.user = {};
-            // TODO error handle
+            self.$dispatch('UserSignInFailed', data.message);
           }
-          
-          console.log(self.user);
-          self.$dispatch('user_sigined', data);
         })
       },
       'signout' () {
@@ -30,8 +30,7 @@
       }
     },
     events: {
-      'rinSingIn' (ev, form) {
-        console.log('seconday #2');
+      'rinUserSignIn' (form) {
         this.signin(form.username, form.password);
       }
     }

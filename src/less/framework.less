@@ -1,3 +1,5 @@
+@import 'colors.less';
+
 html, body {
   padding: 0;
   margin: 0;
@@ -63,3 +65,39 @@ a {
 
 .rin-fade-transition { transition: all .6s ease; }
 .rin-fade-enter, .rin-fade-leave { opacity: 0; }
+
+form {
+  .rin-message {
+    display: block;
+    font-size: 0.9em;
+    line-height: 1.8em;
+    padding: 0.6em 1.2em;
+  } 
+  
+  .rin-message.rin-error {
+    color: @color-secondary-2-1;
+    background-color: @color-secondary-2-4;
+  } 
+  
+  div {
+    margin-bottom: 0.3em;
+  }
+  
+  .rin-input {
+    label, input {
+      display:block;
+    }
+    
+    input {
+      width: 99%;
+      
+      // FIXME md style 
+      border-top: 0;
+      border-left: 0;
+      border-right: 0;
+      border-bottom: 2px solid @color-complement-0;
+      background-color: transparent;
+    }
+  }
+}
+ 

@@ -45,8 +45,9 @@
 <div id="rin-toolbar" class="rin-main-bar rin-col">
 
   <div class="rin-logo">
-    <div class="img-wrap" @click="beginSigin($event)">
-      <img src="../assets/user-demo.png" />
+    <div class="img-wrap" @click="userSignAction($event)">
+      <img src="../assets/user-demo.png" v-if="!user.username" />
+      <img src="https://bangumi.moe/avatar/{{ user.emailHash }}" v-if="user.username" />
     </div>
     <info-box v-bind:class="{'show': infobox.visible}" :user="user"></info-box>
   </div>
@@ -66,7 +67,7 @@
   export default {
     data () {
       return {
-        user: RUser.user,
+        user: {},
         searchBar: {
           visible: false,
           fixed: false
@@ -93,13 +94,26 @@
         this.searchBar.fixed = !this.searchBar.fixed;
       },
       
-      beginSigin (ev) {
-        this.$dispatch('displaySigninForm');
+      userSignAction (ev) {
+        if(!this.user._id) {
+          this.$dispatch('displaySigninForm');
+        } else {
+          // TODO sign out
+        }
       } 
     },
     components: {
       'search-bar': require('./nav-toolbar-search'),
       'info-box': require('./nav-toolbar-infobox')
+    },
+    events: {
+      'UserSignInOk' (user) {
+        console.log(user);
+        this.user = user;
+      },
+      'UserSignInFailed' () {
+        this.user = {};
+      }
     }
   };
 
