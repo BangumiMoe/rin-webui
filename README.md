@@ -96,6 +96,7 @@ hybridSearch 支持同时搜索 tag 和关键字，支持 and / or / not 方式�
 * ```
 `55c057b124180bc3647feb1d` `54992d1cc8b118cf40b274b3`
 ```
+
 同时搜索含有这两个 tag 的资源；
 
 * `WORST ONE -KNA` 同时搜索标题中有 WORST 和 ONE 且不包含 KNA 的资源；
