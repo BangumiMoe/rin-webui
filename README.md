@@ -63,11 +63,11 @@ __开发阶段可点击 copyright 和 logo 调出 Modal 框示例。__
 <p>{{data | date 'eM d,yyyy'}}</p>   		 //Oct 10,2015
 ```
 
-在script中引入：
+在 script 中引入：
 
 ```js
-export default{
-	filters:{
+export default {
+	filters: {
 		'date':require('../filters/dateFormat.js')
 	}
 }
@@ -84,6 +84,24 @@ Torrent APIv2 主要变化是将用户、团队和 tag 信息在一次请求中�
 `/api/v2/torrent/page/:pageNum`
 
 `/api/v2/torrent/:torrent_id`
+
+`/api/v2/torrent/search?query=QUERY`
+
+hybridSearch 支持同时搜索 tag 和关键字，支持 and / or / not 方式查询，QUERY 举例：
+
+* `"WORST ONE"|Asterisk` 同时查询两部类似的番，使用 `|` 操作符；
+
+* `"\"庶民\""` `'"庶民'` 搜索字符串中第一个文字带引号，请将 `\"` 转义或者使用单引号；
+
+* ```
+`55c057b124180bc3647feb1d` `54992d1cc8b118cf40b274b3`
+```
+同时搜索含有这两个 tag 的资源；
+
+* `WORST ONE -KNA` 同时搜索标题中有 WORST 和 ONE 且不包含 KNA 的资源；
+
+* **tag 和关键字无法放在同一个 `|` 操作下，但是可以在同一个 QUERY 中。**
+
 
 ### Bangumi APIv2
 
