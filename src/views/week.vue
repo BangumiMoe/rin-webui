@@ -12,6 +12,7 @@ ul,li,p{
 	box-sizing:border-box;
 	color:#fff;
 	background:@color-secondary-2-3;
+	cursor:pointer;
 
 	display:flex;
 	align-items: center;
@@ -49,6 +50,7 @@ ul,li,p{
 			align-items: center;
 			justify-content: center;
 			transition:all .2s linear;
+			cursor:pointer;
 		}
 		.title-bgc0{
 			background:#f44336;
@@ -78,7 +80,13 @@ ul,li,p{
 			box-sizing: border-box;
 			padding:0 10px;
 			width:360px;
-			transition:width .2s linear;
+			transition:all .2s linear;
+			overflow:hidden;
+
+			&.off{
+				width:0!important;
+				padding:0;
+			}
 
 			.item{
 					background:#fff;
@@ -120,7 +128,7 @@ ul,li,p{
 
 					.date{
 				    color: #9C9C9C;
-				    padding: 5px 0 0;
+				    padding: 4px 0 0;
 				    font-size:12px;
 					}
 				}
@@ -162,15 +170,15 @@ ul,li,p{
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);">
 
 		<div class="rin-week rin-row">
-			<div class="rin-column">
+			<div class="rin-column" v-on:click="allSwitch">
 				<span class="rin-vertical">{{locale.listName[lang]}}</span>
 			</div>
 
 			<div class="rin-week-item rin-row" v-for="item in datas">
-				<div class="rin-week-title title-bgc{{$index}}">
+				<div class="rin-week-title title-bgc{{$index}}" v-on:click="Switch($index)">
 					<span class="rin-vertical">{{locale.week[lang][$index]}}</span>
 				</div>
-				<div class="rin-week-content rin-row">
+				<div class="rin-week-content rin-row" v-bind:class="{'off':isOff[$index]}">
 
 						<div class="item" v-for="d in item">
 							<div class="preview">
@@ -179,7 +187,7 @@ ul,li,p{
 							<div class="content">
 								<p class="title rin-text-overflow" title="{{d.tag.locale[lang]}}">{{d.tag.locale[lang]}}</p>
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
-								<p class="date">{{d.startDate | date 'HH:mm'}}</p>
+								<p class="date">{{locale.time[lang]}} : {{d.startDate | date 'HH:mm'}}</p>
 							</div>
 							<div class="teams">
 									<span v-for="t in d.team">
@@ -199,7 +207,7 @@ ul,li,p{
 export default{
   data (){
   	return{
-    	lang:"zh_cn",
+    	lang:"ja",
 
     	locale:{
     		listName:{
@@ -208,6 +216,12 @@ export default{
     			en:"Bangumi List",
     			ja:"Bangumi List",
     		},
+    		time:{
+    			zh_cn:"播放时间",
+    			zh_tw:"播放時間",
+    			en:"On air",
+    			ja:"放送時間",
+    		},
     		week:{
 	    		zh_cn:["星期日","星期一","星期二","星期三","星期四","星期五","星期六"],
 	    		zh_tw:["星期日","星期一","星期二","星期三","星期四","星期五","星期六"],
@@ -215,7 +229,8 @@ export default{
 	    		ja:["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"],
     		}
     	},
-      datas:[]
+      datas:[],
+      isOff:[],
   	}
   },
   filters:{
@@ -223,6 +238,23 @@ export default{
   	'date':require('../filters/dateFormat.js')
   },
 	methods:{
+		//全部列表切换
+		allSwitch:function(){
+			//如果某个列表处于关闭状态，则全部打开。反之，全部关闭
+			if(this.isOff.indexOf(true)){
+				for(var i = 0;i<7;i++){
+					this.isOff.$set(i,true);
+				}
+			}else{
+				for(var i = 0;i<7;i++){
+					this.isOff.$set(i,false);
+				}
+			}
+		},
+		//单个列表切换
+		Switch:function(index){
+			this.isOff.$set(index,!this.isOff[index]);
+		},
 		setWidth: function(){
 			var allItem = document.querySelectorAll(".rin-week-content");
 			for(var i = 0;i<allItem.length;i++){
