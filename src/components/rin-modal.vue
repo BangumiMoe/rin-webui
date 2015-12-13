@@ -21,19 +21,19 @@
         height:30px;
       }
       .black-yellow-up{
-        background: linear-gradient(to 135deg,yellow 25%, black 0, black 50%,yellow 0, yellow 75%, black 0);
+        background: linear-gradient(135deg,yellow 25%, black 0, black 50%,yellow 0, yellow 75%, black 0);
         background-size: 200px 200px;
       }
       .black-yellow-down{
-        background: linear-gradient(to 135deg,black 25%, yellow 0, yellow 50%,black 0, black 75%, yellow 0);
+        background: linear-gradient(135deg,black 25%, yellow 0, yellow 50%,black 0, black 75%, yellow 0);
         background-size: 200px 200px;
       }
       .black-red-up{
-        background: linear-gradient(to 135deg,red 25%, black 0, black 50%,red 0, red 75%, black 0);
+        background: linear-gradient(135deg,red 25%, black 0, black 50%,red 0, red 75%, black 0);
         background-size: 200px 200px;
       }
       .black-red-down{
-        background: linear-gradient(to 135deg,black 25%, red 0, red 50%,black 0, black 75%, red 0);
+        background: linear-gradient(135deg,black 25%, red 0, red 50%,black 0, black 75%, red 0);
         background-size: 200px 200px;
       }
       .clearfix{
