@@ -8,7 +8,10 @@ Vue.use(VueResource);
 
 const router = new VueRouter();
 router.map({
-  '/': { component: require('./views/main') }
+  '/': { component: require('./views/main') },
+  '/week' :{
+  	component: require('./views/week')
+  }
 });
 
 router.start(require('./app'), '#app');

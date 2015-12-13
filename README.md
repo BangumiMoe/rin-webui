@@ -42,8 +42,8 @@ opts 参数如下：
   modalId:"modal-id" //要调起的模态框id（复杂逻辑必填，全局唯一）
   title: "标题",  //复杂逻辑可留空
   content: "内容",  //复杂逻辑可留空
-  noCancel: false, //是否隐藏取消按钮  
-  danger: false //是否为紧急通知（红黑条）    
+  noCancel: false, //是否隐藏取消按钮
+  danger: false //是否为紧急通知（红黑条）
 }
 ```
 要在模态框内实现复杂逻辑，请将 `rin-modal` 作为逻辑组件的子组件。在组件模板内采用 `<rin-modal modal-id="some-id"></rin-modal>` 包裹模板内容。
@@ -51,6 +51,27 @@ opts 参数如下：
 
 
 __开发阶段可点击 copyright 和 logo 调出 Modal 框示例。__
+
+### 日期格式化
+
+* 使用说明：
+
+```html
+<p>{{data | date 'yyyy-MM-dd HH:mm'}}</p>     //2015-10-21 16:38
+<p>{{data | date 'MM-dd'}}</p>   			 //10-21
+<p>{{data | date 'w'}}</p>   				 //三    //星期三
+<p>{{data | date 'eM d,yyyy'}}</p>   		 //Oct 10,2015
+```
+
+在script中引入：
+
+```js
+export default{
+	filters:{
+		'date':require('../filters/dateFormat.js')
+	}
+}
+```
 
 ## API
 
