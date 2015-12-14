@@ -20,4 +20,4 @@
 
 ## 开发
 
-[https://github.com/BangumiMoe/rin-webui/wiki/DEV](文档)
+[文档](https://github.com/BangumiMoe/rin-webui/wiki/DEV)
