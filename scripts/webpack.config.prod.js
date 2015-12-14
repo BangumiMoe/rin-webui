@@ -3,6 +3,7 @@ var config = require('./webpack.config')
 var path = require('path')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
+config.bail = true
 config.output.filename = 'bundle.[hash].js'
 config.output.publicPath = './'
 config.plugins = [
