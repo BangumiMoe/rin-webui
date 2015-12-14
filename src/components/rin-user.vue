@@ -2,6 +2,7 @@
   export default {
 	  data () {
       let user = {};
+      let is_signined = false;
       
       for(var name of ['_id', 'emailHash', 'username']) {
         user[name] = Cookies.get('rin-user-' + name);

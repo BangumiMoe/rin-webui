@@ -10,17 +10,6 @@
       display: inline-block;
       margin: 16px 4px;
 
-      .img-wrap {
-        background-color: @color-secondary-1-4;
-        height: 270px;
-        z-index: 2;
-        position: absolute;
-        margin: 0px;
-        left: 0px;
-        right: 0px;
-        padding-left: 4px;
-      }
-
       img {
         border-radius: 28px;
         border: 4px solid @color-secondary-1-1;
@@ -49,7 +38,7 @@
       <img src="../assets/user-demo.png" v-if="!user.username" />
       <img src="https://bangumi.moe/avatar/{{ user.emailHash }}" v-if="user.username" />
     </div>
-    <info-box v-bind:class="{'show': infobox.visible}" :user="user"></info-box>
+    <info-box :user="user" arrow="right"></info-box>
   </div>
 
   <span class="rin-search" v-on:mouseenter="searchBarShow" v-on:mouseleave="searchBarHide" v-on:click="searchBarToggle">
@@ -71,9 +60,6 @@
         searchBar: {
           visible: false,
           fixed: false
-        },
-        infobox:{
-          visible: false
         }
       };
     },
