@@ -17,6 +17,11 @@ ul,li,p{
 	display:flex;
 	align-items: center;
 	justify-content: center;
+
+	>span{
+		/*fix firefox error*/
+		width:100%;
+	}
 }
 .rin-vertical{
 	/*文字竖排*/
@@ -108,12 +113,15 @@ ul,li,p{
 					}
 
 				.preview{
+					width:60px;
+					height:60px;
 					float:left;
 
 					img{
+						width:100%;
+						height:100%;
 						border-radius:5px;
-						width:60px;
-						height:60px;
+						font-size:12px;
 					}
 				}
 
@@ -169,7 +177,7 @@ ul,li,p{
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);">
 
-		<div class="rin-week rin-row">
+		<div class="rin-week rin-row" id="rin-week">
 			<div class="rin-column" v-on:click="allSwitch">
 				<span class="rin-vertical">{{locale.listName[lang]}}</span>
 			</div>
@@ -295,6 +303,25 @@ export default{
 	},
 	ready:function(){
 		this.getData();
+
+
+
+		//横向滚动
+		var wrap = document.getElementById("rin-week");
+    var eventName = document.onmousewheel !== undefined ? "mousewheel" : "DOMMouseScroll";
+		function mouse_wheel(e){
+			var wrapWidth = wrap.scrollWidth/25;
+
+			var e = window.event || e;
+			if(e.detail > 0 || e.wheelDelta < 0){
+				wrap.scrollLeft += wrapWidth;
+			}
+			else{
+				wrap.scrollLeft -= wrapWidth;
+			}
+		}
+		wrap.addEventListener(eventName,mouse_wheel);
+
 	}
 }
 </script>
