@@ -5,6 +5,7 @@
   overflow: hidden;
   .page-nav{
     width: calc(~'100% - 128px');
+    right:143px;
     height: 50px;
     position: fixed;
     top:0;
@@ -15,7 +16,7 @@
     .page-nav-inner{
       width:100%;
       float: right;
-      box-shadow: #333 1px 1px 15px;
+      /*box-shadow: #333 1px 1px 15px;*/
       transition: width .5s;
     }
     .page-nav-short{
@@ -28,6 +29,9 @@
     }
     .page-nav-btn.btn-up{
       background-color: #E861A6;
+    }
+    .page-nav-btn.btn-up-first{
+      background-color: #EC9EC6;
     }
     .page-nav-num{
       color:#2781FD;
@@ -48,6 +52,9 @@
     }
     .page-nav-btn.btn-down{
       background-color: #EDAB5A;
+    }
+    .page-nav-btn.btn-down-last{
+      background-color: #FFCB8C;
     }
   }
 
@@ -101,19 +108,19 @@
     <div  class="rin-wrapper" v-show="!busy" transition="rin-fade" v-on:scroll="checkPageNav">
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" v-bind:class={'page-nav-short':short}>
-          <div class="page-nav-btn btn-up rin-col-1" v-on:click="chgPage(1-currentPage)" v>
+          <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v>
             &lt;&lt;
           </div>
-          <div class="page-nav-btn btn-up rin-col-3" v-on:click="chgPage(-1)" v>
+          <div class="page-nav-btn btn-up rin-col-2" v-on:click="chgPage(-1)" v>
             &lt;
           </div>
-            <div  v-for="(index,page) in getPageNavNum(5)" v-bind:class="{'cur':page.offset == 0}" class="rin-col-1  page-nav-btn page-nav-num" v-on:click="chgPage(page.offset)" >
+            <div  v-for="(index,page) in getPageNavNum(5)" v-bind:class="{'cur':page.offset == 0}" class="rin-col-2  page-nav-btn page-nav-num" v-on:click="chgPage(page.offset)" >
               {{page.show}}
             </div>
-          <div class="page-nav-btn btn-down rin-col-3" v-on:click="chgPage(+1)">
+          <div class="page-nav-btn btn-down rin-col-2" v-on:click="chgPage(+1)">
             &gt;
           </div>
-          <div class="page-nav-btn btn-down rin-col-1" v-on:click="chgPage(torrent.pageNum-currentPage)">
+          <div class="page-nav-btn btn-down-last rin-col-2" v-on:click="chgPage(torrent.pageNum-currentPage)">
             &gt;&gt;
 
           </div>
