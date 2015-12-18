@@ -1,4 +1,5 @@
 @import 'colors.less';
+@import 'normalize.css';
 
 html, body {
   padding: 0;
@@ -7,33 +8,41 @@ html, body {
   overflow: hidden;
 }
 
+body{
+  font-family: 'Helvetica Neue','Microsoft Yahei',Helvetica,Arial,sans-serif;
+  font-size: 14px;
+  word-wrap: break-word;
+  color: #222;
+  background-color: #fff;
+}
+
 a {
   text-decoration: none
 }
 
 .rin-row {
   height: 100%;
-  
+
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-  
+
   flex-direction: row;
   align-items: stretch;
-  
+
   -ms-flex-direction: row;
   -ms-flex-align: stretch;
-  
-  .rin-col { 
+
+  .rin-col {
     position: relative;
-    
+
     .rin-wrapper {
       position: relative;
-    }  
+    }
   }
-  
+
   .rin-col-1 { width: 8.33% }
   .rin-col-2 { width: 16.66% }
   .rin-col-3 { width: 25% }
@@ -51,7 +60,7 @@ a {
   list-style: none;
   margin: 0;
   padding: 0;
-  
+
   li {
     display: block;
     padding: 0;
@@ -72,37 +81,63 @@ form {
     font-size: 0.9em;
     line-height: 1.8em;
     padding: 0.6em 1.2em;
-  } 
-  
+  }
+
   .rin-message.rin-error {
     color: @color-secondary-2-1;
     background-color: @color-secondary-2-4;
-  } 
-  
+  }
+
   div {
     margin-bottom: 0.3em;
   }
-  
+
   .rin-input {
     label, input {
       display:block;
     }
-    
+
     input {
       width: 99%;
-      
-      // FIXME md style 
+
+      // FIXME md style
       border: 2px solid white;
       background-color: transparent;
     }
   }
-  
+
   .rin-checkbox {
     font-size: 0.6em;
-    
+
     input,label {
       display: inline-block;
     }
   }
 }
- 
+.rin-tag{
+  font-size:12px;
+
+  >span{
+    display:inline-block;
+    height:20px;
+    line-height:20px;
+    padding-right:5px;
+    margin: 0 4px;
+    margin-top:8px;
+    background: #eee;
+    border-radius: 3px;
+    color: #6d6d6d;
+    overflow:hidden;
+
+    >img{
+      width:20px;
+      height:20px;
+      vertical-align: top;
+    }
+
+    &:hover{
+      color:#fff;
+      background:@color-secondary-2-2;
+    }
+  }
+}

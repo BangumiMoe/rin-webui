@@ -94,6 +94,7 @@ ul,li,p{
 			}
 
 			.item{
+					position:relative;
 					background:#fff;
 					overflow:hidden;
 					padding:10px;
@@ -104,12 +105,16 @@ ul,li,p{
 					border-radius:5px;
 					width:300px;
 					cursor:pointer;
-					transition:all .2s linear;
+					transition:all .3s linear;
 
 					&:hover{
 						border-color:#c3c3c3;
 						transform:translateX(3px);
 						box-shadow:0 4px 5px rgba(0, 0, 0, 0.07);
+
+						.acgdb{
+			    		right: -45px;
+						}
 					}
 
 				.preview{
@@ -129,6 +134,7 @@ ul,li,p{
 					padding-left:68px;
 				  font-size: 14px;
 					height:60px;
+					line-height:20px;
 
 					.title{
 						color:#333;
@@ -136,37 +142,28 @@ ul,li,p{
 
 					.date{
 				    color: #9C9C9C;
-				    padding: 4px 0 0;
 				    font-size:12px;
 					}
 				}
-				.teams{
-					font-size:12px;
 
-					>span{
-					  display:inline-block;
-				    height:20px;
-				    line-height:20px;
-				    padding-right:3px;
-				    margin: 0 4px;
-						margin-top:8px;
-				    background: #eee;
-				    border-radius: 3px;
-				    color: #6d6d6d;
-				    overflow:hidden;
+				.rin-tag{
+					margin-bottom:-2px;
+				}
 
-						>img{
-							width:20px;
-							height:20px;
-							vertical-align: top;
-							padding-right:3px;
-						}
+				.acgdb{
+			    position: absolute;
+			    width: 95px;
+			    height: 65px;
+			    top: -30px;
+			    background: #681558;
+			    padding: 5px;
+			    color: #fff;
+			    right: -112px;
+			    line-height: 110px;
+			    text-align: center;
+			    transform:rotate(45deg);
+					transition:right .2s linear;
 
-						&:hover{
-							color:#fff;
-							background:@color-secondary-2-2;
-						}
-					}
 				}
 			}
 
@@ -193,16 +190,19 @@ ul,li,p{
 								<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+d.icon" alt="{{d.name}}">
 							</div>
 							<div class="content">
-								<p class="title rin-text-overflow" title="{{d.tag.locale[lang]}}">{{d.tag.locale[lang]}}</p>
+								<p class="title rin-text-overflow" title="{{d.tag.locale[lang] ? d.tag.locale[lang] : d.tag.name}}">{{d.tag.locale[lang] ? d.tag.locale[lang] : d.tag.name}}</p>
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
-								<p class="date">{{locale.time[lang]}} : {{d.startDate | date 'HH:mm'}}</p>
+								<p class="date">{{locale.time[lang]}}: {{d.startDate | date 'HH:mm'}}</p>
 							</div>
-							<div class="teams">
+							<div class="rin-tag">
 									<span v-for="t in d.team">
-										<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+(t.icon?t.icon:'data/images/2015/01/0fm7ihnu7lh2me3fog6.jpg')" alt="{{t.name}}">
-										{{t.name}}
+										<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+(t.icon?t.icon:'data/images/2015/01/0fm7ihnu7lh2me3fog6.jpg')" alt="{{t.tag.locale[lang] ? t.tag.locale[lang] : t.tag.name}}">
+										{{t.tag.locale[lang] ? t.tag.locale[lang] : t.tag.name}}
 									</span>
 							</div>
+							<a class="acgdb" href="http://acgdb.com/{{d.acgdb_id?d.acgdb_id:''}}" target="_black">
+								ACGDB
+							</a>
 						</div>
 
 				</div>
