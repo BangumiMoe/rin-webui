@@ -24,12 +24,27 @@
     .page-nav-btn{
       cursor: pointer;
       color:azure;
+      transition: font-size .2s;
     }
     .page-nav-btn.btn-up{
       background-color: #E861A6;
     }
     .page-nav-num{
+      color:#2781FD;
+    }
+    .page-nav-num.cur{
+      color:#fff;
+      background-color:#3965A7 !important;
+      cursor:default;
+    }
+    .page-nav-num{
       background-color: azure;
+    }
+    .page-nav-num:nth-child(odd){
+      background-color: #B3E6FF;
+    }
+    .page-nav-btn:not(.cur):hover{
+      font-size:1.5em;
     }
     .page-nav-btn.btn-down{
       background-color: #EDAB5A;
@@ -86,14 +101,21 @@
     <div  class="rin-wrapper" v-show="!busy" transition="rin-fade" v-on:scroll="checkPageNav">
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" v-bind:class={'page-nav-short':short}>
-          <div class="page-nav-btn btn-up rin-col-4" v-on:click="lastPage">
-            上一页⬆️
+          <div class="page-nav-btn btn-up rin-col-1" v-on:click="chgPage(1-currentPage)" v>
+            &lt;&lt;
           </div>
-          <div class="rin-col-4 page-nav-num">
-            当前第{{currentPage}}页
+          <div class="page-nav-btn btn-up rin-col-3" v-on:click="chgPage(-1)" v>
+            &lt;
           </div>
-          <div class="page-nav-btn btn-down rin-col-4" v-on:click="nextPage">
-            下一页⬇️
+            <div  v-for="(index,page) in getPageNavNum(5)" v-bind:class="{'cur':page.offset == 0}" class="rin-col-1  page-nav-btn page-nav-num" v-on:click="chgPage(page.offset)" >
+              {{page.show}}
+            </div>
+          <div class="page-nav-btn btn-down rin-col-3" v-on:click="chgPage(+1)">
+            &gt;
+          </div>
+          <div class="page-nav-btn btn-down rin-col-1" v-on:click="chgPage(torrent.pageNum-currentPage)">
+            &gt;&gt;
+
           </div>
         </div>
 
@@ -144,7 +166,8 @@
         currentPage:1,
         short:false,
         torrent: {
-          lastest: []
+          lastest: [],
+          pageNum:0,
         },
         modalBlur:false
       }
@@ -155,26 +178,38 @@
         self.busy=true;
         this.$http.get('https://bangumi.moe/api/v2/torrent/page/'+self.currentPage, null, function(data) {
           self.torrent.lastest = data.torrents;
-
+          self.torrent.pageNum=data.page_count;
           self.busy=false;
 //          setTimeout(function() {
 //            self.busy = false;
 //          }, 2000);
         });
       },
-      lastPage:function(){
+      chgPage:function(offset){
+        if (!offset) return;
         let self=this;
-        if (self.currentPage>1){
-          self.currentPage--;
+        if ((self.currentPage+offset>=1)&&(self.currentPage+offset<=self.torrent.pageNum)){
+          self.currentPage+=offset;
           self.getTorrents();
         }
+        self.getPageNavNum(20);
       },
-      nextPage:function(){
+      getPageNavNum:function(length){
+        if (!length) return;
         let self=this;
-        if (self.torrent.lastest.length>=30){
-          self.currentPage++;
-          self.getTorrents();
+        var me=parseInt(length/2),start=0;
+        if (self.currentPage-me<1){
+          start=1;
+        }else if (self.currentPage+me>self.torrent.pageNum){
+          start=self.torrent.pageNum-length+1;
+        }else{
+          start=this.currentPage-me;
         }
+        var rst=[];
+        for (var i=0;i<length;i++){
+          rst.push({show:start+i,offset:start+i-self.currentPage});
+        }
+        return rst;
       },
       checkPageNav:function(e){
         //console.log(e);
