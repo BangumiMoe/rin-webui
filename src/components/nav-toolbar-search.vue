@@ -4,7 +4,8 @@
 -->
 
 <!-- SearchBar 样式定义. -->
-<style lang="less">
+<style scoped lang="less">
+  @import "../less/colors.less";
   @cubicEase: cubic-bezier(.22, .58, .12, .98);
 
   /* Main Container. | 节点主容器. */
@@ -18,8 +19,9 @@
     box-sizing: border-box;
     font-family: "Microsoft YaHei";
     font-size: 13px;
-    background-color: #fff;
-    box-shadow: 0 0 .1em .1em rgba(0,0,0,.3);
+    border-top: 5px solid @color-secondary-1-3;
+    background-color: @color-secondary-1-4;
+    /* box-shadow: 0 0 .1em .1em rgba(0,0,0,.3); */
     transition: all @cubicEase .5s;
 
     &:after {
@@ -114,28 +116,28 @@
       display: inline-block;
       padding: .5em;
       margin: .5em .5em .5em 0;
-      color: cornflowerblue;
+      border: .1em solid @color-secondary-2-4;
+      background-color: @color-secondary-2-3;
+      color: @color-secondary-2-1;
       font-size: 12px;
-      border: .1em solid cornflowerblue;
       border-radius: .5em;
       cursor: pointer;
       transition: all @cubicEase .4s;
       user-select: none;
 
       &:hover {
-         background-color: cornflowerblue;
-         color: #fff;
-       }
+        border-color: @color-secondary-2-3;
+        background-color: @color-secondary-2-2;
+        color: @color-secondary-2-4;
+      }
 
       &:active {
-         background-color: #4fc315;
-         border-color: #4fc315;
-         color: #fff;
-         transition: none !important;
-       }
+        border-color: @color-secondary-2-2;
+        background-color: @color-secondary-2-1;
+        color: @color-secondary-2-0;
+        transition: none !important;
+      }
     }
-
-
 
     .rin-loading-progress {
       background-color: #fff;
@@ -147,10 +149,7 @@
       text-align: center;
     }
 
-
-
     /* Common Class-based Style goes below. */
-
     .float-left {
       float: left;
     }

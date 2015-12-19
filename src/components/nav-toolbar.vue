@@ -2,8 +2,8 @@
   @import "../less/colors.less";
 
   #rin-toolbar {
-    background-color: @color-secondary-1-4;
-    color: @color-secondary-1-0;
+    background-color: @color-primary-0;
+    color: @color-primary-2;
 
     .rin-logo {
       cursor: pointer;
@@ -12,7 +12,7 @@
 
       img {
         border-radius: 28px;
-        border: 4px solid @color-secondary-1-1;
+        border: 4px solid @color-primary-2;
         width: 48px;
       }
     }

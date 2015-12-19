@@ -1,4 +1,4 @@
-<style lang="less">
+<style scoped lang="less">
 @import "../less/colors.less";
 #rin-main {
   height: 100%;
@@ -24,37 +24,37 @@
     }
     .page-nav-btn{
       cursor: pointer;
-      color:azure;
+      color: @color-secondary-1-1;
       transition: font-size .2s;
     }
     .page-nav-btn.btn-up{
-      background-color: #E861A6;
+      background-color: @color-complement-3;
     }
     .page-nav-btn.btn-up-first{
-      background-color: #EC9EC6;
+      background-color: @color-complement-4;
     }
     .page-nav-num{
-      color:#2781FD;
+      color: @color-secondary-2-4;
     }
     .page-nav-num.cur{
-      color:#fff;
-      background-color:#3965A7 !important;
+      color: @color-secondary-1-3;
+      background-color: @color-secondary-1-2 !important;
       cursor:default;
     }
     .page-nav-num{
-      background-color: azure;
+      background-color: @color-complement-2;
     }
     .page-nav-num:nth-child(odd){
-      background-color: #B3E6FF;
+      background-color: @color-complement-2;
     }
     .page-nav-btn:not(.cur):hover{
       font-size:1.5em;
     }
     .page-nav-btn.btn-down{
-      background-color: #EDAB5A;
+      background-color: @color-complement-3;
     }
     .page-nav-btn.btn-down-last{
-      background-color: #FFCB8C;
+      background-color: @color-complement-4;
     }
   }
 
@@ -73,24 +73,32 @@
     padding-top:50px;
     table.rin-main-table{
       tr{
-        border-bottom:#989898 1px solid;
+        border-bottom: @color-secondary-1-3 1px solid;
+        background-color: @color-secondary-1-2;
         font-size:0.9em;
-        background-color: #D7ECEA;
         td{
           line-height: 170%;
           padding:5px 0;
           text-align: center;
+          
+          .rin-magnet {
+            color: @color-primary-4;
+          }
         }
       }
       .rin-main-table-tr:nth-child(odd){
-        background-color: #66ccff;
+        background-color: @color-secondary-1-1;
       }
       .rin-main-table-tr:hover{
-        background-color: #B2E5FF;
-        box-shadow: #333 1px 1px 1px ;
+        color: @color-secondary-1-2;
+        background-color: @color-secondary-1-4;
+        
+        .rin-magnet {
+          color: @color-primary-2;
+        }
       }
       .rin-main-table-tr{
-        transition: all .5s;
+        transition: all .2s;
       }
       th{
         text-align: center;
@@ -149,7 +157,11 @@
           			<td class="title"  style="text-align:left;">
           				<a target="_blank" >{{t.title}}</a>
                 </td>
-          			<td nowrap="nowrap" align="center"><a class="rin-magnet" title="磁力下載" href="{{t.magnet}}">⬇️</a></td>
+          			<td nowrap="nowrap" align="center">
+                  <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}">️
+                    <i class="material-icons">&#xE2C4;</i>
+                  </a>️
+                </td>
           			<td nowrap="nowrap" align="center">{{t.size}}</td>
           			<td nowrap="nowrap" align="center">{{t.seeders}}</td>
           			<td nowrap="nowrap" align="center">{{t.leechers}}</td>

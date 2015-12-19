@@ -1,7 +1,7 @@
-<style lang="less">
+<style scoped lang="less">
   @import "../less/colors.less";
   .modal-wrapper{
-    width: calc(~"100% - 128px");
+    width:calc(~"100% - 128px");
     height:100%;
     position: fixed;
     background-color: rgba(0, 0, 0, 0.72);

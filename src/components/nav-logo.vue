@@ -2,7 +2,7 @@
   @import "../less/colors.less";
 
   #rin-logo {
-    background-color: @color-primary-3;
+    background-color: @color-primary-4;
     color: @color-primary-0;
 
     .logo {
