@@ -5,7 +5,7 @@
   overflow: hidden;
   .page-nav{
     width: calc(~'100% - 128px');
-    right:145px;
+    right: 128px;
     height: 50px;
     position: fixed;
     top:0;
@@ -16,7 +16,6 @@
     .page-nav-inner{
       width:100%;
       float: right;
-      /*box-shadow: #333 1px 1px 15px;*/
       transition: width .5s;
     }
     .page-nav-short{
@@ -24,17 +23,19 @@
     }
     .page-nav-btn{
       cursor: pointer;
-      color: @color-secondary-1-1;
+      color: white;
       transition: font-size .2s;
+      
+      i { margin-top: 0.5em;}
     }
     .page-nav-btn.btn-up{
-      background-color: @color-complement-3;
+      background-color: @color-primary-2;
     }
     .page-nav-btn.btn-up-first{
-      background-color: @color-complement-4;
+      background-color: @color-primary-2;
     }
     .page-nav-num{
-      color: @color-secondary-2-4;
+      color: @color-primary-0;
     }
     .page-nav-num.cur{
       color: @color-secondary-1-3;
@@ -42,19 +43,19 @@
       cursor:default;
     }
     .page-nav-num{
-      background-color: @color-complement-2;
+      background-color: @color-primary-1;
     }
-    .page-nav-num:nth-child(odd){
-      background-color: @color-complement-2;
-    }
+    /*.page-nav-num:nth-child(odd){
+      background-color: @color-primary-2;
+    }*/
     .page-nav-btn:not(.cur):hover{
-      font-size:1.5em;
+      font-size:1.4em;
     }
     .page-nav-btn.btn-down{
-      background-color: @color-complement-3;
+      background-color: @color-primary-2;
     }
     .page-nav-btn.btn-down-last{
-      background-color: @color-complement-4;
+      background-color: @color-primary-2;
     }
   }
 
@@ -72,10 +73,16 @@
     overflow-y: scroll;
     padding-top:50px;
     table.rin-main-table{
-      tr{
+      font-size:0.9em;
+      
+      thead {
+        background-color: @color-secondary-1-2;  
+      }
+        
+      .rin-main-table-tr{
         border-bottom: @color-secondary-1-3 1px solid;
-        background-color: @color-secondary-1-2;
-        font-size:0.9em;
+        
+        
         td{
           line-height: 170%;
           padding:5px 0;
@@ -84,8 +91,6 @@
           .rin-magnet {
             color: @color-primary-4;
           }
-
-
         }
         td.rin-uploader{
           text-align: left;
@@ -102,7 +107,6 @@
         }
       }
       .rin-main-table-tr:nth-child(odd){
-        background-color: @color-secondary-1-1;
       }
       .rin-main-table-tr:hover{
         color: @color-secondary-1-2;
@@ -132,20 +136,19 @@
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" v-bind:class={'page-nav-short':short}>
           <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v>
-            &lt;&lt;
+            <i class="material-icons">&#xE020;</i>
           </div>
           <div class="page-nav-btn btn-up rin-col-2" v-on:click="chgPage(-1)" v>
-            &lt;
+            <i class="material-icons">&#xE314;</i>
           </div>
             <div  v-for="(index,page) in getPageNavNum(5)" v-bind:class="{'cur':page.offset == 0}" class="rin-col-2  page-nav-btn page-nav-num" v-on:click="chgPage(page.offset)" >
               {{page.show}}
             </div>
           <div class="page-nav-btn btn-down rin-col-2" v-on:click="chgPage(+1)">
-            &gt;
+            <i class="material-icons">&#xE315;</i>
           </div>
           <div class="page-nav-btn btn-down-last rin-col-2" v-on:click="chgPage(torrent.pageNum-currentPage)">
-            &gt;&gt;
-
+            <i class="material-icons">&#xE01F;</i>
           </div>
         </div>
 
@@ -171,12 +174,12 @@
           			<td width="6%" align="center">{{t.category_tag.locale.zh_cn}}</td>
           			<td class="title"  style="text-align:left;">
           				<a target="_blank" >{{t.title}}</a>
-                </td>
-          			<td nowrap="nowrap" align="center">
-                  <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}">️
-                    <i class="material-icons">&#xE2C4;</i>
-                  </a>️
-                </td>
+                    </td>
+                    <td nowrap="nowrap" align="center">
+                        <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}">️
+                            <i class="material-icons">&#xE2C4;</i>
+                        </a>️
+                    </td>
           			<td nowrap="nowrap" align="center">{{t.size}}</td>
           			<td nowrap="nowrap" align="center">{{t.seeders}}</td>
           			<td nowrap="nowrap" align="center">{{t.leechers}}</td>

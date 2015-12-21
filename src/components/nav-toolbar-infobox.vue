@@ -17,15 +17,15 @@
 
   .rin-infobox {
     border-radius: 10px;
-    border-width: 1px 2px 2px 2px;
-    border-color: #799A06;
+    border-width: 1px 4px 3px 2px;
+    border-color: @color-primary-2;
     border-style: solid;
     padding: 15px 0px;
     width: 220px;
     min-height: 40px;
     max-height: 300px;
-    background-color: @color-secondary-1-0;
-    color: blue;
+    background-color: @color-primary-4;
+    color: @color-primary-2;
     position: relative;
   }
 
@@ -41,14 +41,14 @@
   .rin-infobox-arrow-right .rin-infobox:after {
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-left: 15px solid @color-secondary-1-0;
+    border-left: 15px solid @color-primary-4;
     right: -10px;
   }
 
   .rin-infobox-arrow-left .rin-infobox:after {
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
-    border-right: 15px solid @color-secondary-1-0;
+    border-right: 15px solid @color-primary-4;
     left: -10px;
   }
 
