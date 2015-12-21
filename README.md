@@ -22,5 +22,5 @@
 
 [文档](https://github.com/BangumiMoe/rin-webui/wiki/DEV)
 
- -[travis-url]: https://travis-ci.org/BangumiMoe/rin-webui
- -[travis-image]: http://img.shields.io/travis/BangumiMoe/rin-webui.svg
+[travis-url]: https://travis-ci.org/BangumiMoe/rin-webui
+[travis-image]: http://img.shields.io/travis/BangumiMoe/rin-webui.svg
