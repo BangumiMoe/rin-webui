@@ -5,7 +5,7 @@
   overflow: hidden;
   .page-nav{
     width: calc(~'100% - 128px');
-    right:143px;
+    right:145px;
     height: 50px;
     position: fixed;
     top:0;
@@ -80,9 +80,24 @@
           line-height: 170%;
           padding:5px 0;
           text-align: center;
-          
+
           .rin-magnet {
             color: @color-primary-4;
+          }
+
+
+        }
+        td.rin-uploader{
+          text-align: left;
+          .uploader-avatar{
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            vertical-align: top;
+          }
+          span{
+            display: inline-block;
+            width: calc(~'100% - 25px')
           }
         }
       }
@@ -92,7 +107,7 @@
       .rin-main-table-tr:hover{
         color: @color-secondary-1-2;
         background-color: @color-secondary-1-4;
-        
+
         .rin-magnet {
           color: @color-primary-2;
         }
@@ -166,7 +181,7 @@
           			<td nowrap="nowrap" align="center">{{t.seeders}}</td>
           			<td nowrap="nowrap" align="center">{{t.leechers}}</td>
           			<td nowrap="nowrap" align="center">{{t.finished}}</td>
-          			<td align="center">{{t.uploader.username}}</td>
+          			<td class="rin-uploader"><img class="uploader-avatar"src="{{gravatarUrl+t.uploader.emailHash}}" alt="" /><span>{{t.uploader.username}}</span></td>
 
               </tr>
             </tbody>
@@ -188,7 +203,8 @@
           lastest: [],
           pageNum:0,
         },
-        modalBlur:false
+        modalBlur:false,
+        gravatarUrl:"http://g.cdog.work/avatar/"
       }
     },
     methods: {
