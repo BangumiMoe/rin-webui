@@ -5,7 +5,7 @@
   overflow: hidden;
   .page-nav{
     width: 250px;
-    right: 200px;
+    right: 190px;
     height: 40px;
     position: fixed;
     bottom:40px;
@@ -77,17 +77,18 @@
   .rin-wrapper {
     height: 100%;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     table.rin-main-table{
       font-size:0.9em;
 
       thead {
         /*color: @color-secondary-2-1;
-        background-color: @color-secondary-2-4; */
-        
-        color: rgba(233,233,233,0.9);
-        background-color: rgba(98,137,168,0.8);
-        th {font-weight: 400}
+       background-color: @color-secondary-2-4; */
+
+       color: rgba(233,233,233,0.9);
+       background-color: rgba(98,137,168,0.8);
+       th {font-weight: 400}
+
       }
 
       .rin-main-table-tr{
@@ -102,6 +103,7 @@
           .rin-magnet {
             color: @color-primary-4;
           }
+
         }
         td.rin-uploader{
           text-align: left;
@@ -121,8 +123,6 @@
             background-color: rgba(233,233,233,0.56);
         }
       }
-      
-      .rin-main-table-tr
       .rin-main-table-tr:hover{
         color: @color-secondary-1-2;
         background-color: @color-secondary-1-4;
@@ -151,7 +151,7 @@
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" >
           <div class="page-nav-btn btn-down-last rin-col-2" >
-            <i class="material-icons">&#xE308;</i>
+            <i class="material-icons" style="transform:rotate(45deg);">&#xE63E;</i>
           </div>
           <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v>
             <i class="material-icons">&#xE020;</i>
@@ -184,12 +184,15 @@
           			<th width="9%"><span class="title">发布者</span></th>
           		</tr>
           	</thead>
-              
           	<tbody>
               <tr v-for="(index, t) in torrent.lastest" class="rin-main-table-tr">
                 <td width="110" style="font-size:12px;">{{t.publish_time | date 'yyyy/MM/dd HH:mm'}}</td>
           			<td width="6%" align="center">{{t.category_tag.locale.zh_cn}}</td>
           			<td class="title"  style="text-align:left;">
+                  <div class="rin-team" v-if="t.team">
+                    <img class="team-icon" src="{{gravatarUrl+t.uploader.emailHash}}" alt="" />
+                    {{t.team.name}}
+                  </div>
           				<a target="_blank" >{{t.title}}</a>
                     </td>
                     <td nowrap="nowrap" align="center">
@@ -201,7 +204,7 @@
           			<td nowrap="nowrap" align="center">{{t.seeders}}</td>
           			<td nowrap="nowrap" align="center">{{t.leechers}}</td>
           			<td nowrap="nowrap" align="center">{{t.finished}}</td>
-          			<td class="rin-uploader"><img class="uploader-avatar"src="{{gravatarUrl+t.uploader.emailHash}}" alt="" /><span>{{t.uploader.username}}</span></td>
+          			<td class="rin-uploader"><img class="uploader-avatar" src="{{gravatarUrl+t.uploader.emailHash}}" alt="" /><span>{{t.uploader.username}}</span></td>
 
               </tr>
             </tbody>
@@ -224,7 +227,8 @@
           pageNum:0,
         },
         modalBlur:false,
-        gravatarUrl:"//g.cdog.work/avatar/"
+        gravatarUrl:"//g.cdog.work/avatar/",
+        teamIconBaseUrl:"https://bangumi-moe.phoenixstatic.com/"
       }
     },
     methods: {
@@ -248,18 +252,6 @@
           self.getTorrents();
         }
         self.getPageNavNum(20);
-      },
-      checkPageNav:function(e){
-        //console.log(e);
-        if (e.target.scrollTop>50 ){
-          if (!this.short){
-            this.short=true;
-          }
-        }else{
-          if (this.short){
-            this.short=false;
-          }
-        }
       }
     },
     ready: function() {

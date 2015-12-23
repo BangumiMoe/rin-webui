@@ -33,7 +33,8 @@
 <div id="rin-logo" class="rin-main-bar rin-col" >
 
   <span class="logo" >
-    <img src="../assets/logo-20150506.png" v-on:click="modalDemoSimple"/>
+    <a href="#"><img src="../assets/logo-20150506.png" /></a>
+
   </span>
 
   <span class="copyright" v-on:click="modalDemo">
