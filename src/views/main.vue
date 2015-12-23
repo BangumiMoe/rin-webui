@@ -48,9 +48,9 @@
       background-color: @color-primary-1;
       font-size: 0.9em;
     }
-    /*.page-nav-num:nth-child(odd){
+    .page-nav-num:nth-child(odd){
       background-color: @color-primary-2;
-    }*/
+    }
     .page-nav-btn:not(.cur):hover{
       background-color: @color-primary-3;
       i{
@@ -82,11 +82,16 @@
       font-size:0.9em;
 
       thead {
-        background-color: @color-secondary-1-2;
+        /*color: @color-secondary-2-1;
+        background-color: @color-secondary-2-4; */
+        
+        color: rgba(233,233,233,0.9);
+        background-color: rgba(98,137,168,0.8);
+        th {font-weight: 400}
       }
 
       .rin-main-table-tr{
-        border-bottom: @color-secondary-1-3 1px solid;
+        /* border-bottom: @color-secondary-1-3 1px solid;*/
 
 
         td{
@@ -111,9 +116,13 @@
             width: calc(~'100% - 25px')
           }
         }
+        
+        &:nth-child(odd){
+            background-color: rgba(233,233,233,0.56);
+        }
       }
-      .rin-main-table-tr:nth-child(odd){
-      }
+      
+      .rin-main-table-tr
       .rin-main-table-tr:hover{
         color: @color-secondary-1-2;
         background-color: @color-secondary-1-4;
@@ -175,6 +184,7 @@
           			<th width="9%"><span class="title">发布者</span></th>
           		</tr>
           	</thead>
+              
           	<tbody>
               <tr v-for="(index, t) in torrent.lastest" class="rin-main-table-tr">
                 <td width="110" style="font-size:12px;">{{t.publish_time | date 'yyyy/MM/dd HH:mm'}}</td>
