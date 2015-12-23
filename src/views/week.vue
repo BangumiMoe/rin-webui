@@ -1,6 +1,5 @@
 <style lang="less">
 @import "../less/colors.less";
-@import "../less/data-tip.css";
 
 ul,li,p{
   margin: 0;
