@@ -94,17 +94,37 @@
       .rin-main-table-tr{
         /* border-bottom: @color-secondary-1-3 1px solid;*/
 
+        &:nth-child(odd){
+                    background-color: rgba(233,233,233,0.56);
+                }
 
         td{
           line-height: 170%;
           padding:5px 0;
           text-align: center;
+          i{
+            line-height: 170%;
+          }
 
           .rin-magnet {
             color: @color-primary-4;
           }
+          .rin-team{
+            display: inline-block;
+            color: #6d6d6d;
+            background-color: #eee;
+            height: 20px;
+            line-height: 20px;
+            padding-right: 5px;
+            .team-icon{
+              width: 20px;
+              height: 20px;
+              vertical-align: top;
+            }
 
+          }
         }
+
         td.rin-uploader{
           text-align: left;
           .uploader-avatar{
@@ -117,10 +137,6 @@
             display: inline-block;
             width: calc(~'100% - 25px')
           }
-        }
-        
-        &:nth-child(odd){
-            background-color: rgba(233,233,233,0.56);
         }
       }
       .rin-main-table-tr:hover{
