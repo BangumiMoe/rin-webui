@@ -33,7 +33,7 @@
     }
 
     &.show {
-       bottom: 0;
+       bottom: -20em;
     }
 
     &.hide {
@@ -72,7 +72,7 @@
 
       .day-item {
         display: inline-block;
-        height: 25em;
+        height: 15em;
         vertical-align: top;
         white-space: normal;
       }
@@ -244,7 +244,7 @@
       <!-- Search Bar Container. | 搜索栏容器. -->
       <div class="search-bar clear-float">
         <!-- 搜索栏本体. -->
-        <input type="text" class="rin-input vertical-middle search-input" v-model="searchBarValue" role="search" aria-label="在这里搜索当前团队内容." placeholder="在这里搜索..." v-on:click="getRecommendTags" v-on:keyup="getRecommendTags" v-on:keyup.13="searchSubmit">
+        <input type="text" class="rin-input vertical-middle search-input" v-model="searchBarValue" role="search" aria-label="在这里搜索当前团队内容." placeholder="在这里搜索..." v-on:click="getRecommendTags" v-on:keyup="getRecommendTags" v-on:keyup.13="searchSubmit" v-on:blur="showRecentProgram">
 
         <!-- Rock'n Roll! -->
         <button type="submit" role="button" class="search-submit-btn"><i class="material-icons search">&#xE8B6;</i></button>
@@ -295,12 +295,13 @@
         },
 
         // 推荐 Tag 数据:
-        recommendTags: ["澄空学园", "华盟", "极影"]
+        recommendTags: ["标签1", "标签2", "标签3"]
       },
 
       // 搜索事件相关数据.
       searchEvent: {
-        recommendTagTimeout: null  // 推荐 Tag 事件延时计时器.
+        recommendTagTimeout: null,  // 推荐 Tag 事件延时计时器.
+        searchBlurTimeout: null  // 搜索栏 Blur 计时器.
       }
     }
   },
@@ -341,6 +342,7 @@
 
     addRecommendTag: function (event) {
       var self = this;
+      clearTimeout(self.searchEvent.searchBlurTimeout);
       var tagData = event.target.attributes["data-tag"].value || event.srcElement.attributes["data-tag"].value;
       if (this.searchBarValue.indexOf(tagData) > -1) { return; }  // 如果已存在该 Tag 则返回.
       this.searchBarValue = this.searchBarValue.replace(self.cursorKeyword, tagData)
@@ -366,8 +368,10 @@
       self.nodeControl.recommendTags.show = false;
 //        self.generateTags();  // 生成 Tag.
 
-      // TODO: 向服务器发送搜索请求.
-      // ...
+      self.$http.post("https://bangumi.moe/api/tag/search", { query: self.cursorKeyword }).then(requestFinished);
+      function requestFinished (result) {
+        self.dataObject.recommendTags = result;
+      }
     },
 
     // 获得推荐 Tag 事件.
@@ -390,12 +394,9 @@
 
 
       self.searchEvent.recommendTagTimeout = setTimeout(function () {
-        self.$http.post("https://bangumi.moe/api/tag/suggest", { query: self.cursorKeyword }, {
-          headers: {
-            "Access-Control-Allow-Origin": "*"
-          }
+        self.$http.post("https://bangumi.moe/api/tag/suggest", {
+          // TODO: ...
         }).then(requestFinished);
-
         function requestFinished (result) {
           self.dataObject.recommendTags = result;
         }
@@ -414,6 +415,14 @@
         return CaretPos;
       }
 
+    },
+
+    showRecentProgram: function () {
+      let self = this;
+      self.searchEvent.searchBlurTimeout = setTimeout(function () {
+        self.nodeControl.recentProgramList.show = true;
+        self.nodeControl.recommendTags.show = false;
+      }, 200);
     }
   }
 
