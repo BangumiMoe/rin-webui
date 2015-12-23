@@ -116,10 +116,12 @@
             height: 20px;
             line-height: 20px;
             padding-right: 5px;
+            margin-right: 5px;
             .team-icon{
               width: 20px;
               height: 20px;
               vertical-align: top;
+
             }
 
           }
@@ -167,7 +169,7 @@
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" >
           <div class="page-nav-btn btn-down-last rin-col-2" >
-            <i class="material-icons" style="transform:rotate(45deg);">&#xE63E;</i>
+            <i class="material-icons" style="    transform: rotate(45deg);padding-top: 1px;padding-left: 2px;">&#xE63E;</i>
           </div>
           <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v>
             <i class="material-icons">&#xE020;</i>
