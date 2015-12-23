@@ -206,7 +206,7 @@
           			<td width="6%" align="center">{{t.category_tag.locale.zh_cn}}</td>
           			<td class="title"  style="text-align:left;">
                   <div class="rin-team" v-if="t.team">
-                    <img class="team-icon" src="{{gravatarUrl+t.uploader.emailHash}}" alt="" />
+                    <img class="team-icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
                     {{t.team.name}}
                   </div>
           				<a target="_blank" >{{t.title}}</a>
@@ -220,7 +220,7 @@
           			<td nowrap="nowrap" align="center">{{t.seeders}}</td>
           			<td nowrap="nowrap" align="center">{{t.leechers}}</td>
           			<td nowrap="nowrap" align="center">{{t.finished}}</td>
-          			<td class="rin-uploader"><img class="uploader-avatar" src="{{gravatarUrl+t.uploader.emailHash}}" alt="" /><span>{{t.uploader.username}}</span></td>
+          			<td class="rin-uploader"><img class="uploader-avatar" v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" /><span>{{t.uploader.username}}</span></td>
 
               </tr>
             </tbody>
