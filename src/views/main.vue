@@ -46,6 +46,7 @@
     }
     .page-nav-num{
       background-color: @color-primary-1;
+      font-size: 0.9em;
     }
     /*.page-nav-num:nth-child(odd){
       background-color: @color-primary-2;
@@ -220,7 +221,7 @@
       getTorrents: function() {
         let self = this;
         self.busy=true;
-        this.$http.get('https://bangumi.moe/api/v2/torrent/page/'+self.currentPage, null, function(data) {
+        this.$http.get('https://bangumi.moe/api/v2/torrent/page/'+self.currentPage, {limit:50}, function(data) {
           self.torrent.lastest = data.torrents;
           self.torrent.pageNum=data.page_count;
           self.busy=false;
