@@ -4,29 +4,27 @@
   height: 100%;
   overflow: hidden;
   .page-nav{
-    width: calc(~'100% - 128px');
-    right: 128px;
-    height: 50px;
+    width: 250px;
+    right: 200px;
+    height: 40px;
     position: fixed;
-    top:0;
+    bottom:80px;
     text-align: center;
-    line-height: 50px;
+    line-height: 40px;
     font-size: 1.2em;
+    box-shadow: 1px 1px 25px 1px #DC7788;
 
     .page-nav-inner{
       width:100%;
       float: right;
       transition: width .5s;
     }
-    .page-nav-short{
-      width: 60%;
-    }
     .page-nav-btn{
       cursor: pointer;
       color: white;
       transition: font-size .2s;
-      
-      i { margin-top: 0.5em;}
+
+      i { margin-top: 0.3em;}
     }
     .page-nav-btn.btn-up{
       background-color: @color-primary-2;
@@ -68,21 +66,20 @@
   }
 
   .rin-wrapper {
-    height: calc(~'100% - 50px');
+    height: 100%;
     overflow-x: hidden;
     overflow-y: scroll;
-    padding-top:50px;
     table.rin-main-table{
       font-size:0.9em;
-      
+
       thead {
-        background-color: @color-secondary-1-2;  
+        background-color: @color-secondary-1-2;
       }
-        
+
       .rin-main-table-tr{
         border-bottom: @color-secondary-1-3 1px solid;
-        
-        
+
+
         td{
           line-height: 170%;
           padding:5px 0;
@@ -132,24 +129,25 @@
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
     <div is="rin-loader" v-if="busy" :progress="progress" transition="rin-fade"></div>
-    <div  class="rin-wrapper" v-show="!busy" transition="rin-fade" v-on:scroll="checkPageNav">
+    <div  class="rin-wrapper" v-show="!busy" transition="rin-fade" >
       <div class="page-nav clearfix" >
-        <div  class="rin-row page-nav-inner" v-bind:class={'page-nav-short':short}>
+        <div  class="rin-row page-nav-inner" >
+          <div class="page-nav-btn btn-down-last rin-col-2" >
+            <i class="material-icons">&#xE308;</i>
+          </div>
           <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v>
             <i class="material-icons">&#xE020;</i>
           </div>
           <div class="page-nav-btn btn-up rin-col-2" v-on:click="chgPage(-1)" v>
             <i class="material-icons">&#xE314;</i>
           </div>
-            <div  v-for="(index,page) in getPageNavNum(5)" v-bind:class="{'cur':page.offset == 0}" class="rin-col-2  page-nav-btn page-nav-num" v-on:click="chgPage(page.offset)" >
-              {{page.show}}
+            <div  class="cur rin-col-4  page-nav-btn page-nav-num">
+              {{currentPage}}
             </div>
           <div class="page-nav-btn btn-down rin-col-2" v-on:click="chgPage(+1)">
             <i class="material-icons">&#xE315;</i>
           </div>
-          <div class="page-nav-btn btn-down-last rin-col-2" v-on:click="chgPage(torrent.pageNum-currentPage)">
-            <i class="material-icons">&#xE01F;</i>
-          </div>
+
         </div>
 
 
@@ -207,7 +205,7 @@
           pageNum:0,
         },
         modalBlur:false,
-        gravatarUrl:"http://g.cdog.work/avatar/"
+        gravatarUrl:"//g.cdog.work/avatar/"
       }
     },
     methods: {
@@ -231,23 +229,6 @@
           self.getTorrents();
         }
         self.getPageNavNum(20);
-      },
-      getPageNavNum:function(length){
-        if (!length) return;
-        let self=this;
-        var me=parseInt(length/2),start=0;
-        if (self.currentPage-me<1){
-          start=1;
-        }else if (self.currentPage+me>self.torrent.pageNum){
-          start=self.torrent.pageNum-length+1;
-        }else{
-          start=this.currentPage-me;
-        }
-        var rst=[];
-        for (var i=0;i<length;i++){
-          rst.push({show:start+i,offset:start+i-self.currentPage});
-        }
-        return rst;
       },
       checkPageNav:function(e){
         //console.log(e);
