@@ -20,6 +20,7 @@ ul,li,p{
 
 	>span{
 		/*fix firefox error*/
+		padding-right: 4px;
 		width:100%;
 	}
 }
@@ -181,16 +182,7 @@ ul,li,p{
 	border-radius:5px;
 	transform:translateY(10px);
 	transition:transform .3s linear,opacity .3s linear;
-
-	&:before{
-    content: '';
-    border: 6px solid transparent;
-    border-bottom-color: #681558;
-    position: absolute;
-    top: -12px;
-    left: 50%;
-    transform: translateX(-6px);
-	}
+	box-shadow: 0px 0px 0px 2px #fff, 0px 0px 0px 4px #681558;
 
 	&.on{
 		opacity:1;
@@ -342,7 +334,7 @@ export default{
 			var tip = document.getElementById("tip");
 			tip.className = "rin-datatip on";
 			tip.style.left = e.pageX-(tip.offsetWidth/2)+"px";
-			tip.style.top = e.pageY+25+"px";
+			tip.style.top = e.pageY+20	+"px";
 		},
 		hideTip:function(e){
 			var tip = document.getElementById("tip");
