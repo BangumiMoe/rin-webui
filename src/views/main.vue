@@ -8,11 +8,13 @@
     right: 200px;
     height: 40px;
     position: fixed;
-    bottom:80px;
+    bottom:40px;
     text-align: center;
     line-height: 40px;
     font-size: 1.2em;
     box-shadow: 1px 1px 25px 1px #DC7788;
+    border-radius: 5px;
+    overflow: hidden;
 
     .page-nav-inner{
       width:100%;
@@ -22,9 +24,11 @@
     .page-nav-btn{
       cursor: pointer;
       color: white;
-      transition: font-size .2s;
+      transition: background-color .2s;
 
-      i { margin-top: 0.3em;}
+      i { line-height: 40px;
+        transition: font-size .2s;
+      }
     }
     .page-nav-btn.btn-up{
       background-color: @color-primary-2;
@@ -47,7 +51,11 @@
       background-color: @color-primary-2;
     }*/
     .page-nav-btn:not(.cur):hover{
-      font-size:1.4em;
+      background-color: @color-primary-3;
+      i{
+        font-size:2em;
+      }
+
     }
     .page-nav-btn.btn-down{
       background-color: @color-primary-2;
