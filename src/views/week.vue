@@ -112,7 +112,7 @@ ul,li,p{
 						box-shadow:0 4px 5px rgba(0, 0, 0, 0.07);
 
 						.acgdb{
-			    		right: -34px;
+			    		right: -30px;
 						}
 					}
 
@@ -152,15 +152,15 @@ ul,li,p{
 
 				.acgdb{
 			    position: absolute;
-			    width: 65px;
-			    height: 37px;
-			    top: -20px;
+			    width: 62px;
+			    height: 21px;
+			    top: -10px;
 			    background: #681558;
 			    padding: 5px;
 			    color: #fff;
-			    font-size: 36px;
-			    right: -112px;
-			    line-height: 60px;
+			    font-size: 28px;
+			    right: -70px;
+			    line-height: 32px;
 			    text-align: center;
 			    transition: right .2s linear;
 					transform:rotate(45deg);
@@ -178,14 +178,14 @@ ul,li,p{
 	background:#681558;
 	color:#fff;
 	padding:5px 8px;
-	border-radius:3px;
+	border-radius:5px;
 	transform:translateY(10px);
 	transition:transform .3s linear,opacity .3s linear;
 
 	&:before{
     content: '';
     border: 6px solid transparent;
-    border-bottom-color: #333;
+    border-bottom-color: #681558;
     position: absolute;
     top: -12px;
     left: 50%;
