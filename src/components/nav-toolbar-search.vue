@@ -228,7 +228,7 @@
 
       <!-- 建议 Tag 容器. -->
       <div class="recommend-tags" role="list" v-show="nodeControl.recommendTags.show">
-        <div class="list-item tag-item" role="listitem" v-for="tag in dataObject.recommendTags" v-text="tag" data-tag="{{tag}}" v-on:click="addUserTag"></div>
+        <div class="list-item tag-item" role="listitem" v-for="tag in dataObject.recommendTags" v-text="tag" data-tag="{{tag}}" v-on:click="addRecommendTag"></div>
       </div>
 
       <!-- 搜索进度条 -->
@@ -244,7 +244,7 @@
       <!-- Search Bar Container. | 搜索栏容器. -->
       <div class="search-bar clear-float">
         <!-- 搜索栏本体. -->
-        <input type="text" class="rin-input vertical-middle search-input" v-model="searchBarValue" role="search" aria-label="在这里搜索当前团队内容." placeholder="在这里搜索..." v-on:keyup="getRecommendTags" v-on:keyup.13="searchSubmit">
+        <input type="text" class="rin-input vertical-middle search-input" v-model="searchBarValue" role="search" aria-label="在这里搜索当前团队内容." placeholder="在这里搜索..." v-on:click="getRecommendTags" v-on:keyup="getRecommendTags" v-on:keyup.13="searchSubmit">
 
         <!-- Rock'n Roll! -->
         <button type="submit" role="button" class="search-submit-btn"><i class="material-icons search">&#xE8B6;</i></button>
@@ -271,6 +271,7 @@
     return {
       searchBarTitle: "搜索.",  // 搜索节点题文字.
       searchBarValue: "",  // 搜索框数值.
+      cursorKeyword: "",  // 光标处 Tag.
       loadingText: "正在努力获取最近四天的番组... > <",
       userTagList: [],  // 用户输入标签数组.
 
@@ -294,7 +295,7 @@
         },
 
         // 推荐 Tag 数据:
-        recommendTags: ["啊♂", "屁♂股", "Take ♂ it ♂ Boy"]
+        recommendTags: ["澄空学园", "华盟", "极影"]
       },
 
       // 搜索事件相关数据.
@@ -338,6 +339,13 @@
       this.searchBarValue += tagData + " ";
     },
 
+    addRecommendTag: function (event) {
+      var self = this;
+      var tagData = event.target.attributes["data-tag"].value || event.srcElement.attributes["data-tag"].value;
+      if (this.searchBarValue.indexOf(tagData) > -1) { return; }  // 如果已存在该 Tag 则返回.
+      this.searchBarValue = this.searchBarValue.replace(self.cursorKeyword, tagData)
+    },
+
     // Definition: 删除搜索栏中的 Tag.
     removeUserTag: function (event) {
       var targetElement = event.srcElement || event.target;
@@ -363,17 +371,49 @@
     },
 
     // 获得推荐 Tag 事件.
-    getRecommendTags: function () {
+    getRecommendTags: function (event) {
       let self = this;
+      let target = event.target || event.srcElement;
+      let cursorPosition = getPositionForInput(target);  // 光标位置.
 
-      //
+      // 获取光标附近关键字.
+      let leftPart = self.searchBarValue.slice(0, cursorPosition);
+      let rightPart = self.searchBarValue.slice(cursorPosition, self.searchBarValue.length);
+      leftPart = leftPart.lastIndexOf(" ") < 0 ? leftPart : leftPart.slice(leftPart.lastIndexOf(" "), leftPart.length);
+      rightPart = rightPart.indexOf(" ") < 0 ? rightPart : rightPart.slice(0, rightPart.indexOf(" "));
+      self.cursorKeyword = (leftPart + rightPart).trim();
+
+      // 显示推荐 Tag 节点.
       self.nodeControl.recentProgramList.show = false;
       self.nodeControl.recommendTags.show = true;
       clearTimeout(self.searchEvent.recommendTagTimeout);
 
+
       self.searchEvent.recommendTagTimeout = setTimeout(function () {
-        // TODO: 发送请求获取推荐 Tag.
-      });
+        self.$http.post("https://bangumi.moe/api/tag/suggest", { query: self.cursorKeyword }, {
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          }
+        }).then(requestFinished);
+
+        function requestFinished (result) {
+          self.dataObject.recommendTags = result;
+        }
+      }, 500);
+
+
+      function getPositionForInput (element) {
+        var CaretPos = 0;
+        if (document.selection) {  // IE Support
+          var Sel = document.selection.createRange();
+          Sel.moveStart('character', -element.value.length);
+          CaretPos = Sel.text.length;
+        } else if (element.selectionStart || element.selectionStart == '0'){  // Firefox support
+          CaretPos = element.selectionStart;
+        }
+        return CaretPos;
+      }
+
     }
   }
 
