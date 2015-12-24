@@ -204,7 +204,7 @@
           	</thead>
           	<tbody>
               <tr v-for="(index, t) in torrent.lastest" class="rin-main-table-tr">
-                <td width="110" style="font-size:12px;">{{t.publish_time | date 'yyyy/MM/dd HH:mm'}}</td>
+                <td width="110" style="font-size:12px;">{{t.publish_time | date 'lately'}}</td>
           			<td width="6%" align="center">{{t.category_tag.locale.zh_cn}}</td>
           			<td class="title"  style="text-align:left;">
                   <div class="rin-team" v-if="t.team">

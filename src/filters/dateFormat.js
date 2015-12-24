@@ -18,7 +18,7 @@
 	    });
 	};
 	var dateFormat = (function(){
-	    var _map = {i:!0,r:/\byyyy|yy|MM|cM|eM|M|dd|d|HH|H|mm|ms|ss|m|s|w|ct|et\b/g},
+	    var _map = {i:!0,r:/\byyyy|yy|MM|cM|eM|M|dd|d|HH|H|mm|ms|ss|m|s|w|ct|et|lately\b/g},
 	        _12cc = ['上午','下午'],
 	        _12ec = ['A.M.','P.M.'],
 	        _week = ['日','一','二','三','四','五','六'],
@@ -31,6 +31,11 @@
 	    var _fmtclc = function(_hour){
 	        return _hour<12?0:1;
 	    };
+	    var getDate = function(_date,num){
+	    	//num = 0，返回当天，= -1 返回昨天，以此类推
+			var date = new Date(Date.parse(_date) + (86400000 * num));
+			return date.getFullYear() +''+ date.getMonth()+''+date.getDate();
+	    }
 	    return function(_time,_format,_12time){
 	        if (!_time||!_format)
 	            return '';
@@ -54,6 +59,26 @@
 	        var _cc   = _fmtclc(_map.H);
 	        _map.ct   = _12cc[_cc];
 	        _map.et   = _12ec[_cc];
+
+	        //判断今天/昨天/前天
+	        switch(getDate(_time,0))
+	        {
+	        	case getDate(new Date(),0):
+		        	//今天
+		        	_map.lately = '今天';
+		        	break;
+	        	case getDate(new Date(),-1):
+		        	//昨天
+		        	_map.lately = '昨天';
+		        	break;
+	        	case getDate(new Date(),-2):
+		        	//前天
+		        	_map.lately = '前天';
+		        	break;
+	        	default:
+	        		_map.lately = _map.yyyy+'/'+_map.MM+'/'+_map.dd+' '+_map.HH+':'+_map.mm;
+	        }
+
 	        if (!!_12time){
 	            _map.H = _map.H%12;
 	        }
