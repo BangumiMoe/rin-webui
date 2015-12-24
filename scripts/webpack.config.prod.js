@@ -21,7 +21,7 @@ config.plugins = [
   }),
   new HtmlWebpackPlugin({
     filename: './index.html',
-    title: 'VuePack',
+    title: '番組、萌え',
     template: __dirname + '/index.template'
   })
 ]
