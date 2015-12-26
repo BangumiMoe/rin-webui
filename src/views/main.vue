@@ -159,7 +159,7 @@
         &:nth-child(odd) {
           background-color: @color-tr-odd;
         }
-        
+
         &:hover{
           background-color: @color-tr-hover;
 
@@ -315,7 +315,6 @@
         this.$http.get('https://bangumi.moe/api/v2/torrent/page/'+self.currentPage, {limit:50}, function(data) {
           self.torrent.lastest = data.torrents;
           self.torrent.pageNum=data.page_count;
-          document.getElementById("rin-wrapper").scrollTop=0;
           self.busy=false;
 //          setTimeout(function() {
 //            self.busy = false;
@@ -327,6 +326,9 @@
         let self=this;
         if ((self.currentPage+offset>=1)&&(self.currentPage+offset<=self.torrent.pageNum)){
           self.$route.router.go({name:"page",params:{number:self.currentPage+=offset}});
+          setTimeout(function(){
+            document.getElementById("rin-wrapper").scrollTop=0;
+          },500)
           //self.getTorrents();
         }
       },
