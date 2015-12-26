@@ -5,7 +5,7 @@
 @color-tr-hover: rgba(200,200,200,0.7);
 @color-th: rgba(233,233,233,0.9);
 @color-th-bg: rgba(98,137,168,0.8);
- 
+
 #rin-main {
   height: 100%;
   overflow: hidden;
@@ -187,7 +187,7 @@
 
   }
   .fixed-show{
-    opacity: 0.7;
+    opacity: 0.9;
 
   }
 }
@@ -196,7 +196,7 @@
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
     <div is="rin-loader" v-if="busy" :progress="progress" transition="rin-fade"></div>
-    <div  class="rin-wrapper" v-show="!busy" transition="rin-fade" v-on:scroll="checkFixed">
+    <div  id="rin-wrapper" class="rin-wrapper" v-show="!busy" transition="rin-fade">
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" >
           <div class="page-nav-btn btn-down-last rin-col-2" >
@@ -220,7 +220,7 @@
 
       </div>
           <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
-          	<thead>
+          	<thead style="opacity:0;">
           		<tr>
           			<th width="110"><span class="title">发布时间</th>
           			<th width="5%"><span class="title">分类</span></th>
@@ -264,7 +264,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="table-title-fixed" v-bind:class="{'fixed-show': titleFixed}">
+          <div class="table-title-fixed fixed-show" >
             <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
               <thead>
                 <tr>
@@ -312,6 +312,7 @@
         this.$http.get('https://bangumi.moe/api/v2/torrent/page/'+self.currentPage, {limit:50}, function(data) {
           self.torrent.lastest = data.torrents;
           self.torrent.pageNum=data.page_count;
+          document.getElementById("rin-wrapper").scrollTop=0;
           self.busy=false;
 //          setTimeout(function() {
 //            self.busy = false;
@@ -324,19 +325,7 @@
         if ((self.currentPage+offset>=1)&&(self.currentPage+offset<=self.torrent.pageNum)){
           self.currentPage+=offset;
           self.getTorrents();
-        }
-        self.getPageNavNum(20);
-      },
-      checkFixed:function(e){
-        //console.log(e.target.scrollTop);
-        if (e.target.scrollTop>33 ){
-          if (!this.titleFixed){
-            this.titleFixed=true;
-          }
-        }else{
-          if (this.titleFixed){
-            this.titleFixed=false;
-          }
+
         }
       }
     },
