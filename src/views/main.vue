@@ -158,18 +158,18 @@
 
         &:hover{
           background-color: @color-tr-hover;
-          
+
           .rin-inline-tag {
             color: @color-inline-tag-hover;
             background-color: @color-inline-tag-bg-hover;
           }
         }
-        
+
         &:nth-child(odd) {
           background-color: @color-tr-odd;
         }
       }
-      
+
       th{
         text-align: center;
         font-size: 1.2em;
@@ -269,7 +269,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="table-title-fixed fixed-show" >
+          <div class="table-title-fixed fixed-show" style="width:calc(100% - {{getScrollWidth()+128}}px)">
             <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
               <thead>
                 <tr>
@@ -299,7 +299,6 @@
         magnentt: '&tr=https%3A%2F%2Ftr.bangumi.moe%3A9696%2Fannounce&tr=http%3A%2F%2Ftr.bangumi.moe%3A6969%2Fannounce&tr=udp%3A%2F%2Ftr.bangumi.moe%3A6969%2Fannounce&tr=http%3A%2F%2Fopen.acgtracker.com%3A1096%2Fannounce&tr=http%3A%2F%2F208.67.16.113%3A8000%2Fannounce&tr=udp%3A%2F%2F208.67.16.113%3A8000%2Fannounce&tr=http%3A%2F%2Ftracker.ktxp.com%3A6868%2Fannounce&tr=http%3A%2F%2Ftracker.ktxp.com%3A7070%2Fannounce&tr=http%3A%2F%2Ft2.popgo.org%3A7456%2Fannonce&tr=http%3A%2F%2Fbt.sc-ol.com%3A2710%2Fannounce&tr=http%3A%2F%2Fshare.camoe.cn%3A8080%2Fannounce&tr=http%3A%2F%2F61.154.116.205%3A8000%2Fannounce&tr=http%3A%2F%2Fbt.rghost.net%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.publicbt.com%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.prq.to%2Fannounce&tr=http%3A%2F%2Fopen.nyaatorrents.info%3A6544%2Fannounce',
         busy: true,
         currentPage:1,
-        titleFixed:false,
         torrent: {
           lastest: [],
           pageNum:0,
@@ -329,8 +328,16 @@
         if ((self.currentPage+offset>=1)&&(self.currentPage+offset<=self.torrent.pageNum)){
           self.currentPage+=offset;
           self.getTorrents();
-
         }
+      },
+      getScrollWidth:function() {
+        var noScroll, scroll, oDiv = document.createElement("DIV");
+        oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
+        noScroll = document.body.appendChild(oDiv).clientWidth;
+        oDiv.style.overflowY = "scroll";
+        scroll = oDiv.clientWidth;
+        document.body.removeChild(oDiv);
+        return noScroll-scroll;
       }
     },
     ready: function() {
