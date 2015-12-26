@@ -1,5 +1,11 @@
 <style scoped lang="less">
 @import "../less/colors.less";
+
+@color-tr-odd: rgba(233,233,233,0.56);
+@color-tr-hover: rgba(200,200,200,0.7);
+@color-th: rgba(233,233,233,0.9);
+@color-th-bg: rgba(98,137,168,0.8);
+ 
 #rin-main {
   height: 100%;
   overflow: hidden;
@@ -86,8 +92,8 @@
         /*color: @color-secondary-2-1;
        background-color: @color-secondary-2-4; */
 
-       color: rgba(233,233,233,0.9);
-       background-color: rgba(98,137,168,0.8);
+       color: @color-th;
+       background-color: @color-th-bg;
        th {font-weight: 400}
 
       }
@@ -98,9 +104,7 @@
       .rin-main-table-tr{
         /* border-bottom: @color-secondary-1-3 1px solid;*/
 
-        &:nth-child(odd){
-                    background-color: rgba(233,233,233,0.56);
-                }
+        &:nth-child(odd){ background-color: @color-tr-odd; }
 
         td{
           line-height: 170%;
@@ -152,8 +156,7 @@
         }
       }
       .rin-main-table-tr:hover{
-        color: @color-secondary-1-2;
-        background-color: @color-secondary-1-4;
+        background-color: @color-tr-hover;
 
         .rin-magnet {
           color: @color-primary-2;

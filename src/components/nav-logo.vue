@@ -33,7 +33,7 @@
 <div id="rin-logo" class="rin-main-bar rin-col" >
 
   <span class="logo" >
-    <a href="#"><img src="../assets/logo-20150506.png" /></a>
+    <a v-link="/"><img src="../assets/logo-20150506.png" /></a>
 
   </span>
 
