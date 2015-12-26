@@ -105,7 +105,7 @@
         padding-top:33px;
       }
 
-      .rin-main-table-tr{
+      tbody tr {
         transition: all .2s;
 
         td{
@@ -139,7 +139,6 @@
             span{
               line-height: 20px;
             }
-
           }
         }
 
@@ -164,6 +163,10 @@
             color: @color-inline-tag-hover;
             background-color: @color-inline-tag-bg-hover;
           }
+        }
+        
+        &:nth-child(odd) {
+          background-color: @color-tr-odd;
         }
       }
       
@@ -224,21 +227,19 @@
           <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
           	<thead style="opacity:0;">
           		<tr>
-          			<th width="110"><span class="title">发布时间</th>
+          			<th width="90"><span class="title">发布</th>
           			<th width="5%"><span class="title">分类</span></th>
-          			<th ><span class="title">标题</span></th>
-          			<th width="4%" nowrap="nowrap"><span class="title">磁力链接</span></th>
+          			<th><span class="title">标题</span></th>
+          			<th width="5%" nowrap="nowrap"><span class="title">磁链</span></th>
           			<th width="7%"><span class="title">大小</span></th>
-          			<th width="5%"><span class="title">种子</span></th>
-          			<th width="5%"><span class="title">下载</span></th>
-          			<th width="5%"><span class="title">完成</span></th>
+          			<th width="10%"><span class="title">状况</span></th>
           			<th width="9%"><span class="title">发布者</span></th>
           		</tr>
           	</thead>
           	<tbody>
-              <tr v-for="(index, t) in torrent.lastest" class="rin-main-table-tr">
-                <td width="110" style="font-size:12px;">{{t.publish_time | date 'lately'}}</td>
-          			<td width="6%" align="center">
+              <tr v-for="(index, t) in torrent.lastest">
+                <td style="font-size:12px;">{{t.publish_time | date 'lately'}}</td>
+          			<td align="center">
                   <div class="rin-inline-tag">
                     <span>{{t.category_tag.locale.zh_cn}}</span>
                   </div>
@@ -258,9 +259,11 @@
                         </a>️
                     </td>
           			<td nowrap="nowrap" align="center">{{t.size}}</td>
-          			<td nowrap="nowrap" align="center">{{t.seeders}}</td>
-          			<td nowrap="nowrap" align="center">{{t.leechers}}</td>
-          			<td nowrap="nowrap" align="center">{{t.finished}}</td>
+          			<td nowrap="nowrap" align="center">
+                  <a href="javascript:void(0)" title="种子">{{t.seeders}}</a> /
+                  <a href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
+                  <a href="javascript:void(0)" title="完成">{{t.finished}}</a>
+                </td>
           			<td class="rin-uploader"><img class="uploader-avatar" v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" /><span>{{t.uploader.username}}</span></td>
 
               </tr>
@@ -270,14 +273,12 @@
             <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
               <thead>
                 <tr>
-                  <th width="110"><span class="title">发布时间</th>
+                  <th width="90"><span class="title">发布</th>
                   <th width="5%"><span class="title">分类</span></th>
                   <th  ><span class="title">标题</span></th>
-                  <th width="4%" nowrap="nowrap"><span class="title">磁力链接</span></th>
+                  <th width="4%" nowrap="nowrap"><span class="title">磁链</span></th>
                   <th width="7%"><span class="title">大小</span></th>
-                  <th width="5%"><span class="title">种子</span></th>
-                  <th width="5%"><span class="title">下载</span></th>
-                  <th width="5%"><span class="title">完成</span></th>
+                  <th width="10%"><span class="title">状况</span></th>
                   <th width="9%"><span class="title">发布者</span></th>
                 </tr>
               </thead>
