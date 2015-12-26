@@ -208,7 +208,8 @@
           			<td width="6%" align="center">{{t.category_tag.locale.zh_cn}}</td>
           			<td class="title"  style="text-align:left;">
                   <div class="rin-team" v-if="t.team">
-                    <img class="team-icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
+                    <img class="team-icon"  v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
+                    <img class="team-icon" src="../assets/akarin.jpg" v-if="!t.team.icon"/>
                     {{t.team.name}}
                   </div>
           				<a target="_blank" >{{t.title}}</a>
