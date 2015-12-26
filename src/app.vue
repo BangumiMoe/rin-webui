@@ -54,6 +54,10 @@
       },
       'UserSignInOK' (user) {
         this.$broadcast('UserSignInOK', user);
+        if(this.displaySigninForm) { 
+          this.displaySigninForm = false;
+          this.$broadcast("close-modal");
+        }
       },
       'UserSignInFailed' () {
         this.$broadcast('UserSignInFailed');

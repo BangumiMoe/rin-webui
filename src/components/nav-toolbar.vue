@@ -35,7 +35,7 @@
 
   <div class="rin-logo">
     <div class="img-wrap" @click="userSignAction($event)">
-      <img src="../assets/user-demo.png" v-if="!user.username" />
+      <img src="../assets/akarin.jpg" v-if="!user.username" />
       <img src="https://bangumi.moe/avatar/{{ user.emailHash }}" v-if="user.username" />
     </div>
     <info-box :user="user" arrow="right"></info-box>
@@ -60,7 +60,8 @@
         searchBar: {
           visible: false,
           fixed: false
-        }
+        },
+        signin_form_opened: false,
       };
     },
     methods: {
@@ -82,6 +83,7 @@
       
       userSignAction (ev) {
         if(!this.user._id) {
+          this.signin_form_opened = true;
           this.$dispatch('displaySigninForm');
         } else {
           this.$dispatch('UserSignOut');
@@ -93,15 +95,15 @@
       'info-box': require('./nav-toolbar-infobox')
     },
     events: {
-      'UserSignInOK' (user) {
+      UserSignInOK (user) {
         this.user = user;
+        if(this.signin_form_opened) {
+          this.signin_form_opened = false;
+          this.$dispatch('hideSigninForm');
+        }
       },
-      'UserSignInFailed' () {
-        this.user = {};
-      },
-      'UserSignOutOK' () {
-        this.user = {};
-      }
+      UserSignInFailed () { this.user = {};   },
+      UserSignOutOK ()    { this.user = {};   }
     }
   };
 

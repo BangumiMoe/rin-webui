@@ -190,14 +190,11 @@
 
   }
 }
-
-
-
 </style>
 
 <template>
-  <div class="modal-wrapper" v-if="modalCtrl.visible" transition="modal-animate">
-    <div  class="clearfix rin-modal" v-if="modalCtrl.visible" transition="modal-animate">
+  <div class="modal-wrapper" v-show="modalCtrl.visible" transition="modal-animate">
+    <div  class="clearfix rin-modal" v-show="modalCtrl.visible" transition="modal-animate">
       <div class="alert-line alert-line-up alert-line-scroll" v-bind:class="[modalCtrl.danger ? 'black-red-up' : 'black-yellow-up' ]"></div>
       <div class="modal-content">
           <div class="modal-content-inner">
