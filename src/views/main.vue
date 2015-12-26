@@ -325,7 +325,7 @@
         self.getPageNavNum(20);
       },
       checkFixed:function(e){
-        console.log(e.target.scrollTop);
+        //console.log(e.target.scrollTop);
         if (e.target.scrollTop>33 ){
           if (!this.titleFixed){
             this.titleFixed=true;
