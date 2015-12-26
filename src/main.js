@@ -8,7 +8,9 @@ Vue.use(VueResource);
 
 const router = new VueRouter();
 router.map({
-  '/': { component: require('./views/main') },
+  '/': { name:"index", component: require('./views/main') ,mode:"normal"},
+  '/page/:number': {name:"page" ,component: require('./views/main') ,mode:"page"},
+  '/search/:key': { name:"search" ,component: require('./views/main'),mode:"search" },
   '/week' :{
   	component: require('./views/week')
   }

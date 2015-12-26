@@ -326,8 +326,8 @@
         if (!offset) return;
         let self=this;
         if ((self.currentPage+offset>=1)&&(self.currentPage+offset<=self.torrent.pageNum)){
-          self.currentPage+=offset;
-          self.getTorrents();
+          self.$route.router.go({name:"page",params:{number:self.currentPage+=offset}});
+          //self.getTorrents();
         }
       },
       getScrollWidth:function() {
@@ -341,7 +341,24 @@
       }
     },
     ready: function() {
-      this.getTorrents();
+      /*
+      let self=this;
+      switch (self.$route.mode) {
+        case "normal":
+          self.getTorrents();
+          break;
+        case "page":
+          if ((self.$route.params.number==parseInt(self.$route.params.number))&&parseInt(self.$route.params.number)>0){
+            self.currentPage=parseInt(self.$route.params.number);
+          }
+          self.getTorrents();
+          break;
+        default:
+          self.getTorrents();
+      }
+
+      console.log("path",this.$route.path)
+      */
     },
     components: {
       'rin-loader': RLoader
@@ -356,6 +373,28 @@
     },
     filters: {
        'date':require('../filters/dateFormat.js')
+   },
+   route:{
+     data:function(t){
+       let self=this;
+       switch (self.$route.mode) {
+         case "normal":
+           self.getTorrents();
+           break;
+         case "page":
+           if ((self.$route.params.number==parseInt(self.$route.params.number))&&parseInt(self.$route.params.number)>0){
+             self.currentPage=parseInt(self.$route.params.number);
+           }
+           self.getTorrents();
+           break;
+        case "search":
+          //TODO:搜索处理
+          console.log("Search in process");
+          break;
+         default:
+           self.getTorrents();
+       }
+     }
    }
 
   };
