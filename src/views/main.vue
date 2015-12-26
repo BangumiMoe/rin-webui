@@ -79,6 +79,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     table.rin-main-table{
+      table-layout: fixed;
       font-size:0.9em;
 
       thead {
@@ -89,6 +90,9 @@
        background-color: rgba(98,137,168,0.8);
        th {font-weight: 400}
 
+      }
+      tbody{
+        padding-top:33px;
       }
 
       .rin-main-table-tr{
@@ -109,19 +113,25 @@
           .rin-magnet {
             color: @color-primary-4;
           }
-          .rin-team{
+          .rin-inline-tag{
             display: inline-block;
             color: #6d6d6d;
             background-color: #eee;
             height: 20px;
-            line-height: 20px;
             padding-right: 5px;
+            padding-left:5px;
             margin-right: 5px;
+          }
+          .rin-team{
+            padding-left:0px;
             .team-icon{
               width: 20px;
               height: 20px;
               vertical-align: top;
 
+            }
+            span{
+              line-height: 20px;
             }
 
           }
@@ -157,7 +167,25 @@
         font-size: 1.2em;
         padding: 8px 0;
       }
+
     }
+
+  }
+  .table-title-fixed{
+    width: calc(~'100% - 128px');
+    position: fixed;
+    top:0;
+    opacity: 0;
+    text-align: center;
+    th{
+      text-align: center;
+    }
+    transition: opacity 1s;
+
+  }
+  .fixed-show{
+    opacity: 0.7;
+
   }
 }
 </style>
@@ -165,11 +193,11 @@
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
     <div is="rin-loader" v-if="busy" :progress="progress" transition="rin-fade"></div>
-    <div  class="rin-wrapper" v-show="!busy" transition="rin-fade" >
+    <div  class="rin-wrapper" v-show="!busy" transition="rin-fade" v-on:scroll="checkFixed">
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" >
           <div class="page-nav-btn btn-down-last rin-col-2" >
-            <i class="material-icons" style="    transform: rotate(45deg);padding-top: 1px;padding-left: 2px;">&#xE63E;</i>
+            <i class="material-icons" style="    transform: rotate(45deg);padding-top: 1px;padding-left: .5px;">&#xE63E;</i>
           </div>
           <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v>
             <i class="material-icons">&#xE020;</i>
@@ -205,12 +233,17 @@
           	<tbody>
               <tr v-for="(index, t) in torrent.lastest" class="rin-main-table-tr">
                 <td width="110" style="font-size:12px;">{{t.publish_time | date 'lately'}}</td>
-          			<td width="6%" align="center">{{t.category_tag.locale.zh_cn}}</td>
+          			<td width="6%" align="center">
+                  <div class="rin-inline-tag">
+                    <span>{{t.category_tag.locale.zh_cn}}</span>
+                  </div>
+
+                </td>
           			<td class="title"  style="text-align:left;">
-                  <div class="rin-team" v-if="t.team">
+                  <div class="rin-team rin-inline-tag" v-if="t.team">
                     <img class="team-icon"  v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
                     <img class="team-icon" src="../assets/akarin.jpg" v-if="!t.team.icon"/>
-                    {{t.team.name}}
+                    <span>{{t.team.name}}</span>
                   </div>
           				<a target="_blank" >{{t.title}}</a>
                     </td>
@@ -228,8 +261,27 @@
               </tr>
             </tbody>
           </table>
+          <div class="table-title-fixed" v-bind:class="{'fixed-show': titleFixed}">
+            <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
+              <thead>
+                <tr>
+                  <th width="110"><span class="title">发布时间</th>
+                  <th width="5%"><span class="title">分类</span></th>
+                  <th  ><span class="title">标题</span></th>
+                  <th width="4%" nowrap="nowrap"><span class="title">磁力链接</span></th>
+                  <th width="7%"><span class="title">大小</span></th>
+                  <th width="5%"><span class="title">种子</span></th>
+                  <th width="5%"><span class="title">下载</span></th>
+                  <th width="5%"><span class="title">完成</span></th>
+                  <th width="9%"><span class="title">发布者</span></th>
+                </tr>
+              </thead>
+            </table>
+          </div>
     </div>
+
   </div>
+
 </template>
 
 <script>
@@ -240,7 +292,7 @@
       return {
         busy: true,
         currentPage:1,
-        short:false,
+        titleFixed:false,
         torrent: {
           lastest: [],
           pageNum:0,
@@ -271,6 +323,18 @@
           self.getTorrents();
         }
         self.getPageNavNum(20);
+      },
+      checkFixed:function(e){
+        console.log(e.target.scrollTop);
+        if (e.target.scrollTop>33 ){
+          if (!this.titleFixed){
+            this.titleFixed=true;
+          }
+        }else{
+          if (this.titleFixed){
+            this.titleFixed=false;
+          }
+        }
       }
     },
     ready: function() {
