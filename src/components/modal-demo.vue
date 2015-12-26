@@ -52,14 +52,13 @@
     },
     events:{
       "modal-ok-click":function(){
-        alert("modal-ok-click");
-
+        // alert("modal-ok-click");
       },
       "modal-ok-click-loading":function(){
-        alert("modal-ok-click-loading");
+        // alert("modal-ok-click-loading");
       },
       "modal-closed":function(){
-        alert("modal-closed");
+        // alert("modal-closed");
       }
     }
   };
