@@ -238,7 +238,7 @@
           	</thead>
           	<tbody>
               <tr v-for="(index, t) in torrent.lastest">
-                <td style="font-size:12px;">{{t.publish_time | date 'lately'}}</td>
+                <td style="font-size:12px;">{{t.publish_time | date 'lately HH:mm'}}</td>
           			<td align="center">
                   <div class="rin-inline-tag">
                     <span>{{t.category_tag.locale.zh_cn}}</span>

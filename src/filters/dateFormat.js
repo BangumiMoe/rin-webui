@@ -76,6 +76,7 @@
 		        	_map.lately = '前天';
 		        	break;
 	        	default:
+	        		_format = 'lately';
 	        		_map.lately = _map.yyyy+'/'+_map.MM+'/'+_map.dd+' '+_map.HH+':'+_map.mm;
 	        }
 
