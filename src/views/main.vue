@@ -204,9 +204,9 @@
     <div  id="rin-wrapper" class="rin-wrapper" v-show="!busy" transition="rin-fade">
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" >
-          <div class="page-nav-btn btn-down-last rin-col-2" >
+          <a class="page-nav-btn btn-down-last rin-col-2" href="https://bangumi.moe/rss/latest" target="_blank" >
             <i class="material-icons" style="    transform: rotate(45deg);padding-top: 1px;padding-left: .5px;">&#xE63E;</i>
-          </div>
+          </a>
           <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v>
             <i class="material-icons">&#xE020;</i>
           </div>
