@@ -1,7 +1,7 @@
 <style scoped lang="less">
 @import "../less/colors.less";
 
-@color-tr-odd: rgba(233,233,233,0.56);
+@color-tr-odd: rgba(233,233,233,0.25);
 @color-tr-hover: rgba(200,200,200,0.7);
 @color-th: rgba(233,233,233,0.9);
 @color-th-bg: rgba(98,137,168,0.8);
@@ -156,6 +156,10 @@
           }
         }
 
+        &:nth-child(odd) {
+          background-color: @color-tr-odd;
+        }
+        
         &:hover{
           background-color: @color-tr-hover;
 
@@ -163,10 +167,6 @@
             color: @color-inline-tag-hover;
             background-color: @color-inline-tag-bg-hover;
           }
-        }
-
-        &:nth-child(odd) {
-          background-color: @color-tr-odd;
         }
       }
 
