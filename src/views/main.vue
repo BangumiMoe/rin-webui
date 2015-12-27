@@ -257,9 +257,7 @@
           				<a target="_blank" >{{t.title}}</a>
                     </td>
                     <td nowrap="nowrap" align="center">
-                        <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}{{magnentt}}">️
-                            <i class="material-icons">&#xE2C4;</i>
-                        </a>️
+                        <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}{{magnentt}}"><i class="material-icons">&#xE2C4;</i></a>
                     </td>
           			<td nowrap="nowrap" align="center">{{t.size}}</td>
           			<td nowrap="nowrap" align="center">
@@ -279,7 +277,7 @@
                   <th width="90"><span class="title">发布</th>
                   <th width="5%"><span class="title">分类</span></th>
                   <th  ><span class="title">标题</span></th>
-                  <th width="4%" nowrap="nowrap"><span class="title">磁链</span></th>
+                  <th width="5%" nowrap="nowrap"><span class="title">磁链</span></th>
                   <th width="7%"><span class="title">大小</span></th>
                   <th width="10%"><span class="title">状况</span></th>
                   <th width="9%"><span class="title">发布者</span></th>
