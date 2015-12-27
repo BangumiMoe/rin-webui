@@ -61,12 +61,15 @@
     .page-nav-num:nth-child(odd){
       background-color: @color-primary-2;
     }
-    .page-nav-btn:not(.cur):hover{
+    .page-nav-btn:not(.disabled):hover{
       background-color: @color-primary-3;
       i{
         font-size:2em;
       }
 
+    }
+    .disabled{
+      cursor: default;
     }
     .page-nav-btn.btn-down{
       background-color: @color-primary-2;
@@ -207,16 +210,16 @@
           <a class="page-nav-btn btn-down-last rin-col-2" href="https://bangumi.moe/rss/latest" target="_blank" >
             <i class="material-icons" style="    transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>
           </a>
-          <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v>
+          <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v-bind:class="{'disabled':1-currentPage==0}">
             <i class="material-icons">&#xE020;</i>
           </div>
-          <div class="page-nav-btn btn-up rin-col-2" v-on:click="chgPage(-1)" v>
+          <div class="page-nav-btn btn-up rin-col-2" v-on:click="chgPage(-1)" v-bind:class="{'disabled':currentPage==1}">
             <i class="material-icons">&#xE314;</i>
           </div>
             <div  class="cur rin-col-4  page-nav-btn page-nav-num">
               {{currentPage}}
             </div>
-          <div class="page-nav-btn btn-down rin-col-2" v-on:click="chgPage(+1)">
+          <div class="page-nav-btn btn-down rin-col-2" v-on:click="chgPage(+1)" v-bind:class="{'disabled':currentPage==torrent.pageNum}">
             <i class="material-icons">&#xE315;</i>
           </div>
 
@@ -392,6 +395,7 @@
         case "search":
           //TODO:搜索处理
           console.log("Search in process");
+          alert("搜索请求Get√，Key="+self.$route.params.key);
           break;
          default:
            self.getTorrents();
