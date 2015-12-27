@@ -238,7 +238,7 @@
 
       <!-- 建议 Tag 容器. -->
       <div class="recommend-tags" role="list" v-show="nodeControl.recommendTags.show">
-        <div class="list-item tag-item" role="listitem" v-for="tag in dataObject.recommendTags" v-text="tag" data-tag="{{tag}}" v-on:click="addRecommendTag"></div>
+        <div class="list-item tag-item" role="listitem" v-for="tag in dataObject.recommendTags" v-text="tag.locale.zh_cn" data-tag="{{tag.locale.zh_cn}}" v-on:click="addRecommendTag"></div>
       </div>
 
       <!-- 搜索进度条 -->
@@ -305,7 +305,7 @@
         },
 
         // 推荐 Tag 数据:
-        recommendTags: ["标签1", "标签2", "标签3"]
+        recommendTags: []
       },
 
       // 搜索事件相关数据.
@@ -378,7 +378,7 @@
       self.nodeControl.recommendTags.show = false;
 //        self.generateTags();  // 生成 Tag.
 
-      self.$http.post("https://bangumi.moe/api/tag/search", { query: self.cursorKeyword }).then(requestFinished);
+//      self.$http.post("https://bangumi.moe/api/tag/search", { query: self.cursorKeyword }).then(requestFinished);
       function requestFinished (result) {
         self.dataObject.recommendTags = result;
       }
@@ -397,20 +397,35 @@
       rightPart = rightPart.indexOf(" ") < 0 ? rightPart : rightPart.slice(0, rightPart.indexOf(" "));
       self.cursorKeyword = (leftPart + rightPart).trim();
 
+
       // 显示推荐 Tag 节点.
       self.nodeControl.recentProgramList.show = false;
       self.nodeControl.recommendTags.show = true;
+
+      if (self.cursorKeyword.length < 2) { return; }
+
       clearTimeout(self.searchEvent.recommendTagTimeout);
-
-
       self.searchEvent.recommendTagTimeout = setTimeout(function () {
-        self.$http.post("https://beta.bangumi.moe/api/tag/suggest", {
-          // TODO: ...
-        }).then(requestFinished);
-        function requestFinished (result) {
-          self.dataObject.recommendTags = result;
-        }
-      }, 500);
+
+        // vue-resource 跨域 post 搞不定, 先用原生了.
+        var data = new FormData();
+        data.append("keywords", "true");
+        data.append("multi", "true");
+        data.append("name", self.cursorKeyword);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://bangumi.moe/api/tag/search", true);
+        xhr.onreadystatechange = function () {
+          if ( xhr.readyState == 4 && xhr.status == 200 ) {
+            var result = JSON.parse(xhr.responseText);
+            self.dataObject.recommendTags = result.tag;
+          } else {
+
+          }
+        };
+        xhr.send(data);
+
+      }, 350);
 
 
       function getPositionForInput (element) {
