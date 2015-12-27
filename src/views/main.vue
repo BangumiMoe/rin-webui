@@ -205,7 +205,7 @@
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" >
           <a class="page-nav-btn btn-down-last rin-col-2" href="https://bangumi.moe/rss/latest" target="_blank" >
-            <i class="material-icons" style="    transform: rotate(45deg);padding-top: 1px;padding-left: .5px;">&#xE63E;</i>
+            <i class="material-icons" style="    transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>
           </a>
           <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v>
             <i class="material-icons">&#xE020;</i>
@@ -328,7 +328,7 @@
           self.$route.router.go({name:"page",params:{number:self.currentPage+=offset}});
           setTimeout(function(){
             document.getElementById("rin-wrapper").scrollTop=0;
-          },500)
+          },300)
           //self.getTorrents();
         }
       },
