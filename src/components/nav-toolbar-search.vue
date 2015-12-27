@@ -143,7 +143,8 @@
       &:hover {
         border-color: @color-secondary-2-3;
         background-color: @color-secondary-2-2;
-        color: @color-secondary-2-4;
+        /*color: @color-secondary-2-4;*/
+        color: #fff;
       }
 
       &:active {
