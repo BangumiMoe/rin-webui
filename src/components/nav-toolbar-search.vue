@@ -227,7 +227,7 @@
           <div class="list-item-ctnr" role="list">
 
             <div class="list-column" v-for="(columnNum, column) in Math.ceil(results.length / 5)">
-              <div class="list-item tag-item" v-for="item in results | limitBy 5 columnNum*5" v-text="item.tag.locale.zh_cn"></div>
+              <div class="list-item tag-item" v-for="item in results | limitBy 5 columnNum*5" v-on:click="addUserTag" data-tag="{{item.tag.locale.zh_cn}}" v-text="item.tag.locale.zh_cn" role="listitem"></div>
             </div>
 
           </div>
@@ -404,7 +404,7 @@
 
 
       self.searchEvent.recommendTagTimeout = setTimeout(function () {
-        self.$http.post("https://bangumi.moe/api/tag/suggest", {
+        self.$http.post("https://beta.bangumi.moe/api/tag/suggest", {
           // TODO: ...
         }).then(requestFinished);
         function requestFinished (result) {
