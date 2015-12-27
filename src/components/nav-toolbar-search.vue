@@ -33,7 +33,7 @@
     }
 
     &.show {
-       bottom: -20em;
+       bottom: -21em;
     }
 
     &.hide {
@@ -78,7 +78,7 @@
       }
 
       .list-item-ctnr {
-        max-width: 30em;
+        /*max-width: 30em;*/
         width: auto;
         height: 20em;
         padding-left: 1em;
@@ -109,6 +109,12 @@
         float: right;
       }
 
+    }
+
+    .list-column {
+      display: inline-block;
+      width: 200px;
+      vertical-align: top;
     }
 
     /* Tags Container. */
@@ -218,9 +224,13 @@
           <div class="list-item-title" role="heading" v-text="day"></div>
 
           <!-- 当日结果列表. -->
-          <ul class="list-item-ctnr" role="list">
-            <li class="list-item tag-item" v-for="item in results" role="listitem" v-text="item.tag.locale.zh_cn" v-on:click="addUserTag" data-tag="{{item.tag.locale.zh_cn}}"></li>
-          </ul>
+          <div class="list-item-ctnr" role="list">
+
+            <div class="list-column" v-for="(columnNum, column) in Math.ceil(results.length / 5)">
+              <div class="list-item tag-item" v-for="item in results | limitBy 5 columnNum*5" v-text="item.tag.locale.zh_cn"></div>
+            </div>
+
+          </div>
 
         </div>
 
