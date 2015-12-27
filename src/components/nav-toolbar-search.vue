@@ -16,11 +16,14 @@
     position: fixed;
     left: 0;
     bottom: 0;
+    color: #97c8ef;
     box-sizing: border-box;
     font-family: "Microsoft YaHei";
     font-size: 13px;
-    border-top: 5px solid @color-secondary-1-3;
-    background-color: @color-secondary-1-4;
+    border-top: 5px solid #97c8ef;
+    background-color: #fff;
+    /*background-color: @color-secondary-1-4;*/
+    /*border-top: 5px solid @color-secondary-1-3;*/
     /* box-shadow: 0 0 .1em .1em rgba(0,0,0,.3); */
     transition: all @cubicEase .5s;
 
@@ -41,7 +44,10 @@
     }
 
     &.fixed {
-       bottom: 0
+       bottom: 0;
+      .search-hint {
+        display: none;
+      }
     }
 
     /* Title Part. | 标题部分. */
@@ -122,9 +128,12 @@
       display: inline-block;
       padding: .5em;
       margin: .5em .5em .5em 0;
-      border: .1em solid @color-secondary-2-4;
-      background-color: @color-secondary-2-3;
-      color: @color-secondary-2-1;
+      /*border: .1em solid @color-secondary-2-4;*/
+      border: .1em solid #97c8ef;
+      /*background-color: @color-secondary-2-3;*/
+      background-color: #97c8ef;
+      /*color: @color-secondary-2-1;*/
+      color: #fff;
       font-size: 12px;
       border-radius: .5em;
       cursor: pointer;
@@ -194,7 +203,8 @@
 
     .rin-input {
       border: 0;
-      border-bottom: .1em solid #222;
+      color: #7eb0ef;
+      border-bottom: .1em solid #97c8ef;
       outline: none;
     }
 
@@ -208,7 +218,7 @@
 
     <!-- Preview Title. | 预览标题节点. -->
     <h4 class="preview-title">
-      <i class="material-icons search">&#xE8B6;</i> <span class="search-bar-title">搜索.</span>
+      <i class="material-icons search">&#xE8B6;</i> <span class="search-bar-title">搜索.</span> <span class="search-hint vertical-middle">( 点击固定 )</span>
     </h4>
 
     <!-- Search Result List Container. | 搜索结果容器. -->
@@ -257,7 +267,7 @@
         <input type="text" class="rin-input vertical-middle search-input" v-model="searchBarValue" role="search" aria-label="在这里搜索当前团队内容." placeholder="在这里搜索..." v-on:click="getRecommendTags" v-on:keyup="getRecommendTags" v-on:keyup.13="searchSubmit" v-on:blur="showRecentProgram">
 
         <!-- Rock'n Roll! -->
-        <button type="submit" role="button" class="search-submit-btn"><i class="material-icons search">&#xE8B6;</i></button>
+        <button type="submit" role="button" class="search-submit-btn" v-on:click="searchSubmit"><i class="material-icons search">&#xE8B6;</i></button>
       </div>
 
       <!-- User-input-tags Container. | 用户已输入标签容器. -->
@@ -376,12 +386,20 @@
       self.userTagList = [];  // 清空之前的 Tag.
       self.nodeControl.recentProgramList.show = true;
       self.nodeControl.recommendTags.show = false;
-//        self.generateTags();  // 生成 Tag.
+//    self.generateTags();  // 生成 Tag.
+
+      var keyword = self.searchBarValue;
+      keyword = keyword.replace(/"/g, "'");
+      keyword = keyword.replace(/\s/g, "|");
+
+      console.log(keyword);
+
+      // TODO: 广播发送搜索请求至相应视图.
 
 //      self.$http.post("https://bangumi.moe/api/tag/search", { query: self.cursorKeyword }).then(requestFinished);
-      function requestFinished (result) {
-        self.dataObject.recommendTags = result;
-      }
+//      function requestFinished (result) {
+//        self.dataObject.recommendTags = result;
+//      }
     },
 
     // 获得推荐 Tag 事件.
