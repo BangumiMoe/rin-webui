@@ -17,39 +17,42 @@
 
   .rin-infobox-inner{
     position: relative;
-    width: 220px;
+    width: 224px;
+    border: 2px solid #681558;
+    border-radius: 10px;
   }
 
   .rin-infobox {
     border-radius: 10px;
-    /*border-width: 1px 4px 3px 2px;*/
-    /*border-color: @color-primary-2;*/
-    /*border-style: solid;*/
-    margin: 4px;
-	  box-shadow: 0px 0px 0px 2px #fff, 0px 0px 0px 4px #681558;
+    border: 2px solid #fff;
+		z-index: 1;
     padding: 15px 0px;
     width: 220px;
     min-height: 40px;
     max-height: 300px;
     background-color: @color-primary-4;
     color: @color-primary-2;
+    position: relative;
   }
 
   .rin-infobox-inner:after {
     content: "";
-    width: 0; 
-    height: 0; 
+    width: 9px; 
+    height: 10px; 
+    border-top: 2px solid #681558;
+    border-right: 2px solid #681558;
+    transform: rotate(45deg);
+    background: white;
     position: absolute;
     top: 10px;
     display: block;
   }
 
   .rin-infobox-arrow-right .rin-infobox-inner:after {
-    border-top: 9px solid transparent;
-    border-bottom: 9px solid transparent;
-    border-left: 9px solid #681558;
-    right: -15px;
     top: 10px;
+    right: -5px;
+    top: 10px;
+    z-index: 0;
   }
 
   .rin-infobox-arrow-left .rin-infobox-inner:after {
