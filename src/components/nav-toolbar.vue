@@ -42,27 +42,18 @@
       }
     }
 
-    .rin-search {
+    .rin-search, .rin-week, .rin-torrents {
+      text-shadow: 0 0 5px @color-primary-3;
       background-color: transparent !important;
       border-color: transparent !important;
       position: absolute;
-      bottom: 0;
 
-      i {
-        font-size: 36px;
-      }
+      i { font-size: 32px; }
     }
     
-    .rin-week {
-      background-color: transparent !important;
-      border-color: transparent !important;
-      position: absolute;
-      bottom: 48px;
-      
-      i {
-        font-size: 32px;
-      }
-    }
+    .rin-search { bottom: 0; }
+    .rin-week { bottom: 48px; }
+    .rin-torrents { bottom: 96px; }
   }
 </style>
 
@@ -89,10 +80,14 @@
       <i class="material-icons">&#xE03B;</i>
     </a>
     <a class="rin-button round" aria-label="退出" @click="userSignout">
-      <i class="material-icons">&#xE0E2;</i>
+      <i class="material-icons">&#xE0E4;</i>
     </a>
   </div>  
 
+  <a class="rin-button rin-torrents" href="#/">
+    <i class="material-icons">&#xE5C4;</i>
+  </a>
+  
   <a class="rin-button rin-week" href="#/week">
     <i class="material-icons">&#xE8EF;</i>
   </a>
