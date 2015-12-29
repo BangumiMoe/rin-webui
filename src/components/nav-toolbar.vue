@@ -1,30 +1,66 @@
-<style lang="less">
+<style scoped lang="less">
   @import "../less/colors.less";
 
   #rin-toolbar {
     background-color: @color-primary-0;
     color: @color-primary-2;
-
+    
+    .rin-button {
+      width: 40px;
+      height: 40px;
+      margin: 8px 8px;
+      color: @color-primary-2;
+      background: @color-primary-3;
+      border: 4px solid @color-primary-2;
+      
+      i {
+        font-size: 2em;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      
+      &:hover {
+        color: @color-primary-1;
+        background: @color-primary-4;
+        border: 4px solid @color-primary-1;
+      }
+    }
+    
     .rin-logo {
       cursor: pointer;
-      display: inline-block;
-      margin: 16px 4px;
-
-      img {
-        border-radius: 28px;
-        border: 4px solid @color-primary-2;
+      .img-wrap {
         width: 48px;
+        height: 48px;
+        margin-left: 4px;
+        margin-right: 4px;
+        
+        img {
+          border-radius: 50%;
+        }  
       }
     }
 
     .rin-search {
-      cursor: pointer;
+      background-color: transparent !important;
+      border-color: transparent !important;
       position: absolute;
-      right: 8px;
-      bottom: 8px;
+      bottom: 0;
 
       i {
-        font-size: 48px;
+        font-size: 36px;
+      }
+    }
+    
+    .rin-week {
+      background-color: transparent !important;
+      border-color: transparent !important;
+      position: absolute;
+      bottom: 48px;
+      
+      i {
+        font-size: 32px;
       }
     }
   }
@@ -34,14 +70,34 @@
 <div id="rin-toolbar" class="rin-main-bar rin-col">
 
   <div class="rin-logo">
-    <div class="img-wrap" @click="userSignAction($event)">
-      <img src="../assets/akarin.jpg" v-if="!user.username" />
-      <img src="https://bangumi.moe/avatar/{{ user.emailHash }}" v-if="user.username" />
-    </div>
+    <div class="rin-button round img-wrap" @click="userSignAction($event)">
+      <img src="../assets/akarin.jpg" v-show="!user.username" />
+      <img src="https://bangumi.moe/avatar/{{ user.emailHash }}" v-show="user.username" />
+    </div>  
+    
     <info-box :user="user" arrow="right"></info-box>
   </div>
+  
+  <div class="user-toolbar" v-show="user.username">
+    <a class="rin-button round" aria-label="团队">
+      <i class="material-icons">&#xE7FC;</i>
+    </a>
+    <a class="rin-button round" aria-label="发布">
+      <i class="material-icons">&#xE89D;</i>
+    </a>
+    <a class="rin-button round" aria-label="自定义RSS">
+      <i class="material-icons">&#xE03B;</i>
+    </a>
+    <a class="rin-button round" aria-label="退出" @click="userSignout">
+      <i class="material-icons">&#xE0E2;</i>
+    </a>
+  </div>  
 
-  <span class="rin-search" v-on:mouseenter="searchBarShow" v-on:mouseleave="searchBarHide" v-on:click="searchBarToggle">
+  <a class="rin-button rin-week" href="#/week">
+    <i class="material-icons">&#xE8EF;</i>
+  </a>
+  
+  <span class="rin-button rin-search" v-on:mouseenter="searchBarShow" v-on:mouseleave="searchBarHide" v-on:click="searchBarToggle">
     <i class="material-icons">&#xE8B6;</i>
   </span>
 
@@ -85,10 +141,18 @@
         if(!this.user._id) {
           this.signin_form_opened = true;
           this.$dispatch('displaySigninForm');
-        } else {
+        }
+        
+        /* } else {
+          this.$dispatch('UserSignOut');
+        }*/
+      },
+      
+      userSignout (ev) {
+        if(this.user._id) {
           this.$dispatch('UserSignOut');
         }
-      } 
+      }
     },
     components: {
       'search-bar': require('./nav-toolbar-search'),
