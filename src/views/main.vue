@@ -143,6 +143,10 @@
               line-height: 20px;
             }
           }
+          
+          .rin-seed-online { color: green }
+          .rin-seed-downloading { color: red }
+          .rin-seed-downloaded { color: blue }
         }
 
         td.rin-uploader{
@@ -194,10 +198,7 @@
     transition: opacity 1s;
 
   }
-  .fixed-show{
-    opacity: 0.9;
-
-  }
+  .fixed-show{ opacity: 0.9 }
 }
 </style>
 
@@ -261,9 +262,9 @@
                     </td>
           			<td nowrap="nowrap" align="center">{{t.size}}</td>
           			<td nowrap="nowrap" align="center">
-                  <a href="javascript:void(0)" title="种子">{{t.seeders}}</a> /
-                  <a href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
-                  <a href="javascript:void(0)" title="完成">{{t.finished}}</a>
+                  <a class="rin-seed-online" href="javascript:void(0)" title="种子">{{t.seeders}}</a> /
+                  <a class="rin-seed-downloading" href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
+                  <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
                 </td>
           			<td class="rin-uploader"><img class="uploader-avatar" v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" /><span>{{t.uploader.username}}</span></td>
 
