@@ -254,7 +254,7 @@
                     <img class="team-icon" src="../assets/akarin.jpg" v-if="!t.team.icon"/>
                     <span>{{t.team.name}}</span>
                   </div>
-          				<a target="_blank" >{{t.title}}</a>
+          				<a target="_blank" v-on:click="goTorrent(t._id)">{{t.title}}</a>
                     </td>
                     <td nowrap="nowrap" align="center">
                         <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}{{magnentt}}"><i class="material-icons">&#xE2C4;</i></a>
@@ -341,6 +341,9 @@
         scroll = oDiv.clientWidth;
         document.body.removeChild(oDiv);
         return noScroll-scroll;
+      },
+      goTorrent:function(id){
+        this.$route.router.go({name:"torrent",params:{key:id}})
       }
     },
     ready: function() {
