@@ -11,9 +11,9 @@ router.map({
   '/': { name:"index", component: require('./views/main') ,mode:"normal"},
   '/page/:number': {name:"page" ,component: require('./views/main') ,mode:"page"},
   '/search/:key': { name:"search" ,component: require('./views/main'),mode:"search" },
-  '/week' :{
-  	name:'week',
-  	component: require('./views/week')
+  '/bangumi/list' :{
+  	name:'list',
+  	component: require('./views/list')
   },
   '/torrent/:key':{
   	name:'torrent',

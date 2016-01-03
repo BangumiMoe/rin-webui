@@ -89,7 +89,7 @@
     <i class="material-icons">&#xE5C4;</i>
   </a>
   
-  <a class="rin-button rin-week" href="#/week">
+  <a class="rin-button rin-week" href="#/bangumi/list">
     <i class="material-icons">&#xE8EF;</i>
   </a>
   

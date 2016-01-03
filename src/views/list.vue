@@ -365,6 +365,22 @@ export default{
 		}
 		wrap.addEventListener(eventName,mouse_wheel);
 
+		//键盘方向键滚动
+		document.onkeydown = function(event){
+			var wrapWidth = wrap.scrollWidth/80;
+			var keycode = event.which || event.keyCode;
+			switch(keycode){
+				case 38:
+					//top
+					wrap.scrollLeft += wrapWidth;
+					break;
+
+				case 40:
+					//bottom
+					wrap.scrollLeft -= wrapWidth;
+					break;
+			}
+		}
 	}
 }
 </script>
