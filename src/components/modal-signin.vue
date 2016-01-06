@@ -46,26 +46,38 @@
       'rin-modal': require('./rin-modal'),
     },
     data () {
-      return { username: null, password: null, message: null };
+      return { username: null, password: null, message: null, loading: false };
     },
     methods:{
       'cancel' () { return 0; }
     },
     events:{
       'modal-ok-click' () {
+        if (this.loading) return;
+        
+        this.$broadcast("modal-start-loading");
+        this.loading = true;
         this.$dispatch('UserSignIn', {
           username: this.username,
           password: this.password
         });
       },
-      'modal-closed' () {},
+      'modal-closed' () {
+        this.$broadcast("modal-stop-loading");
+        this.loading = false;
+      },
       
       'UserSignInOk' (user) {
         if(user.username == this.username) {
           this.$broadcast('close-modal');
         }
+        
+        this.loading = false;
+        this.$broadcast("modal-stop-loading");
       },
       'UserSignInFailed' (msg) {
+        this.$broadcast("modal-stop-loading");
+        this.loading = false;
         this.message = msg;
       }
     }
