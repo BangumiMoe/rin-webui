@@ -71,29 +71,32 @@
   </div>
   
   <div class="user-toolbar" v-show="user.username">
-    <a class="rin-button round" aria-label="团队">
+    <a class="rin-button round rin-tip left" data-tool="团队">
       <i class="material-icons">&#xE7FC;</i>
     </a>
-    <a class="rin-button round" aria-label="发布">
+    <a class="rin-button round rin-tip left" data-tool="发布">
       <i class="material-icons">&#xE89D;</i>
     </a>
-    <a class="rin-button round" aria-label="自定义RSS">
+    <a class="rin-button round rin-tip left" data-tool="自定义RSS">
       <i class="material-icons">&#xE03B;</i>
     </a>
-    <a class="rin-button round" aria-label="退出" @click="userSignout">
+    <a class="rin-button round rin-tip left" data-tool="退出" @click="userSignout">
       <i class="material-icons">&#xE0E4;</i>
     </a>
   </div>  
 
-  <a class="rin-button rin-torrents" href="#/">
+  <a class="rin-button rin-torrents rin-tip left" data-tool="返回首页" href="#/">
     <i class="material-icons">&#xE5C4;</i>
   </a>
   
-  <a class="rin-button rin-week" href="#/bangumi/list">
+  <a class="rin-button rin-week rin-tip left" data-tool="番组表" href="#/bangumi/list">
     <i class="material-icons">&#xE8EF;</i>
   </a>
   
-  <span class="rin-button rin-search" v-on:mouseenter="searchBarShow" v-on:mouseleave="searchBarHide" v-on:click="searchBarToggle">
+  <span class="rin-button rin-search rin-tip left" data-tool="搜索" 
+    @mouseenter="searchBarShow" 
+    @mouseleave="searchBarHide" 
+    @click="searchBarToggle">
     <i class="material-icons">&#xE8B6;</i>
   </span>
 

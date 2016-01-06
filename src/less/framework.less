@@ -146,6 +146,77 @@ form {
   }
 }
 
+/* From:http://designshack.net/articles/css/html5-css3-anchor-link-tooltips/ */
+.rin-tip {
+  position: relative;
+  
+  &:after {
+    display: block;
+    visibility: hidden;
+    position: absolute;
+    bottom: 100%;
+    left: -80%;
+    opacity: 0;
+    content: attr(data-tool); /* might also use attr(title) */
+    height: auto;
+    min-width: 100px;
+    padding: 5px 8px;
+    z-index: 999;
+    color: #fff;
+    text-decoration: none;
+    text-align: center;
+    background: rgba(0,0,0,0.85);
+    border-radius: 5px;
+  }
+  &:before {
+    position: absolute;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    left: 40%;
+    bottom: 100%;
+    opacity: 0;
+    content: "";
+    border-style: solid;
+    border-width: 6px 6px 0 6px;
+    border-color: rgba(0,0,0,0.85) transparent transparent transparent;
+  }
+  &:hover:after{ visibility: visible; opacity: 1; bottom: 20px; }
+  &:hover:before{ visibility: visible; opacity: 1; bottom: 14px; }
+  
+  &.bottom:after { bottom: auto; top: 0; }
+  &.bottom:hover:after { top: 120%; }
+  &.bottom:before {
+    border-width: 0 5px 8.7px 5px;
+    border-color: transparent transparent rgba(0,0,0,0.85) transparent;
+    top: 0
+  }
+  &.bottom:hover:before { top: 100%; }
+  
+  /* tips on the right */
+  &.right:after { left: 100%; bottom: -45%; }
+  &.right:hover:after { left: 110%; bottom: -45%; }
+  &.right:before {
+    border-width: 5px 10px 5px 0;
+    border-color: transparent rgba(0,0,0,0.85) transparent transparent;
+    left: 90%;
+    bottom: 2%;
+  }
+  &.right:hover:before { left: 100%; bottom: 2%; }
+  
+  /* tips on the left */
+  &.left:after { left: auto; right: 100%; bottom: -45%; }
+  &.left:hover:after { right: 130%; bottom: 15%; }
+  &.left:before {
+    border-width: 5px 0 5px 10px;
+    border-color: transparent transparent transparent rgba(0,0,0,0.85);
+    left: auto;
+    right: 90%;
+    bottom: 2%;
+  }
+  &.left:hover:before { right: 115%; bottom: 40%; }
+}
+
 .rin-button {
   display: flex;
   align-items: cetner;
