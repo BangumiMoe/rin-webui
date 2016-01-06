@@ -39,12 +39,23 @@
       i { line-height: 40px;
         transition: font-size .2s;
       }
-    }
-    .page-nav-btn.btn-up{
-      background-color: @color-primary-2;
-    }
-    .page-nav-btn.btn-up-first{
-      background-color: @color-primary-2;
+      
+      &.btn-up{ background-color: @color-primary-2 }
+      &.btn-up-first{ background-color: @color-primary-2 }
+      
+      &:not(.disabled):hover{
+        background-color: @color-primary-3;
+        i{
+          font-size:2em;
+        }
+
+      }
+      &.btn-down{
+        background-color: @color-primary-2;
+      }
+      &.btn-down-last{
+        background-color: @color-primary-2;
+      }
     }
     .page-nav-num{
       color: @color-primary-0;
@@ -61,21 +72,8 @@
     .page-nav-num:nth-child(odd){
       background-color: @color-primary-2;
     }
-    .page-nav-btn:not(.disabled):hover{
-      background-color: @color-primary-3;
-      i{
-        font-size:2em;
-      }
-
-    }
     .disabled{
       cursor: default;
-    }
-    .page-nav-btn.btn-down{
-      background-color: @color-primary-2;
-    }
-    .page-nav-btn.btn-down-last{
-      background-color: @color-primary-2;
     }
   }
 
@@ -211,18 +209,18 @@
           <a class="page-nav-btn btn-down-last rin-col-2" href="https://bangumi.moe/rss/latest" target="_blank" >
             <i class="material-icons" style="    transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>
           </a>
-          <div class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v-bind:class="{'disabled':1-currentPage==0}">
+          <a class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v-bind:class="{'disabled':1-currentPage==0}">
             <i class="material-icons">&#xE020;</i>
-          </div>
-          <div class="page-nav-btn btn-up rin-col-2" v-on:click="chgPage(-1)" v-bind:class="{'disabled':currentPage==1}">
+          </a>
+          <a class="page-nav-btn btn-up rin-col-2" v-on:click="chgPage(-1)" v-bind:class="{'disabled':currentPage==1}">
             <i class="material-icons">&#xE314;</i>
-          </div>
-            <div  class="cur rin-col-4  page-nav-btn page-nav-num">
-              {{currentPage}}
-            </div>
-          <div class="page-nav-btn btn-down rin-col-2" v-on:click="chgPage(+1)" v-bind:class="{'disabled':currentPage==torrent.pageNum}">
+          </a>
+          <a  class="cur rin-col-4  page-nav-btn page-nav-num">
+            {{currentPage}}
+          </a>
+          <a class="page-nav-btn btn-down rin-col-2" v-on:click="chgPage(+1)" v-bind:class="{'disabled':currentPage==torrent.pageNum}">
             <i class="material-icons">&#xE315;</i>
-          </div>
+          </a>
 
         </div>
 
