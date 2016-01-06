@@ -107,6 +107,7 @@
       }
 
       tbody tr {
+        cursor: pointer;
         transition: all .2s;
 
         td{
