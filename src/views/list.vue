@@ -1,4 +1,4 @@
-<style lang="less">
+<style scoped lang="less">
 @import "../less/colors.less";
 
 ul,li,p{
