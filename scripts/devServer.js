@@ -17,6 +17,10 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }))
 
 app.use('/api/user/signin', proxy(url.parse('https://bangumi.moe/api/user/signin')))
+app.use('/api/torrent/fetch', proxy(url.parse('https://bangumi.moe/api/torrent/fetch')))
+app.use('/api/tag/fetch', proxy(url.parse('https://bangumi.moe/api/tag/fetch')))
+app.use('/api/user/fetch', proxy(url.parse('https://bangumi.moe/api/user/fetch')))
+app.use('/api/team/fetch',proxy(url.parse('https://bangumi.moe/api/team/fetch')))
 
 app.use(require('webpack-hot-middleware')(compiler))
 
