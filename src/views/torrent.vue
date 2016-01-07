@@ -39,12 +39,12 @@
 
 	.rin-details{
 		width:100%;
-		padding:20px;
+		padding: 0 1em;
+    overflow-y: auto;
 	}
 	.rin-bar-btn{
 		position:relative;
 		height: 60px;
-    line-height: 73px;
 		border-top:1px solid @color-sidebar;
 		background:@color-th-bg;
 		color:#fff;
@@ -62,8 +62,10 @@
 			border:1px solid @color-th-bg;
 			border-left:0;
 			left:60px;
-			z-index: -1;
+			z-index:0;
 		}
+    
+    i {line-height: 60px !important;}
 	}
 }
 
@@ -71,40 +73,47 @@
 <template>
   <div id="rin-main" class="rin-row" style="width: calc(100% - 128px);">
 		<div class="rin-head">
-			<h3>种子标题</h3>
+			<h3>{{content.title}}</h3>
 		</div>
 		<div class="rin-content rin-row">
 			<div class="rin-sidebar rin-row">
-				<div class="rin-bar-btn"><i class="material-icons">&#xE2C4;</i></div>
-				<div class="rin-bar-btn"><i class="material-icons">&#xE8AB;</i></div>
-				<div class="rin-bar-btn">
+				<a class="rin-bar-btn" :href="'https://bangumi.moe/download/torrent/'+ id +'/' + content.infoHash + '.torrent'"><i class="material-icons">&#xE2C4;</i></a>
+				<a class="rin-bar-btn" :href="content.magnet"><i class="material-icons">&#xE8AB;</i></a>
+				<a class="rin-bar-btn rin-button" @click="toggleComments">
 					<i class="material-icons">&#xE0B9;</i>
-					<div class="rin-bar-content">
-						评论内容
-					</div>
-				</div>
+					<div class="rin-bar-content" v-show="showComments"></div>
+				</a>
 			</div>
 			<div class="rin-details">
-				内容
-			</div>
+        <div v-html="content.introduction"></div>
+      </div>
 		</div>
 	</div>
 </template>
 <script>
 export default {
-	data(){
-		return {
-
+	data () {
+		return { showComments: false }
+	},
+  methods: {
+    toggleComments () {
+      console.log(this.showComments);
+      this.showComments = !this.showComments;
+    }
+  },
+	route: {
+		data (t) {
+			var id = this.$route.params.key;
+      return { id: id, content: null }
 		}
 	},
-	route:{
-		data:function(t){
-			var id = this.$route.params.key;
-			// this.$http.post("https://bangumi.moe/api/torrent/fetch",{"_id":id},function(data){
-			// 	console.log(data);
-			// })
-		}
-	}
-
+  ready () {
+    let self = this;
+    self.$http.get('https://bangumi.moe/api/v2/torrent/' + this.id, {}, function(data) {
+      self.content = data;
+      
+      console.log(data);
+    });
+  }
 }
 </script>
