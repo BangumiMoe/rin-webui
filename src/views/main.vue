@@ -279,7 +279,7 @@
                   <th  ><span class="title">标题</span></th>
                   <th width="5%" nowrap="nowrap"><span class="title">磁链</span></th>
                   <th width="7%"><span class="title">大小</span></th>
-                  <th width="10%"><span class="title">状况</span></th>
+                  <th width="10%"><span class="title">下载状况</span></th>
                   <th width="9%"><span class="title">发布者</span></th>
                 </tr>
               </thead>
