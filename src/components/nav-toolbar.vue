@@ -64,7 +64,7 @@
   <div class="rin-logo">
     <div class="rin-button round img-wrap" @click="userSignAction($event)">
       <img src="../assets/akarin.jpg" v-show="!user.username" />
-      <img src="https://bangumi.moe/avatar/{{ user.emailHash }}" v-show="user.username" />
+      <img :src="'https://bangumi.moe/avatar/'+ user.emailHash" v-show="user.username" />
     </div>  
     
     <info-box :user="user" arrow="right"></info-box>
@@ -108,6 +108,7 @@
 
 <script>
   import RUser from '../components/rin-user.vue'
+  
   export default {
     data () {
       return {
@@ -166,8 +167,7 @@
         }
       },
       UserSignInFailed () { this.user = {};   },
-      UserSignOutOK ()    { this.user = {};   }
+      UserSignOutOK ()    { this.user = {};   },
     }
   };
-
 </script>
