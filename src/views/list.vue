@@ -369,17 +369,18 @@ export default{
 		document.onkeydown = function(event){
 			var wrapWidth = wrap.scrollWidth/80;
 			var keycode = event.which || event.keyCode;
-			switch(keycode){
-				case 38:
-					//top
-					wrap.scrollLeft += wrapWidth;
-					break;
 
-				case 40:
-					//bottom
+			//up:38 left:37 H:72 K:75
+			if(keycode == 38 || keycode == 37 || keycode == 72 || keycode == 75){
+				//move right
 					wrap.scrollLeft -= wrapWidth;
-					break;
 			}
+			//down:40 right:39 L:76 J:74
+			else if(keycode == 40 || keycode == 39 || keycode == 76 || keycode == 74){
+				//move left
+					wrap.scrollLeft += wrapWidth;
+			}
+
 		}
 	}
 }
