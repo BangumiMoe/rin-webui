@@ -19,7 +19,7 @@ body{
 a {
   text-decoration: none;
   user-select: none;
-  
+
   i { user-select: none }
 }
 
@@ -152,7 +152,7 @@ form {
 /* From:http://designshack.net/articles/css/html5-css3-anchor-link-tooltips/ */
 .rin-tip {
   position: relative;
-  
+
   &:after {
     display: block;
     visibility: hidden;
@@ -186,7 +186,7 @@ form {
   }
   &:hover:after{ visibility: visible; opacity: 1; bottom: 20px; }
   &:hover:before{ visibility: visible; opacity: 1; bottom: 14px; }
-  
+
   &.bottom:after { bottom: auto; top: 0; }
   &.bottom:hover:after { top: 120%; }
   &.bottom:before {
@@ -195,7 +195,7 @@ form {
     top: 0
   }
   &.bottom:hover:before { top: 100%; }
-  
+
   /* tips on the right */
   &.right:after { left: 100%; bottom: -45%; }
   &.right:hover:after { left: 110%; bottom: -45%; }
@@ -206,7 +206,7 @@ form {
     bottom: 2%;
   }
   &.right:hover:before { left: 100%; bottom: 2%; }
-  
+
   /* tips on the left */
   &.left:after { left: auto; right: 100%; bottom: -45%; }
   &.left:hover:after { right: 130%; bottom: 15%; }
@@ -221,12 +221,20 @@ form {
 }
 
 .rin-button {
+  border: 0;
+  background-color: transparent;
+
   display: flex;
   align-items: cetner;
   justify-content: center;
   cursor: pointer;
-  
+  outline: none;
+
   &.round {
     border-radius: 50%;
+  }
+
+  &:hover {
+    color: @color-secondary-2-1;
   }
 }

@@ -39,10 +39,10 @@
       i { line-height: 40px;
         transition: font-size .2s;
       }
-      
+
       &.btn-up{ background-color: @color-primary-2 }
       &.btn-up-first{ background-color: @color-primary-2 }
-      
+
       &:not(.disabled):hover{
         background-color: @color-primary-3;
         i{
@@ -142,7 +142,7 @@
               line-height: 20px;
             }
           }
-          
+
           .rin-seed-online { color: green }
           .rin-seed-downloading { color: red }
           .rin-seed-downloaded { color: blue }
@@ -230,13 +230,13 @@
           <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
           	<thead style="opacity:0;">
           		<tr>
-          			<th width="90"><span class="title">发布</th>
-          			<th width="5%"><span class="title">分类</span></th>
-          			<th><span class="title">标题</span></th>
-          			<th width="5%" nowrap="nowrap"><span class="title">磁链</span></th>
-          			<th width="7%"><span class="title">大小</span></th>
-          			<th width="10%"><span class="title">状况</span></th>
-          			<th width="9%"><span class="title">发布者</span></th>
+                <th width="90"><span class="title">{{'Uploaded time'|locale}}</th>
+                <th width="5%"><span class="title">{{'Category'|locale}}</span></th>
+                <th  ><span class="title">{{'Title'|locale}}</span></th>
+                <th width="5%" nowrap="nowrap"><span class="title">{{'magnet'|locale}}</span></th>
+                <th width="7%"><span class="title">{{'Size'|locale}}</span></th>
+                <th width="10%"><span class="title">{{'Seed stat'|locale}}</span></th>
+                <th width="9%"><span class="title">{{'Uploader'|locale}}</span></th>
           		</tr>
           	</thead>
           	<tbody>
@@ -244,7 +244,7 @@
                 <td style="font-size:12px;">{{t.publish_time | date 'lately HH:mm'}}</td>
           			<td align="center">
                   <div class="rin-inline-tag">
-                    <span>{{t.category_tag.locale.zh_cn}}</span>
+                    <span>{{t.category_tag|locale}}</span>
                   </div>
 
                 </td>
@@ -274,13 +274,13 @@
             <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
               <thead>
                 <tr>
-                  <th width="90"><span class="title">发布</th>
-                  <th width="5%"><span class="title">分类</span></th>
-                  <th  ><span class="title">标题</span></th>
-                  <th width="5%" nowrap="nowrap"><span class="title">磁链</span></th>
-                  <th width="7%"><span class="title">大小</span></th>
-                  <th width="10%"><span class="title">下载状况</span></th>
-                  <th width="9%"><span class="title">发布者</span></th>
+                  <th width="90"><span class="title">{{'Start'|locale}}</th>
+                  <th width="5%"><span class="title">{{'Category'|locale}}</span></th>
+                  <th  ><span class="title">{{'Title'|locale}}</span></th>
+                  <th width="5%" nowrap="nowrap"><span class="title">{{'magnet'|locale}}</span></th>
+                  <th width="7%"><span class="title">{{'Size'|locale}}</span></th>
+                  <th width="10%"><span class="title">{{'Seed stat'|locale}}</span></th>
+                  <th width="9%"><span class="title">{{'Uploader'|locale}}</span></th>
                 </tr>
               </thead>
             </table>

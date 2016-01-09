@@ -1,5 +1,5 @@
 
-<style lang="less">
+<style scoped lang="less">
   input{
     color:black;
   }
@@ -13,7 +13,7 @@
   <h1>Welcome Bangumi.moe</h1>
   <form>
     <div class="rin-message rin-error" v-if="message">{{ message }}</div>
-  
+
     <div class="rin-row">
       <div class="rin-col">
         <span class="rin-input">
@@ -21,7 +21,7 @@
           <input id="signin_username" type="text" v-model="username" placeholder="nickname or email">
         </span>
       </div>
-      
+
       <div class="rin-col" style="margin-left:0.3em;">
         <span class="rin-input">
           <label for="signin_password">Password</label>
@@ -29,12 +29,12 @@
         </span>
       </div>
     </div>
-    
+
     <div class="rin-checkbox">
       <input id="signin_cookie" type="checkbox" checked="checked" v-model="cookie">
       <label for="signin_cookie">本地保存账号信息</label>
     </div>
-    
+
   </form>
 
 </rin-modal>
@@ -54,7 +54,7 @@
     events:{
       'modal-ok-click' () {
         if (this.loading) return;
-        
+
         this.$broadcast("modal-start-loading");
         this.loading = true;
         this.$dispatch('UserSignIn', {
@@ -66,12 +66,12 @@
         this.$broadcast("modal-stop-loading");
         this.loading = false;
       },
-      
+
       'UserSignInOk' (user) {
         if(user.username == this.username) {
           this.$broadcast('close-modal');
         }
-        
+
         this.loading = false;
         this.$broadcast("modal-stop-loading");
       },
@@ -83,4 +83,3 @@
     }
   };
 </script>
-
