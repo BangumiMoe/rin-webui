@@ -4,7 +4,7 @@
   #rin-toolbar {
     background-color: @color-primary-0;
     color: @color-primary-2;
-    
+
     .rin-button {
       width: 40px;
       height: 40px;
@@ -12,7 +12,7 @@
       color: @color-primary-2;
       background: @color-primary-3;
       border: 4px solid @color-primary-2;
-      
+
       i {
         font-size: 2em;
         height: 40px;
@@ -20,14 +20,16 @@
         align-items: center;
         justify-content: center;
       }
-      
+
       &:hover {
         color: @color-primary-1;
         background: @color-primary-4;
         border: 4px solid @color-primary-1;
+
+        i {color: @color-primary-1;}
       }
     }
-    
+
     .rin-logo {
       cursor: pointer;
       .img-wrap {
@@ -35,11 +37,11 @@
         height: 48px;
         margin-left: 4px;
         margin-right: 4px;
-        
+
         img {
           border-radius: 50%;
           width: 48px;
-        }  
+        }
       }
     }
 
@@ -51,7 +53,7 @@
 
       i { font-size: 32px; }
     }
-    
+
     .rin-search { bottom: 0; }
     .rin-week { bottom: 48px; }
     .rin-torrents { bottom: 96px; }
@@ -65,11 +67,11 @@
     <div class="rin-button round img-wrap" @click="userSignAction($event)">
       <img src="../assets/akarin.jpg" v-show="!user.username" />
       <img :src="'https://bangumi.moe/avatar/'+ user.emailHash" v-show="user.username" />
-    </div>  
-    
+    </div>
+
     <info-box :user="user" arrow="right"></info-box>
   </div>
-  
+
   <div class="user-toolbar" v-show="user.username">
     <a class="rin-button round rin-tip left" data-tool="团队">
       <i class="material-icons">&#xE7FC;</i>
@@ -83,19 +85,19 @@
     <a class="rin-button round rin-tip left" data-tool="退出" @click="userSignout">
       <i class="material-icons">&#xE0E4;</i>
     </a>
-  </div>  
+  </div>
 
   <a class="rin-button rin-torrents rin-tip left" data-tool="返回首页" href="#/">
     <i class="material-icons">&#xE5C4;</i>
   </a>
-  
+
   <a class="rin-button rin-week rin-tip left" data-tool="番组表" href="#/bangumi/list">
     <i class="material-icons">&#xE8EF;</i>
   </a>
-  
-  <span class="rin-button rin-search rin-tip left" data-tool="搜索" 
-    @mouseenter="searchBarShow" 
-    @mouseleave="searchBarHide" 
+
+  <span class="rin-button rin-search rin-tip left" data-tool="搜索"
+    @mouseenter="searchBarShow"
+    @mouseleave="searchBarHide"
     @click="searchBarToggle">
     <i class="material-icons">&#xE8B6;</i>
   </span>
@@ -108,7 +110,7 @@
 
 <script>
   import RUser from '../components/rin-user.vue'
-  
+
   export default {
     data () {
       return {
@@ -136,18 +138,18 @@
       searchBarToggle: function (event) {
         this.searchBar.fixed = !this.searchBar.fixed;
       },
-      
+
       userSignAction (ev) {
         if(!this.user._id) {
           this.signin_form_opened = true;
           this.$dispatch('displaySigninForm');
         }
-        
+
         /* } else {
           this.$dispatch('UserSignOut');
         }*/
       },
-      
+
       userSignout (ev) {
         if(this.user._id) {
           this.$dispatch('UserSignOut');

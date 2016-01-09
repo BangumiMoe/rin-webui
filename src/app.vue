@@ -57,6 +57,7 @@
     },
     methods: {
       updateLocales (lng) {
+        // TODO busy controller
         let self = this;
         self.$http.get('https://bangumi.moe/i18n/'+ lng +'.json', {}, function(data) {
           self.locales[lng] = data;
@@ -111,17 +112,17 @@
         this.$broadcast('UserSignOutOK');
       },
 
+      'chooseLanguage' () {
+        this.$dispatch("open-modal", {modalId: 'modal-lang' });
+      },
       'changeLang' (lng) {
-        // TODO busy?
-        updateLocales(lng);
+        this.updateLocales(lng);
       },
     },
     ready () {
       this.lang = Cookies.get('locale');
       if(!this.lang) { this.lang = 'zh_tw'; }
       this.updateLocales(this.lang);
-      // DEBUG
-      // this.$dispatch("open-modal", {modalId: 'modal-lang' });
     }
   };
 </script>
