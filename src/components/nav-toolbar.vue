@@ -4,6 +4,7 @@
   #rin-toolbar {
     background-color: @color-primary-0;
     color: @color-primary-2;
+    z-index:1;
 
     .rin-button {
       width: 40px;

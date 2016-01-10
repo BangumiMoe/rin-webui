@@ -4,7 +4,7 @@
 @color-tr-odd: rgba(233,233,233,0.25);
 @color-tr-hover: rgba(200,200,200,0.7);
 @color-th: rgba(233,233,233,0.9);
-@color-th-bg: rgba(98,137,168,1);
+@color-th-bg: rgba(98,137,168,0.8);
 @color-inline-tag: #6d6d6d;
 @color-inline-tag-bg: #eeeeee;
 @color-inline-tag-hover: #6d6d6d;
@@ -23,11 +23,17 @@
 	text-align:center;
 	color:#fff;
 	background-color: @color-th-bg;
+
+	h3{
+		color:@color-th;
+		font-weight:400;
+		font-size:16px;
+	}
 }
 
 .rin-content{
 	position:relative;
-  margin-top: 54px;
+  margin-top: 53px;
   width: 100%;
   flex: 1;
   overflow-y:auto;
@@ -37,8 +43,13 @@
 		width:100%;
 		padding:20px;
   	box-sizing: border-box;
-
+		
 		.rin-tag{
+			vertical-align:sub;
+			vertical-align: -webkit-baseline-middle;
+		}
+
+		>.rin-tag{
 			border-bottom: 1px solid #ddd;
     	padding-bottom: 20px;
     	text-align:center;
@@ -79,20 +90,37 @@
 	  &:hover{
     	color: #F8D7DE;
 	  }
+
+	  &.rin-tip:hover:after{
+	  	line-height:initial;
+	  	right: 100%;
+    	bottom: 22%;
+	  }
+	  &.rin-tip:hover:before{
+			right: 84%;
+    	bottom: 38%;
+	  }
 	}
 	.rin-sidebar{
+		opacity:0;
     position: absolute;
-    right: -64px;
+    right: 64px;
     bottom: 155px;
     height: auto;
     z-index: 2;
 		flex-direction:column-reverse;
 		width:64px;
 		border-bottom:1px solid #DE8F9F;
+
+		&.action{
+	    animation-duration: 1s;
+	    animation-fill-mode: both;
+			animation-name: fadeInUp;
+		}
 	}
 	.rin-bar-comment{
     position: absolute;
-    right:0;
+    right:128px;
     bottom: 155px;
     width: 500px;
     height: 180px;
@@ -112,39 +140,122 @@
 			transform:translate(80%);
 		}
 	}
+	.rin-team-signature{
+    margin-top: 30px;
+    border-left: 4px solid #ddd;
+    background: #f5f5f5;
+    padding: 0 20px;
+    overflow:hidden;
+	}
+
+	.rin-bar-comment{
+		z-index:1;
+	}
+
+	@keyframes fadeInUp {
+	  from {
+	    opacity: 0;
+	    transform: translate3d(0, 100%, 0);
+	  }
+
+	  to {
+	    opacity: 1;
+	    transform: none;
+	  }
+	}
+</style>
+<style lang="less">
+	.rin-details-intro{
+		a {
+			padding:0 2px;
+			position:relative;
+			color:rgba(98,137,168,0.8);
+			padding-left: 24px;
+
+			&:before{
+			  content: "";
+			  position: absolute;
+			  z-index: -1;
+			  left: 50%;
+			  right: 50%;
+			  bottom: 0;
+			  background: rgba(98,137,168,0.8);
+			  height: 1px;
+			  transition-property: left, right;
+			  transition-duration: 0.3s;
+			  transition-timing-function: ease-out;
+			}
+			&:after{
+				position:absolute;
+				left:0;
+				content:"link";
+			  font-family: 'Material Icons';
+			  font-weight: normal;
+			  font-style: normal;
+			  font-size: 22px;
+			  line-height: 1;
+			  letter-spacing: normal;
+			  text-transform: none;
+			  display: inline-block;
+			  white-space: nowrap;
+			  word-wrap: normal;
+			  direction: ltr;
+			  -webkit-font-feature-settings: 'liga';
+			  -webkit-font-smoothing: antialiased;
+			}
+			&:hover:before{
+			  left: 0;
+			  right: 0;
+			}
+		}
+	}
 </style>
 <template>
+	<div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
+		<a class="rin-bar-btn rin-tip left" v-bind:href="data.downloadTorrent" data-tool="{{locale.torrent[lang]}}"><i class="material-icons">&#xE2C4;</i></a>
+		<a class="rin-bar-btn rin-tip left" v-bind:href="data.magnet" data-tool="{{locale.magnet[lang]}}"><i class="material-icons">&#xE8AB;</i></a>
+		<a class="rin-bar-btn rin-tip left" href="javascript:void(0);" data-tool="{{locale.comment[lang]}}"
+					v-on:click="toggleComment" 
+					v-on:mouseenter="showComment"
+					v-on:mouseleave="hideComment">
+			<i class="material-icons">&#xE0B9;</i>
+		</a>
+	</div>
+	<div class="rin-bar-comment" v-bind:class="{'active':isShow,'action':commentStatus}">
+		评论内容
+	</div>
+
   <div id="rin-main" class="rin-row" style="width: calc(100% - 128px);">
     <div is="rin-loader" :progress="progress" v-if="busy" transition="rin-fade"></div>
-		<div class="rin-head">
+		<div class="rin-head" v-if="!busy">
 			<h3>{{data.title || 'loading...'}}</h3>
 		</div>
-		<div class="rin-sidebar rin-row">
-			<a class="rin-bar-btn" v-bind:href="data.downloadTorrent"><i class="material-icons">&#xE2C4;</i></a>
-			<a class="rin-bar-btn" v-bind:href="data.magnet"><i class="material-icons">&#xE8AB;</i></a>
-			<a class="rin-bar-btn" href="javascript:void(0);"
-						v-on:click="toggleComment" 
-						v-on:mouseenter="showComment"
-						v-on:mouseleave="hideComment">
-				<i class="material-icons">&#xE0B9;</i>
-			</a>
-		</div>
-		<div class="rin-content">
-			<div class="rin-bar-comment" v-bind:class="{'active':isShow,'action':commentStatus}">
-				评论内容
-			</div>
+		<div class="rin-content" v-if="!busy">
 			<div class="rin-details">
 				<p class="rin-details-info">
-					{{data.uploader.username}} @[{{data.team.name}}] 提交于 {{data.publish_time | date 'yyyy-MM-dd HH:mm'}}
+					 
+					<a class="rin-tag">
+						<span>
+							<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+data.team.icon">
+							{{data.team.name}} | @{{data.uploader.username}}
+						</span>
+					</a>
+					 提交于 {{data.publish_time | date 'yyyy-MM-dd HH:mm'}}
 				</p>
 				<div class="rin-tag">
 					<span v-for="t in data.tags">
-						<a v-bind:href="'/tag/'+t._id">{{t.name}}</a>
+						<a v-bind:href="'/tag/'+t._id">{{t.locale[lang] ? t.locale[lang] : t.name}}</a>
 					</span>
 				</div>
 
 				<div class="rin-details-intro">
 					{{{data.introduction}}}
+					<div class="rin-team-signature">
+						{{{data.team.signature}}}
+					</div>
+				</div>
+				<div>
+					
 				</div>
 			</div>
 		</div>
@@ -160,6 +271,27 @@ export default {
 			isShow:false,
 			commentStatus:false,
 			busy:true,
+    	lang:"ja",
+    	locale:{
+    		magnet:{
+    			zh_cn:"磁力链接",
+    			zh_tw:"磁力連結",
+    			en:"MAGNET",
+    			ja:"MAGNET",
+    		},
+    		comment:{
+    			zh_cn:"评论",
+    			zh_tw:"評論",
+    			en:"COMMENTS",
+    			ja:"COMMENTS",
+    		},
+    		torrent:{
+    			zh_cn:"种子下载",
+    			zh_tw:"種子下載",
+    			en:"TORRENT",
+    			ja:"TORRENT",
+    		},
+    	}
 		}
 	},
 	methods:{
@@ -177,7 +309,7 @@ export default {
 	route: {
 		data (t) {
 			var id = this.$route.params.key;
-      return { id: id, content: null }
+      return { id: id}
 		}
 	},
   filters:{

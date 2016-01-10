@@ -4,6 +4,7 @@
   #rin-logo {
     background-color: @color-primary-4;
     color: @color-primary-0;
+    z-index:1;
 
     .logo {
       display: block;
