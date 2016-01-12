@@ -43,7 +43,7 @@
 		width:100%;
 		padding:20px;
   	box-sizing: border-box;
-		
+
 		.rin-tag{
 			vertical-align:sub;
 			vertical-align: -webkit-baseline-middle;
@@ -80,7 +80,7 @@
     line-height: 80px;
 		text-align:center;
 		cursor:pointer;
-	  color: #F4BCC7;
+	  color: #fff;
 	  text-shadow: 0 0 5px #DC778B;
 
 	  i.material-icons{
@@ -121,9 +121,9 @@
 	.rin-bar-comment{
     position: absolute;
     right:128px;
-    bottom: 155px;
+    bottom: 0;
     width: 500px;
-    height: 180px;
+    height: 335px;
     background: #fff;
 		color:#666;
 		border:1px solid #EF9EAE;
@@ -141,11 +141,10 @@
 		}
 	}
 	.rin-team-signature{
-    margin-top: 30px;
+		margin: 40px;
     border-left: 4px solid #ddd;
-    background: #f5f5f5;
     padding: 0 20px;
-    overflow:hidden;
+    overflow: hidden;
 	}
 
 	.rin-bar-comment{
@@ -214,8 +213,8 @@
 	<div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
 		<a class="rin-bar-btn rin-tip left" v-bind:href="data.downloadTorrent" data-tool="{{locale.torrent[lang]}}"><i class="material-icons">&#xE2C4;</i></a>
 		<a class="rin-bar-btn rin-tip left" v-bind:href="data.magnet" data-tool="{{locale.magnet[lang]}}"><i class="material-icons">&#xE8AB;</i></a>
-		<a class="rin-bar-btn rin-tip left" href="javascript:void(0);" data-tool="{{locale.comment[lang]}}"
-					v-on:click="toggleComment" 
+		<a class="rin-bar-btn" href="javascript:void(0);"
+					v-on:click="toggleComment"
 					v-on:mouseenter="showComment"
 					v-on:mouseleave="hideComment">
 			<i class="material-icons">&#xE0B9;</i>
@@ -233,7 +232,7 @@
 		<div class="rin-content" v-if="!busy">
 			<div class="rin-details">
 				<p class="rin-details-info">
-					 
+
 					<a class="rin-tag">
 						<span>
 							<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+data.team.icon">
@@ -250,12 +249,12 @@
 
 				<div class="rin-details-intro">
 					{{{data.introduction}}}
-					<div class="rin-team-signature">
-						{{{data.team.signature}}}
-					</div>
+				</div>
+				<div class="rin-team-signature">
+					{{{data.team.signature}}}
 				</div>
 				<div>
-					
+
 				</div>
 			</div>
 		</div>
@@ -321,7 +320,6 @@ export default {
   ready () {
     let self = this;
 		self.$http.get("https://bangumi.moe/api/v2/torrent/"+this.id,{},function(data){
-			console.log(data);
 			self.data = data;
 			//torrent文件
 			self.data.downloadTorrent = "/download/torrent/" + self.id + "/" + data.infoHash + ".torrent";

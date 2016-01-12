@@ -363,7 +363,20 @@ export default{
 				wrap.scrollLeft -= wrapWidth;
 			}
 		}
-		wrap.addEventListener(eventName,mouse_wheel);
+		function mac_mouse_wheel(e){
+			console.log(e,e.detail,e.wheelDelta);
+			var wrapWidth = wrap.scrollWidth/25;
+			if(e.wheelDelta<=-120){
+				wrap.scrollLeft += wrapWidth;
+			}else if(e.wheelDelta >= 120){
+				wrap.scrollLeft -= wrapWidth;
+			}
+		}
+		if(navigator.userAgent.toLowerCase().match(/mac |chrome/g).length > 1){
+			wrap.addEventListener(eventName,mac_mouse_wheel);
+		}else{
+			wrap.addEventListener(eventName,mouse_wheel);
+		}
 
 		//键盘方向键滚动
 		document.onkeydown = function(event){
