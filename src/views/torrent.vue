@@ -225,11 +225,11 @@
 	</div>
 
   <div id="rin-main" class="rin-row" style="width: calc(100% - 128px);">
-    <div is="rin-loader" :progress="progress" v-if="busy" transition="rin-fade"></div>
-		<div class="rin-head" v-if="!busy">
+    <div is="rin-loader" :progress="progress" v-show="busy" transition="rin-fade"></div>
+		<div class="rin-head" v-show="!busy" transition="rin-fade">
 			<h3>{{data.title || 'loading...'}}</h3>
 		</div>
-		<div class="rin-content" v-if="!busy">
+		<div class="rin-content" v-show="!busy" transition="rin-fade">
 			<div class="rin-details">
 				<p class="rin-details-info">
 

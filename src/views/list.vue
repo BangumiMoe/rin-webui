@@ -372,7 +372,8 @@ export default{
 				wrap.scrollLeft -= wrapWidth;
 			}
 		}
-		if(navigator.userAgent.toLowerCase().match(/mac |chrome/g).length > 1){
+		let is = navigator.userAgent.toLowerCase().match(/mac |chrome/g);
+		if(is && is.length > 1){
 			wrap.addEventListener(eventName,mac_mouse_wheel);
 		}else{
 			wrap.addEventListener(eventName,mouse_wheel);
