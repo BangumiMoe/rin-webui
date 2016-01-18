@@ -255,7 +255,7 @@
                     <span>{{t.team.name}}</span>
                   </div>
                   <div class="rin-team rin-inline-tag" v-if="!t.team">
-                    <img class="team-icon" v-bind:src="teamIconBaseUrl+t.uploader.emailHash" alt="" />
+                    <img class="team-icon" v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" />
                     <span>{{t.uploader.username}}</span>
                   </div>
           				<a target="_blank" v-on:click="goTorrent(t._id)">{{t.title}}</a>
