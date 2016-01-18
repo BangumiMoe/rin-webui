@@ -162,8 +162,6 @@
 	    transform: none;
 	  }
 	}
-</style>
-<style lang="less">
 	.rin-details-intro{
 		a {
 			padding:0 2px;
@@ -227,7 +225,12 @@
   <div id="rin-main" class="rin-row" style="width: calc(100% - 128px);">
     <div is="rin-loader" :progress="progress" v-show="busy" transition="rin-fade"></div>
 		<div class="rin-head" v-show="!busy" transition="rin-fade">
-			<h3>{{data.title || 'loading...'}}</h3>
+			<h3>
+        <a class="rin-button rin-left" href="javascript:void(0)" @click="backHomepage">
+          <i class="material-icons">&#xE5C4;</i>
+        </a>
+        <span>{{data.title || 'loading...'}}</span>
+      </h3>
 		</div>
 		<div class="rin-content" v-show="!busy" transition="rin-fade">
 			<div class="rin-details">
@@ -303,7 +306,10 @@ export default {
 		},
 		hideComment:function(){
 			this.commentStatus = false;
-		}
+		},
+    backHomepage () {
+      window.history.back()
+    },
 	},
 	route: {
 		data (t) {
