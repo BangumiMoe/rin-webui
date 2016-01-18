@@ -28,7 +28,6 @@
       return text
 
     } if ((typeof value) == 'string') {
-      console.log('found value is string', value);
       let locale = this.$root.locales[this.$root.lang];
       if(locale) {
         let text = locale[value];

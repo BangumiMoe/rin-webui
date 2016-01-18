@@ -231,8 +231,8 @@
           	<thead style="opacity:0;">
           		<tr>
                 <th width="90"><span class="title">{{'Uploaded time'|locale}}</th>
-                <th width="5%"><span class="title">{{'Category'|locale}}</span></th>
-                <th  ><span class="title">{{'Title'|locale}}</span></th>
+                <th width="7%"><span class="title">{{'Category'|locale}}</span></th>
+                <th><span class="title">{{'Title'|locale}}</span></th>
                 <th width="5%" nowrap="nowrap"><span class="title">{{'magnet'|locale}}</span></th>
                 <th width="7%"><span class="title">{{'Size'|locale}}</span></th>
                 <th width="10%"><span class="title">{{'Seed stat'|locale}}</span></th>
@@ -253,6 +253,10 @@
                     <img class="team-icon"  v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
                     <img class="team-icon" src="../assets/akarin.jpg" v-if="!t.team.icon"/>
                     <span>{{t.team.name}}</span>
+                  </div>
+                  <div class="rin-team rin-inline-tag" v-if="!t.team">
+                    <img class="team-icon" v-bind:src="teamIconBaseUrl+t.uploader.emailHash" alt="" />
+                    <span>{{t.uploader.username}}</span>
                   </div>
           				<a target="_blank" v-on:click="goTorrent(t._id)">{{t.title}}</a>
                     </td>
@@ -275,7 +279,7 @@
               <thead>
                 <tr>
                   <th width="90"><span class="title">{{'Start'|locale}}</th>
-                  <th width="5%"><span class="title">{{'Category'|locale}}</span></th>
+                  <th width="7%"><span class="title">{{'Category'|locale}}</span></th>
                   <th  ><span class="title">{{'Title'|locale}}</span></th>
                   <th width="5%" nowrap="nowrap"><span class="title">{{'magnet'|locale}}</span></th>
                   <th width="7%"><span class="title">{{'Size'|locale}}</span></th>
