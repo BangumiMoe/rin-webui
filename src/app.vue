@@ -13,6 +13,7 @@
     <!-- <modal-demo></modal-demo> -->
     <modal-signin></modal-signin>
     <modal-lang></modal-lang>
+    <choose-langeuage></choose-langeuage>
   </div>
 </template>
 
@@ -52,7 +53,6 @@
       'rin-user': require('./components/rin-user'),
       // 'modal-demo':require('./components/modal-demo'),
       'modal-signin':require('./components/modal-signin'),
-      'modal-lang':require('./components/modal-lang'),
     },
     methods: {
       updateLocales (lng) {
@@ -111,9 +111,6 @@
         this.$broadcast('UserSignOutOK');
       },
 
-      'chooseLanguage' () {
-        this.$dispatch("open-modal", {modalId: 'modal-lang' });
-      },
       'changeLang' (lng) {
         this.updateLocales(lng);
       },
