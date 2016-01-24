@@ -211,7 +211,7 @@
         </thead>
         <tbody>
           <tr v-for="(index, t) in torrent.lastest"  v-on:click="goTorrent(t._id)">
-            <td style="font-size:12px;">{{t.publish_time | date 'lately HH:mm'}}</td>
+            <td style="font-size:12px;">{{t.publish_time | moment 'from' 'now'}}</td>
             <td align="center">
               <div class="rin-inline-tag">
                 <span>{{t.category_tag|locale}}</span>
@@ -343,7 +343,7 @@
       }
     },
     filters: {
-       'date':require('../filters/dateFormat.js')
+       'moment':require('../filters/moment.js')
    },
    route:{
      data:function(t){

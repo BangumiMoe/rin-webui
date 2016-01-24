@@ -13,17 +13,22 @@
 @color-sidebar:#517896;
 #rin-main{
 	position:relative;
+	height: 100%;
+	overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .rin-head{
-	position:absolute;
+	position:fixed;
 	top:0;
-	right:0;
 	left:0;
+	right:0;
 	text-align:center;
 	color:#fff;
 	background-color: @color-th-bg;
-
+	z-index:1;
+	overflow:hidden;
+	
 	h3{
 		color:@color-th;
 		font-weight:400;
@@ -35,11 +40,8 @@
 
 .rin-content{
 	position:relative;
-  margin-top: 53px;
+  padding-top: 53px;
   width: 100%;
-  flex: 1;
-  overflow-y:auto;
-  overflow-x:hidden;
 
 	.rin-details{
 		width:100%;
@@ -211,9 +213,9 @@
 .rin-left{
   position: absolute;
   padding: 14px;
-  padding-bottom: 15px;
   top: 0;
-  
+  bottom:0;
+
   &:hover{
   	background-color: #7894AB;
   }
@@ -221,8 +223,8 @@
 </style>
 <template>
 	<div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
-		<a class="rin-bar-btn rin-tip left" v-bind:href="data.downloadTorrent" data-tool="{{locale.torrent[lang]}}"><i class="material-icons">&#xE2C4;</i></a>
-		<a class="rin-bar-btn rin-tip left" v-bind:href="data.magnet" data-tool="{{locale.magnet[lang]}}"><i class="material-icons">&#xE8AB;</i></a>
+		<a class="rin-bar-btn rin-tip left" v-bind:href="data.downloadTorrent || ''" data-tool="{{'torrent' | locale}}"><i class="material-icons">&#xE2C4;</i></a>
+		<a class="rin-bar-btn rin-tip left" v-bind:href="data.magnet" data-tool="{{'magnet' | locale}}"><i class="material-icons">&#xE8AB;</i></a>
 		<a class="rin-bar-btn" href="javascript:void(0);"
 					v-on:click="toggleComment"
 					v-on:mouseenter="showComment"
@@ -234,7 +236,7 @@
 		评论内容
 	</div>
 
-  <div id="rin-main" class="rin-row" style="width: calc(100% - 128px);">
+  <div id="rin-main" style="width: calc(100% - 128px);">
     <div is="rin-loader" :progress="progress" v-show="busy" transition="rin-fade"></div>
 		<div class="rin-head" v-show="!busy" transition="rin-fade">
 			<h3>
@@ -250,11 +252,13 @@
 
 					<a class="rin-tag">
 						<span>
-							<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+data.team.icon">
-							{{data.team.name}} | @{{data.uploader.username}}
+							<span  v-if="data.team.name">
+								<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+data.team.icon">
+								{{data.team.name}}&nbsp;&nbsp;|
+							</span>&nbsp;@{{data.uploader.username}}
 						</span>
 					</a>
-					 {{'submitted' | locale}} {{data.publish_time | date 'yyyy-MM-dd HH:mm'}}
+					 {{'submitted' | locale}} {{data.publish_time | moment 'LLL'}}
 				</p>
 				<div class="rin-tag">
 					<span v-for="t in data.tags">
@@ -285,27 +289,6 @@ export default {
 			isShow:false,
 			commentStatus:false,
 			busy:true,
-    	lang:"ja",
-    	locale:{
-    		magnet:{
-    			zh_cn:"磁力链接",
-    			zh_tw:"磁力連結",
-    			en:"MAGNET",
-    			ja:"MAGNET",
-    		},
-    		comment:{
-    			zh_cn:"评论",
-    			zh_tw:"評論",
-    			en:"COMMENTS",
-    			ja:"COMMENTS",
-    		},
-    		torrent:{
-    			zh_cn:"种子下载",
-    			zh_tw:"種子下載",
-    			en:"TORRENT",
-    			ja:"TORRENT",
-    		},
-    	}
 		}
 	},
 	methods:{
@@ -330,7 +313,7 @@ export default {
 		}
 	},
   filters:{
-  	'date':require('../filters/dateFormat.js')
+  	'moment':require('../filters/moment.js')
   },
   components: {
     'rin-loader': RLoader

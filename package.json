@@ -38,21 +38,22 @@
     "babel-preset-stage-0": "^6.3.13",
     "babel-runtime": "^5.8.0",
     "css-loader": "^0.23.0",
+    "express": "^4.13.3",
+    "file-loader": "^0.8.4",
+    "html-webpack-plugin": "^1.7.0",
     "less": "^2.5.0",
     "less-loader": "^2.2.0",
-    "express": "^4.13.3",
-    "html-webpack-plugin": "^1.7.0",
+    "moment": "^2.11.1",
+    "proxy-middleware": "^0.15.0",
     "style-loader": "^0.13.0",
-    "file-loader": "^0.8.4",
     "vue": "^1.0.10",
     "vue-hot-reload-api": "^1.2.2",
     "vue-html-loader": "^1.0.0",
     "vue-loader": "^7.1.7",
-    "vue-router": "^0.7.7",
     "vue-resource": "^0.1.17",
+    "vue-router": "^0.7.7",
     "webpack": "^1.12.9",
     "webpack-dev-middleware": "^1.4.0",
-    "webpack-hot-middleware": "^2.6.0",
-    "proxy-middleware": "^0.15.0"
+    "webpack-hot-middleware": "^2.6.0"
   }
 }

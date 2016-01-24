@@ -19,12 +19,13 @@
 
 <script>
   import Vue from 'vue';
+  import Moment from 'moment';
 
   Vue.filter('locale', function(value) {
     // method 1
     if(value.locale) {
       let text = value.locale[this.$root.lang];
-      if(!text) text = value.locale[this.$root.lang_default];
+      // if(!text) text = value.locale[this.$root.lang_default];
       if(!text) text = value.name; //再找不到的话就取默认值，16/01/24  @zzetao
       return text
 
@@ -61,6 +62,9 @@
         self.$http.get('https://bangumi.moe/i18n/'+ lng +'.json', {}, function(data) {
           self.locales[lng] = data;
           self.lang = lng;
+
+          // moment locale update
+          Moment.locale(lng);
 
           // site title update
           document.title = self.locales[lng]['番組、萌え'];
@@ -134,6 +138,7 @@
           this.lang = 'zh_tw'; 
         }
 
+        Moment.locale(this.lang);
       }
       this.updateLocales(this.lang);
     }
