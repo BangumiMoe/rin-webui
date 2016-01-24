@@ -28,6 +28,8 @@
 		color:@color-th;
 		font-weight:400;
 		font-size:16px;
+		margin: 14px 0;
+   	 	margin-bottom: 18px;
 	}
 }
 
@@ -121,7 +123,7 @@
 	.rin-bar-comment{
     position: absolute;
     right:128px;
-    bottom: 0;
+    bottom: -1px;
     width: 500px;
     height: 335px;
     background: #fff;
@@ -206,6 +208,16 @@
 			}
 		}
 	}
+.rin-left{
+  position: absolute;
+  padding: 14px;
+  padding-bottom: 15px;
+  top: 0;
+  
+  &:hover{
+  	background-color: #7894AB;
+  }
+}
 </style>
 <template>
 	<div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
@@ -242,11 +254,11 @@
 							{{data.team.name}} | @{{data.uploader.username}}
 						</span>
 					</a>
-					 提交于 {{data.publish_time | date 'yyyy-MM-dd HH:mm'}}
+					 {{'submitted' | locale}} {{data.publish_time | date 'yyyy-MM-dd HH:mm'}}
 				</p>
 				<div class="rin-tag">
 					<span v-for="t in data.tags">
-						<a v-bind:href="'/tag/'+t._id">{{t.locale[lang] ? t.locale[lang] : t.name}}</a>
+						<a v-bind:href="'/tag/'+t._id">{{t | locale}}</a>
 					</span>
 				</div>
 

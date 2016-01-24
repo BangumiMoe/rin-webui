@@ -195,12 +195,12 @@ ul,li,p{
 
 		<div class="rin-week rin-row" id="rin-week">
 			<div class="rin-column" v-on:click="allSwitch">
-				<span class="rin-vertical">{{locale.listName[lang]}}</span>
+				<span class="rin-vertical">{{'Bangumi List' | locale}}</span>
 			</div>
 
 			<div class="rin-week-item rin-row" v-for="item in datas">
 				<div class="rin-week-title title-bgc{{$index}}" v-on:click="Switch($index)">
-					<span class="rin-vertical">{{locale.week[lang][$index]}}</span>
+					<span class="rin-vertical">{{locale.week[$index] | locale}}</span>
 				</div>
 				<div class="rin-week-content rin-row" v-bind:class="{'off':isOff[$index]}">
 
@@ -209,15 +209,15 @@ ul,li,p{
 								<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+d.icon" alt="{{d.name}}">
 							</div>
 							<div class="content">
-								<p class="title rin-text-overflow"><a href="https://bangumi.moe/tag/{{d.tag_id}}" title="{{d.tag.locale[lang] ? d.tag.locale[lang] : d.tag.name}}">{{d.tag.locale[lang] ? d.tag.locale[lang] : d.tag.name}}</a></p>
+								<p class="title rin-text-overflow"><a href="https://bangumi.moe/tag/{{d.tag_id}}" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
-								<p class="date">{{locale.time[lang]}}: {{d.startDate | date 'HH:mm'}}</p>
+								<p class="date">{{locale.time[this.$root.lang]}}: {{d.startDate | date 'HH:mm'}}</p>
 							</div>
 							<div class="rin-tag">
 									<span v-for="t in d.team">
 										<a href="https://bangumi.moe/search/{{d.tag_id}}+{{t.tag_id}}">
-											<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+(t.icon?t.icon:'data/images/2015/01/0fm7ihnu7lh2me3fog6.jpg')" alt="{{t.tag.locale[lang] ? t.tag.locale[lang] : t.tag.name}}">
-											{{t.tag.locale[lang] ? t.tag.locale[lang] : t.tag.name}}
+											<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+(t.icon?t.icon:'data/images/2015/01/0fm7ihnu7lh2me3fog6.jpg')" alt="{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}">
+											{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}
 										</a>
 									</span>
 							</div>
@@ -229,7 +229,7 @@ ul,li,p{
 				</div>
 			</div>
 			<div class="rin-datatip" id="tip">
-				{{locale.acgdb[lang]}}
+				{{'Read more on ACGDB' | locale}}
 			</div>
 		</div>
 
@@ -239,33 +239,16 @@ ul,li,p{
 export default{
   data (){
   	return{
-    	lang:"ja",
+    	lang:this.$root.lang,
 
     	locale:{
-    		listName:{
-    			zh_cn:"番组列表",
-    			zh_tw:"番組列表",
-    			en:"Bangumi List",
-    			ja:"番組表",
-    		},
     		time:{
     			zh_cn:"播放时间",
     			zh_tw:"播放時間",
     			en:"On air",
     			ja:"放送時間",
     		},
-    		week:{
-	    		zh_cn:["星期日","星期一","星期二","星期三","星期四","星期五","星期六"],
-	    		zh_tw:["星期日","星期一","星期二","星期三","星期四","星期五","星期六"],
-	    		en:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-	    		ja:["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"],
-    		},
-    		acgdb:{
-    			zh_cn:"在 ACGDB 阅读更多",
-    			zh_tw:"前往 ACGDB 暸解更多",
-    			en:"Read more on ACGDB",
-    			ja:"Read more on ACGDB",
-    		}
+    		week:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
     	},
       datas:[],
       isOff:[],
