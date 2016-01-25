@@ -258,7 +258,7 @@
 							</span>&nbsp;@{{data.uploader.username}}
 						</span>
 					</a>
-					 {{'submitted' | locale}} {{data.publish_time | moment 'LLL'}}
+					 {{'submitted' | locale}} {{data.publish_time | date 'yyyy/MM/dd HH:mm'}}
 				</p>
 				<div class="rin-tag">
 					<span v-for="t in data.tags">
@@ -313,7 +313,7 @@ export default {
 		}
 	},
   filters:{
-  	'moment':require('../filters/moment.js')
+  	'date':require('../filters/dateFormat.js')
   },
   components: {
     'rin-loader': RLoader

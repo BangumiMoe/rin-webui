@@ -211,7 +211,9 @@ ul,li,p{
 							<div class="content">
 								<p class="title rin-text-overflow"><a href="https://bangumi.moe/tag/{{d.tag_id}}" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
-								<p class="date">{{locale.time[this.$root.lang]}}: {{d.startDate | moment 'LLL'}}</p>
+								<p class="date">
+									{{locale.time[this.$root.lang]}}: {{d.startDate | date 'yyyy/MM/dd HH:mm'}}
+								</p>
 							</div>
 							<div class="rin-tag">
 									<span v-for="t in d.team">
@@ -254,7 +256,7 @@ export default{
   	}
   },
   filters:{
-  	'moment':require('../filters/moment.js')
+  	'date':require('../filters/dateFormat.js')
   },
 	methods:{
 		//全部列表切换
