@@ -47,6 +47,7 @@ ul,li,p{
 		background: #eee;
 
 		.rin-week-title{
+			position:relative;
 			width:46px;
 			padding:15px;
 			box-sizing: border-box;
@@ -189,6 +190,25 @@ ul,li,p{
 		transform:translateY(0);
 	}
 }
+.thisweek{
+  display: inline-block;
+  font-size: 14px;
+  width: 20px;
+  height: 20px;
+  color: #ddd;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+.week-mask{
+	position:absolute;
+	font-size:26px;
+	left:0;
+	top:-10px;
+	color:#fff;
+	transform: rotate(-20deg);
+  color: rgba(255,255,255,0.2);
+}
 </style>
 <template>
   <div id="rin-main" class="rin-row" style="width: calc(100% - 128px);">
@@ -200,7 +220,8 @@ ul,li,p{
 
 			<div class="rin-week-item rin-row" v-for="item in datas">
 				<div class="rin-week-title title-bgc{{$index}}" v-on:click="Switch($index)">
-					<span class="rin-vertical">{{locale.week[$index] | locale}}</span>
+					<span class="rin-vertical">{{locale.week[$index] | locale | week}}</span>
+					<span class="week-mask">{{week[$index]}}</span>
 				</div>
 				<div class="rin-week-content rin-row" v-bind:class="{'off':isOff[$index]}">
 
@@ -213,6 +234,9 @@ ul,li,p{
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
 								<p class="date">
 									{{locale.time[this.$root.lang]}}: {{d.startDate | date 'yyyy/MM/dd HH:mm'}}
+									<span class="thisweek" v-show="d.showOn == thisWeek">
+										今
+									</span>
 								</p>
 							</div>
 							<div class="rin-tag">
@@ -253,10 +277,16 @@ export default{
     	},
       datas:[],
       isOff:[],
+      thisWeek:new Date().getDay(),
+      week:['日','月','火','水','木','金','土'],
   	}
   },
   filters:{
-  	'date':require('../filters/dateFormat.js')
+  	'date':require('../filters/dateFormat.js'),
+  	'week':function(value){
+  		var str = /（日）|（月）|（火）|（水）|（木）|（金）|（土）/;
+  		return value.replace(str,'');
+  	}
   },
 	methods:{
 		//全部列表切换
