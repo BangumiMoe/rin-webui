@@ -32,9 +32,31 @@
 	        return _hour<12?0:1;
 	    };
 	    var getDate = function(_date,num){
-	    	//num = 0，返回当天，= -1 返回昨天，以此类推
-			var date = new Date(Date.parse(_date) + (86400000 * num));
-			return date.getFullYear() +''+ date.getMonth()+''+date.getDate();
+		    	//num = 0，返回当天，= -1 返回昨天，以此类推
+				var date = new Date(Date.parse(_date) + (86400000 * num));
+				return date.getFullYear() +''+ date.getMonth()+''+date.getDate();
+	    }
+	    var locale ={
+	    	zh_cn:{
+	    		today:"今天",
+	    		yesterday:"昨天",
+	    		dayBeforeYesterday:"前天",
+	    	},
+	    	zh_tw:{
+	    		today:"今天",
+	    		yesterday:"昨天",
+	    		dayBeforeYesterday:"前天",
+	    	},
+	    	ja:{
+	    		today:"今日",
+	    		yesterday:"昨天",
+	    		dayBeforeYesterday:"前天",
+	    	},
+	    	en:{
+	    		today:"Today",
+	    		yesterday:"Yesterday",
+	    		dayBeforeYesterday:"前天",
+	    	}
 	    }
 	    return function(_time,_format,_12time){
 	        if (!_time||!_format)
@@ -60,24 +82,27 @@
 	        _map.ct   = _12cc[_cc];
 	        _map.et   = _12ec[_cc];
 
+	        var lang = this.$root.lang;
 	        //判断今天/昨天/前天
-	        switch(getDate(_time,0))
-	        {
-	        	case getDate(new Date(),0):
-		        	//今天
-		        	_map.lately = '今天';
-		        	break;
-	        	case getDate(new Date(),-1):
-		        	//昨天
-		        	_map.lately = '昨天';
-		        	break;
-	        	case getDate(new Date(),-2):
-		        	//前天
-		        	_map.lately = '前天';
-		        	break;
-	        	default:
-	        		_format = 'lately';
-	        		_map.lately = _map.yyyy+'/'+_map.MM+'/'+_map.dd+' '+_map.HH+':'+_map.mm;
+	        if(_format.indexOf("lately") >= 0){
+		        switch(getDate(_time,0))
+		        {
+		        	case getDate(new Date(),0):
+			        	//今天
+			        	_map.lately = locale[lang].today;
+			        	break;
+		        	case getDate(new Date(),-1):
+			        	//昨天
+			        	_map.lately = locale[lang].yesterday;
+			        	break;
+		        	case getDate(new Date(),-2):
+			        	//前天
+			        	_map.lately = locale[lang].dayBeforeYesterday;
+			        	break;
+		        	default:
+		        		_format = 'lately';
+		        		_map.lately = _map.yyyy+'/'+_map.MM+'/'+_map.dd+' '+_map.HH+':'+_map.mm;
+		        }
 	        }
 
 	        if (!!_12time){
