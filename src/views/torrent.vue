@@ -48,11 +48,6 @@
 		padding:20px;
   	box-sizing: border-box;
 
-		.rin-tag{
-			vertical-align:sub;
-			vertical-align: -webkit-baseline-middle;
-		}
-
 		>.rin-tag{
 			border-bottom: 1px solid #ddd;
     	padding-bottom: 20px;
@@ -73,6 +68,7 @@
 			text-align:center;
 			padding-bottom:10px;
 			margin:0;
+			color:#6d6d6d
 		}
 	}
 }
@@ -220,6 +216,47 @@
   	background-color: #7894AB;
   }
 }
+.team-info{
+	display:inline-block;
+	height:20px;
+	border-radius:3px;
+	overflow:hidden;
+	border:1px solid @color-th-bg;
+	vertical-align: middle;
+
+	.team{
+		display:inline-block;
+		background:@color-th-bg;
+		color:#fff;
+		margin-right:-4px;
+		transition:all .2s linear;
+	}
+	.member{
+		display:inline-block;
+		transition:all .2s linear;
+		color:@color-th-bg;
+	}
+	.name{
+		padding:0 8px;
+		font-weight:normal;
+	}
+	img{
+		float:left;
+		width:20px;
+		height:20px;
+	}
+
+	&:hover{
+		.team{
+			background:#fff;
+			color:@color-th-bg;
+		}
+		.member{
+			background:@color-th-bg;
+			color:#fff;
+		}
+	}
+}
 </style>
 <template>
 	<div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
@@ -250,12 +287,14 @@
 			<div class="rin-details">
 				<p class="rin-details-info">
 
-					<a class="rin-tag">
-						<span>
-							<span  v-if="data.team.name">
-								<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+data.team.icon">
-								{{data.team.name}}&nbsp;&nbsp;|
-							</span>&nbsp;@{{data.uploader.username}}
+					<a class="team-info" href="javascrip:void(0)">
+						<span class="team" v-if="data.team.name">
+							<img v-bind:src="'//bangumi-moe.phoenixstatic.com/'+data.team.icon">
+							<b class="name">{{data.team.name}}</b>
+						</span>
+						<span class="member">
+							<img v-bind:src="'//g.cdog.work/avatar/'+data.uploader.emailHash">
+							<b class="name">{{data.uploader.username}}</b>
 						</span>
 					</a>
 					 {{'submitted' | locale}} {{data.publish_time | date 'yyyy/MM/dd HH:mm'}}

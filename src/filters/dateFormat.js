@@ -47,15 +47,10 @@
 	    		yesterday:"昨天",
 	    		dayBeforeYesterday:"前天",
 	    	},
-	    	ja:{
-	    		today:"今日",
-	    		yesterday:"昨天",
-	    		dayBeforeYesterday:"前天",
-	    	},
 	    	en:{
 	    		today:"Today",
 	    		yesterday:"Yesterday",
-	    		dayBeforeYesterday:"前天",
+	    		dayBeforeYesterday:"2 days ago",
 	    	}
 	    }
 	    return function(_time,_format,_12time){
