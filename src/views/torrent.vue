@@ -228,7 +228,7 @@
 		display:inline-block;
 		background:@color-th-bg;
 		color:#fff;
-		margin-right:-4px;
+		margin-right:-5px;
 		transition:all .2s linear;
 	}
 	.member{
