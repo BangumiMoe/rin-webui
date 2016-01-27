@@ -77,9 +77,11 @@
 	        _map.ct   = _12cc[_cc];
 	        _map.et   = _12ec[_cc];
 
-	        var lang = this.$root.lang;
 	        //判断今天/昨天/前天
 	        if(_format.indexOf("lately") >= 0){
+	        	
+	        var lang = this.$root.lang;
+
 		        switch(getDate(_time,0))
 		        {
 		        	case getDate(new Date(),0):

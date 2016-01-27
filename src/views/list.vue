@@ -233,7 +233,7 @@ ul,li,p{
 								<p class="title rin-text-overflow"><a href="https://bangumi.moe/tag/{{d.tag_id}}" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
 								<p class="date">
-									{{locale.time[this.$root.lang]}}: {{d.startDate | date 'yyyy/MM/dd HH:mm'}}
+									{{locale.time[this.$root.lang]}}: {{d.startDate | handleDate 'yyyy/MM/dd HH:mm'}}
 									<span class="thisweek" v-show="d.showOn == thisWeek">
 										今
 									</span>
@@ -286,6 +286,13 @@ export default{
   	'week':function(value){
   		var str = /（日）|（月）|（火）|（水）|（木）|（金）|（土）/;
   		return value.replace(str,'');
+  	},
+  	'handleDate':function(value,format){
+  		// 判断是否为三个月前的
+  		if( (new Date().getTime() - new Date(value).getTime()) >= 3*30*24*60*60*1000 ){
+  			format = "HH:mm";
+  		}
+  		return this.$options.filters.date(value,format);
   	}
   },
 	methods:{
