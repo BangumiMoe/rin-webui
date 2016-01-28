@@ -241,7 +241,7 @@ ul,li,p{
 							</div>
 							<div class="rin-tag">
 									<span v-for="t in d.team">
-										<a href="https://bangumi.moe/search/{{d.tag_id}}+{{t.tag_id}}">
+										<a href="https://bangumi.moe/team/{{t._id}}">
 											<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+(t.icon?t.icon:'data/images/2015/01/0fm7ihnu7lh2me3fog6.jpg')" alt="{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}">
 											{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}
 										</a>
@@ -271,7 +271,6 @@ export default{
     			zh_cn:"播放时间",
     			zh_tw:"播放時間",
     			en:"On air",
-    			ja:"放送時間",
     		},
     		week:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
     	},

@@ -113,6 +113,7 @@
               padding-right: 5px;
               padding-left:5px;
               margin-right: 5px;
+              border-radius:3px;
             }
             .rin-team{
               padding-left:0px;

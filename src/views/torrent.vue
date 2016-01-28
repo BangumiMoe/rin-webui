@@ -230,11 +230,21 @@
 		color:#fff;
 		margin-right:-5px;
 		transition:all .2s linear;
+
+		&:hover{
+			background:#fff;
+			color:@color-th-bg;
+		}
 	}
 	.member{
 		display:inline-block;
 		transition:all .2s linear;
 		color:@color-th-bg;
+
+		&:hover{
+			background:@color-th-bg;
+			color:#fff;
+		}
 	}
 	.name{
 		padding:0 8px;
@@ -244,17 +254,6 @@
 		float:left;
 		width:20px;
 		height:20px;
-	}
-
-	&:hover{
-		.team{
-			background:#fff;
-			color:@color-th-bg;
-		}
-		.member{
-			background:@color-th-bg;
-			color:#fff;
-		}
 	}
 }
 </style>
