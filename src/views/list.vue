@@ -230,7 +230,7 @@ ul,li,p{
 								<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+d.icon" alt="{{d.name}}">
 							</div>
 							<div class="content">
-								<p class="title rin-text-overflow"><a href="https://bangumi.moe/tag/{{d.tag_id}}" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
+								<p class="title rin-text-overflow"><a href="/tag/{{d.tag_id}}" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
 								<p class="date">
 									{{locale.time[this.$root.lang]}}: {{d.startDate | handleDate 'yyyy/MM/dd HH:mm'}}
@@ -241,7 +241,7 @@ ul,li,p{
 							</div>
 							<div class="rin-tag">
 									<span v-for="t in d.team">
-										<a href="https://bangumi.moe/team/{{t._id}}">
+										<a href="/search/{{d.tag_id}}+{{t.tag_id}}">
 											<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+(t.icon?t.icon:'data/images/2015/01/0fm7ihnu7lh2me3fog6.jpg')" alt="{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}">
 											{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}
 										</a>

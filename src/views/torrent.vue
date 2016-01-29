@@ -28,13 +28,15 @@
 	background-color: @color-th-bg;
 	z-index:1;
 	overflow:hidden;
+	margin-right:128px;
 	
 	h3{
 		color:@color-th;
 		font-weight:400;
 		font-size:16px;
 		margin: 14px 0;
-   	 	margin-bottom: 18px;
+   	margin-bottom: 18px;
+   	padding:0 65px;
 	}
 }
 
@@ -209,6 +211,7 @@
 .rin-left{
   position: absolute;
   padding: 14px;
+  left:0;
   top: 0;
   bottom:0;
 
@@ -219,33 +222,28 @@
 .team-info{
 	display:inline-block;
 	height:20px;
+	line-height:20px;
 	border-radius:3px;
 	overflow:hidden;
 	border:1px solid @color-th-bg;
 	vertical-align: middle;
 
-	.team{
+	>a{
 		display:inline-block;
-		background:@color-th-bg;
-		color:#fff;
-		margin-right:-5px;
+		background:#fff;
+		color:@color-th-bg;
 		transition:all .2s linear;
 
-		&:hover{
-			background:#fff;
-			color:@color-th-bg;
+		&:first-child{
+			margin-right:-4px;
 		}
-	}
-	.member{
-		display:inline-block;
-		transition:all .2s linear;
-		color:@color-th-bg;
 
 		&:hover{
 			background:@color-th-bg;
 			color:#fff;
 		}
 	}
+
 	.name{
 		padding:0 8px;
 		font-weight:normal;
@@ -286,16 +284,16 @@
 			<div class="rin-details">
 				<p class="rin-details-info">
 
-					<a class="team-info" href="javascrip:void(0)">
-						<span class="team" v-if="data.team.name">
+					<span class="team-info">
+						<a class="team" href="/team/{{data.team._id}}" v-if="data.team.name">
 							<img v-bind:src="'//bangumi-moe.phoenixstatic.com/'+data.team.icon">
 							<b class="name">{{data.team.name}}</b>
-						</span>
-						<span class="member">
+						</a>
+						<a class="member" href="/user/{{data.uploader._id}}">
 							<img v-bind:src="'//g.cdog.work/avatar/'+data.uploader.emailHash">
 							<b class="name">{{data.uploader.username}}</b>
-						</span>
-					</a>
+						</a>
+					</span>
 					 {{'submitted' | locale}} {{data.publish_time | date 'yyyy/MM/dd HH:mm'}}
 				</p>
 				<div class="rin-tag">

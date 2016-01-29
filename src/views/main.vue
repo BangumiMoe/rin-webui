@@ -113,7 +113,10 @@
               padding-right: 5px;
               padding-left:5px;
               margin-right: 5px;
-              border-radius:3px;
+
+              &:hover{
+                background-color:#fff;
+              }
             }
             .rin-team{
               padding-left:0px;
@@ -126,23 +129,35 @@
               
               span{ line-height: 20px; }
             }
-            .rin-seed-online { color: green }
-            .rin-seed-downloading { color: red }
-            .rin-seed-downloaded { color: blue }
+            &.rin-seed-stats{
+              color:#d4d4d4;
+            }
+            .rin-seed-online { color: #5c5594 }
+            .rin-seed-downloading { color: #458ac6 }
+            .rin-seed-downloaded { color: #00c4bc }
           }
         
           td.rin-uploader{
             text-align: left;
             
+            >a{
+              color:#333;
+              padding: 6px;
+
+              &:hover{
+                background: #EEE;
+              }
+            }
+
             .uploader-avatar{
               width: 20px;
               height: 20px;
-              margin-right: 5px;
               vertical-align: top;
+              padding-right:2px;
             }
             span{
               display: inline-block;
-              width: calc(~'100% - 25px');
+              /* width: calc(~'100% - 25px'); */
             }
           }
           &:nth-child(odd) {
@@ -219,23 +234,28 @@
               </div>
             </td>
             <td class="title"  style="text-align:left;">
-              <div class="rin-team rin-inline-tag" v-if="t.team">
+              <a class="rin-team rin-inline-tag" href="/team/{{t.team._id}}" v-if="t.team">
                 <img class="team-icon"  v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
                 <img class="team-icon" src="../assets/akarin.jpg" v-if="!t.team.icon"/>
                 <span>{{t.team.name}}</span>
-              </div>
+              </a>
               <a target="_blank">{{t.title}}</a>
             </td>
             <td nowrap="nowrap" align="center">
               <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}{{magnentt}}"><i class="material-icons">&#xE2C4;</i></a>
             </td>
             <td nowrap="nowrap" align="center">{{t.size}}</td>
-            <td nowrap="nowrap" align="center">
+            <td nowrap="nowrap" align="center" class="rin-seed-stats">
               <a class="rin-seed-online" href="javascript:void(0)" title="种子">{{t.seeders}}</a> /
               <a class="rin-seed-downloading" href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
               <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
             </td>
-            <td class="rin-uploader"><img class="uploader-avatar" v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" /><span>{{t.uploader.username}}</span></td>
+            <td class="rin-uploader">
+              <a href="/user/{{t.uploader._id}}">
+                <img class="uploader-avatar" v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" />
+                <span>{{t.uploader.username}}</span>
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>
