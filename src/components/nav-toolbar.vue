@@ -96,7 +96,7 @@
     <i class="material-icons">&#xE8EF;</i>
   </a>
 
-  <span class="rin-button rin-search rin-tip left" data-tool="搜索"
+  <span class="rin-button rin-search rin-tip left" data-tool="搜索" id="rin-search"
     @mouseenter="searchBarShow"
     @mouseleave="searchBarHide"
     @click="searchBarToggle">
@@ -171,6 +171,23 @@
       },
       UserSignInFailed () { this.user = {};   },
       UserSignOutOK ()    { this.user = {};   },
+    },
+    ready () {
+      let self = this;
+
+      /**** 点击其他地方时，关闭搜索 ****/
+      let el = document.querySelectorAll(".rin-search-bar")[0];
+      let openSearchBtn = document.getElementById("rin-search"); //打开搜索的按钮
+      let openSearchIcon = openSearchBtn.children[0]; //按钮内的icon
+
+      document.onclick = event => {
+        //判断点击的目标是不是[搜索]
+        if( !(el !== event.target && el.contains(event.target)) && event.target !== openSearchBtn && event.target !== openSearchIcon ) {
+            self.searchBar.fixed = false;
+        }
+
+      };
+
     }
   };
 </script>
