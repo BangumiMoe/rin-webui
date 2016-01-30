@@ -223,21 +223,18 @@
 	display:inline-block;
 	height:20px;
 	line-height:20px;
-	border-radius:3px;
 	overflow:hidden;
 	border:1px solid @color-th-bg;
 	vertical-align: middle;
+	font-size:0;
 
 	>a{
 		display:inline-block;
 		background:#fff;
 		color:@color-th-bg;
 		transition:all .2s linear;
-
-		&:first-child{
-			margin-right:-4px;
-		}
-
+		font-size:14px;
+		
 		&:hover{
 			background:@color-th-bg;
 			color:#fff;

@@ -209,11 +209,17 @@ ul,li,p{
 	transform: rotate(-20deg);
   color: rgba(255,255,255,0.2);
 }
+.rin-loader{
+  margin-right: 128px;
+  margin-left: 65px;
+}
 </style>
 <template>
   <div id="rin-main" class="rin-row" style="width: calc(100% - 128px);">
 
 		<div class="rin-week rin-row" id="rin-week">
+    	<div is="rin-loader" :progress="progress" v-show="busy" transition="rin-fade"></div>
+
 			<div class="rin-column" v-on:click="allSwitch">
 				<span class="rin-vertical">{{'Bangumi List' | locale}}</span>
 			</div>
@@ -262,6 +268,7 @@ ul,li,p{
 	</div>
 </template>
 <script>
+import RLoader from '../components/rin-loader';
 
 export default{
   data (){
@@ -278,6 +285,7 @@ export default{
       isOff:[],
       thisWeek:new Date().getDay(),
       week:['日','月','火','水','木','金','土'],
+			busy:true,
   	}
   },
   filters:{
@@ -293,6 +301,9 @@ export default{
   		}
   		return this.$options.filters.date(value,format);
   	}
+  },
+  components: {
+    'rin-loader': RLoader
   },
 	methods:{
 		//全部列表切换
@@ -342,6 +353,8 @@ export default{
         }
 
         self.datas = result;
+
+				self.busy = false;  //关闭加载
 
         setTimeout(function(){
         	self.setWidth();
