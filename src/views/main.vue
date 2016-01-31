@@ -8,11 +8,11 @@
   @color-inline-tag-bg: #eeeeee;
   @color-inline-tag-hover: #6d6d6d;
   @color-inline-tag-bg-hover: #eeeeee;
-  
+
   #rin-main {
     height: 100%;
     overflow: hidden;
-    
+
     .page-nav{
       width: 250px;
       right: 190px;
@@ -25,32 +25,32 @@
       box-shadow: 1px 1px 25px 1px #DC7788;
       border-radius: 5px;
       overflow: hidden;
-      
+
       .page-nav-inner{
         width:100%;
         float: right;
         transition: width .5s;
       }
-      
+
       .page-nav-btn{
         cursor: pointer;
         color: white;
         transition: background-color .2s;
-        
+
         i { line-height: 40px; transition: font-size .2s }
-          
+
         &.btn-up{ background-color: @color-primary-2 }
         &.btn-up-first{ background-color: @color-primary-2 }
         &:not(.disabled):hover{
           background-color: @color-primary-3;
-          
+
           i{ font-size:2em; }
         }
-        
+
         &.btn-down{ background-color: @color-primary-2; }
         &.btn-down-last{ background-color: @color-primary-2; }
       }
-      
+
       .page-nav-num{color: @color-primary-0; }
       .page-nav-num.cur{
         color: @color-secondary-1-3;
@@ -66,7 +66,7 @@
       }
       .disabled{ cursor: default; }
     }
-    
+
     .rin-list {
       li {
         height: 3em;
@@ -74,36 +74,36 @@
         border-bottom: 1px solid @color-secondary-1-4;
       }
     }
-    
+
     .rin-wrapper {
       height: 100%;
       overflow-x: hidden;
       overflow-y: auto;
-      
+
       table.rin-main-table {
         table-layout: fixed;
         font-size:0.9em;
-        
+
         thead {
           color: @color-th;
           background-color: @color-th-bg;
           th {font-weight: 400}
         }
-        
+
         tbody {
-           padding-top:33px; 
+           padding-top:33px;
         }
         tbody tr {
           cursor: pointer;
           transition: all .2s;
-    
+
           td {
             line-height: 170%;
             padding:5px 0;
             text-align: center;
-            
+
             i{ line-height: 170%; }
-            
+
             .rin-magnet { color: @color-primary-4; }
             .rin-inline-tag {
               display: inline-block;
@@ -111,7 +111,7 @@
               background-color: @color-inline-tag-bg;
               height: 20px;
               padding-right: 5px;
-              padding-left:5px;
+              padding-left:0;
               margin-right: 5px;
 
               &:hover{
@@ -119,14 +119,13 @@
               }
             }
             .rin-team{
-              padding-left:0px;
-              
+
               .team-icon{
                 width: 20px;
                 height: 20px;
                 vertical-align: top;
               }
-              
+
               span{ line-height: 20px; }
             }
             &.rin-seed-stats{
@@ -136,13 +135,13 @@
             .rin-seed-downloading { color: #458ac6 }
             .rin-seed-downloaded { color: #00c4bc }
           }
-        
+
           td.rin-uploader{
             text-align: left;
-            
+
             >a{
               color:#333;
-              padding: 6px;
+              white-space: nowrap;
 
               &:hover{
                 background: #EEE;
@@ -165,7 +164,7 @@
           }
           &:hover{
             background-color: @color-tr-hover;
-            
+
             .rin-inline-tag {
               color: @color-inline-tag-hover;
               background-color: @color-inline-tag-bg-hover;
@@ -251,7 +250,7 @@
               <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
             </td>
             <td class="rin-uploader">
-              <a href="/user/{{t.uploader._id}}">
+              <a href="/user/{{t.uploader._id}}" class='rin-inline-tag'>
                 <img class="uploader-avatar" v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" />
                 <span>{{t.uploader.username}}</span>
               </a>
@@ -279,7 +278,7 @@
 </template>
 <script>
   import RLoader from '../components/rin-loader';
-  
+
   export default {
     data () {
       return {
@@ -291,7 +290,7 @@
           pageNum:0,
         },
         modalBlur:false,
-        gravatarUrl:"//g.cdog.work/avatar/",
+        gravatarUrl:"https://bangumi-moe.phoenixstatic.com/avatar/",
         teamIconBaseUrl:"https://bangumi-moe.phoenixstatic.com/"
       }
     },
@@ -348,7 +347,7 @@
         default:
           self.getTorrents();
       }
-  
+
       console.log("path",this.$route.path)
       */
     },
@@ -389,6 +388,6 @@
        }
      }
    }
-  
+
   };
 </script>
