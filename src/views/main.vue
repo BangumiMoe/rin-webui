@@ -111,7 +111,7 @@
               background-color: @color-inline-tag-bg;
               height: 20px;
               padding-right: 5px;
-              padding-left:0;
+              padding-left:5px;
               margin-right: 5px;
 
               &:hover{
@@ -119,6 +119,7 @@
               }
             }
             .rin-team{
+              padding-left:0px;
 
               .team-icon{
                 width: 20px;
@@ -142,6 +143,7 @@
             >a{
               color:#333;
               white-space: nowrap;
+              padding-left: 0;
 
               &:hover{
                 background: #EEE;
