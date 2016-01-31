@@ -29,7 +29,7 @@
 	z-index:1;
 	overflow:hidden;
 	margin-right:128px;
-	
+
 	h3{
 		color:@color-th;
 		font-weight:400;
@@ -234,7 +234,7 @@
 		color:@color-th-bg;
 		transition:all .2s linear;
 		font-size:14px;
-		
+
 		&:hover{
 			background:@color-th-bg;
 			color:#fff;
@@ -283,11 +283,12 @@
 
 					<span class="team-info">
 						<a class="team" href="/team/{{data.team._id}}" v-if="data.team.name">
-							<img v-bind:src="'//bangumi-moe.phoenixstatic.com/'+data.team.icon">
+							<img v-if="data.team.icon" v-bind:src="'//bangumi-moe.phoenixstatic.com/'+data.team.icon">
+							<img src="../assets/akarin.jpg" v-if="!data.team.icon"/>
 							<b class="name">{{data.team.name}}</b>
 						</a>
 						<a class="member" href="/user/{{data.uploader._id}}">
-							<img v-bind:src="'//g.cdog.work/avatar/'+data.uploader.emailHash">
+							<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/avatar/'+data.uploader.emailHash">
 							<b class="name">{{data.uploader.username}}</b>
 						</a>
 					</span>
