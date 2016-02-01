@@ -19,6 +19,10 @@ router.map({
   	name:'torrent',
   	component: require('./views/torrent'),
   	mode:"hello"
+  },
+  '/user/:id': {
+    name: "user",
+    component: require('./views/user'),
   }
 });
 

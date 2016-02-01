@@ -287,7 +287,7 @@
 							<img src="../assets/akarin.jpg" v-if="!data.team.icon"/>
 							<b class="name">{{data.team.name}}</b>
 						</a>
-						<a class="member" href="/user/{{data.uploader._id}}">
+						<a class="member" v-link="'/user/' + data.uploader._id">
 							<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/avatar/'+data.uploader.emailHash">
 							<b class="name">{{data.uploader.username}}</b>
 						</a>

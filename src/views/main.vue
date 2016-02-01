@@ -252,7 +252,7 @@
               <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
             </td>
             <td class="rin-uploader">
-              <a href="/user/{{t.uploader._id}}" class='rin-inline-tag'>
+              <a v-link="'/user/' + t.uploader._id" class='rin-inline-tag'>
                 <img class="uploader-avatar" v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" />
                 <span>{{t.uploader.username}}</span>
               </a>
