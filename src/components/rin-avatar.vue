@@ -226,8 +226,7 @@
   }
 
   .tri-circles-content {
-    background: transparent;
-    z-index: 10;
+    z-index: 20;
     background-repeat: no-repeat;
     background-size: contain;
   }
@@ -271,7 +270,7 @@
     content: "";
     border-radius: 50%;
     z-index: -1;
-    transition: all .6s;
+    transition: all .6s .6s;
     opacity: 0;
   }
   .tri-circles-container.stop::after{
@@ -282,13 +281,13 @@
 </style>
 
 <template>
-  <div class="tri-circles-container"  v-bind:class="{'stop': loaded}">
-    <div class="tri-circles-bg" v-transition="rin-fade" v-show="!loaded">
+  <div class="tri-circles-container"  v-bind:class="{'stop': finished}">
+    <div class="tri-circles-bg" transition="rin-fade" v-if="!finished">
       <div class="tri-circles-bg-circle top"></div>
       <div class="tri-circles-bg-circle left"></div>
       <div class="tri-circles-bg-circle right"></div>
     </div>
-    <div class="tri-circles-content" style="background-image: url({{ content }})" v-show="loaded" transition="rin-fade">
+    <div class="tri-circles-content" style="background-image: url({{ content }})" v-if="loaded" transition="rin-fade">
     </div>
   </div>
 </template>
@@ -306,7 +305,8 @@ export default {
     return {
       loaded: false,
       // todo, check if is already loaded
-      avatarUrl: "//bangumi.moe/avatar/"
+      avatarUrl: "//bangumi.moe/avatar/",
+      finished: false,
     }
   },
   computed: {
@@ -319,11 +319,15 @@ export default {
       if(n != o && n && n.length){
         let img = new Image()
         this.loaded = false
-        img.src= this.avatarUrl + n
+        this.finished = false
+        img.src= this.content
         img.onload = function(){
-          console.log("finish loading")
           this.loaded = true
-          this.$dispatch("avatar.loaded")
+          setTimeout(()=>{
+            this.finished = true
+            this.$dispatch("avatar.loaded")
+            // 等两秒钟，放一会动画
+          }, 2000)
         }.bind(this)
       }
 
