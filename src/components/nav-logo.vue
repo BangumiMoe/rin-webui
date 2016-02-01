@@ -5,6 +5,7 @@
     background-color: @color-primary-4;
     color: @color-primary-0;
     z-index:1;
+    flex-shrink: 0;
 
     .logo {
       display: block;
