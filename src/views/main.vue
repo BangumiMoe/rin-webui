@@ -227,7 +227,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(index, t) in torrent.lastest"  v-on:click="goTorrent(t._id)">
+          <tr v-for="(index, t) in torrent.lastest"  v-on:click="goTorrent(t._id, $event)">
             <td style="font-size:12px;">{{t.publish_time | date 'lately HH:mm'}}</td>
             <td align="center">
               <div class="rin-inline-tag">
@@ -329,8 +329,10 @@
         document.body.removeChild(oDiv);
         return noScroll-scroll;
       },
-      goTorrent:function(id){
-        this.$route.router.go({name:"torrent",params:{key:id}})
+      goTorrent:function(id, e){
+        if(e.target.tagName.toLowerCase() != "a"){
+          this.$route.router.go({name:"torrent",params:{key:id}})
+        }
       }
     },
     ready: function() {
