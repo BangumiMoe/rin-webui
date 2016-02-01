@@ -21,6 +21,9 @@
   import Vue from 'vue';
 
   Vue.filter('locale', function(value) {
+    if(!value){
+      return value;
+    }
     // method 1
     if(value.locale) {
       let text = value.locale[this.$root.lang];
@@ -127,11 +130,11 @@
           if(languageList.indexOf(getLanguage) >= 0 ){
             this.lang = getLanguage;
           }else{
-            this.lang = 'zh_tw'; 
+            this.lang = 'zh_tw';
           }
         }else{
           // 获取不到浏览器语言，给予默认值
-          this.lang = 'zh_tw'; 
+          this.lang = 'zh_tw';
         }
 
       }
