@@ -288,7 +288,7 @@
       <div class="tri-circles-bg-circle left"></div>
       <div class="tri-circles-bg-circle right"></div>
     </div>
-    <div class="tri-circles-content" style="background-image: url({{ avatarUrl + hash}})" v-show="loaded" transition="rin-fade">
+    <div class="tri-circles-content" style="background-image: url({{ content }})" v-show="loaded" transition="rin-fade">
     </div>
   </div>
 </template>
@@ -307,6 +307,11 @@ export default {
       loaded: false,
       // todo, check if is already loaded
       avatarUrl: "//bangumi.moe/avatar/"
+    }
+  },
+  computed: {
+    content(){
+      return `${this.avatarUrl}${this.hash}?s=200`
     }
   },
   watch: {
