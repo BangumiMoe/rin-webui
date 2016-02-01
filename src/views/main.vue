@@ -330,7 +330,7 @@
         return noScroll-scroll;
       },
       goTorrent:function(id, e){
-        if(e.target.tagName.toLowerCase() != "a"){
+        if(!e.defaultPrevented){
           this.$route.router.go({name:"torrent",params:{key:id}})
         }
       }
