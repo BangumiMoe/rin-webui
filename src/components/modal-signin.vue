@@ -10,29 +10,29 @@
 
 <template>
 <rin-modal modal-id="modal-signin">
-  <h1>Welcome Bangumi.moe</h1>
+  <h1>{{"Welcome to Bangumi.moe" | locale}}</h1>
   <form>
-    <div class="rin-message rin-error" v-if="message">{{ message }}</div>
+    <div class="rin-message rin-error" v-if="message">{{ message | locale}}</div>
 
     <div class="rin-row">
       <div class="rin-col">
         <span class="rin-input">
           <label for="signin_username">{{"Username" | locale}}</label>
-          <input id="signin_username" type="text" v-model="username" placeholder="nickname or email">
+          <input id="signin_username" type="text" v-model="username" placeholder="{{'nickname or email' | locale}}">
         </span>
       </div>
 
       <div class="rin-col" style="margin-left:0.3em;">
         <span class="rin-input">
           <label for="signin_password">{{"Password" | locale}}</label>
-          <input id="signin_password" type="password" v-model="password" placeholder="please input your passsword">
+          <input id="signin_password" type="password" v-model="password" placeholder="{{'please input your passsword' | locale}}">
         </span>
       </div>
     </div>
 
     <div class="rin-checkbox">
       <input id="signin_cookie" type="checkbox" checked="checked" v-model="cookie">
-      <label for="signin_cookie">本地保存账号信息</label>
+      <label for="signin_cookie">{{"Save account info locally" | locale}}</label>
     </div>
 
   </form>

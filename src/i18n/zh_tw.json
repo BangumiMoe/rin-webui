@@ -165,5 +165,14 @@
   "Here, you can get a rss link and add to your own subscription if you have signin.": "您可以在這裡獲得您客製化過濾器對應的 RSS 網址。如果您已經登入，您還可以將它加入自己的訂閱。",
   "Then, you can add or remove tags to filter by clicking the tags, and get the results instantly.": "您可以通過點擊來向過濾器加入新的標籤，或從過濾器中移除標籤。變化後的搜尋結果會即時顯示。",
   "Some tags are't list here, you can search them here.": "一些標籤並沒有在這裡列出。您可以在這裡搜尋它們。",
-  "After all, you can also do custom searching by title if you are't satisfied with the tags filter.": "如果您對標籤的過濾結果不滿意，您也可以在這裡直接搜尋標題。"
+  "After all, you can also do custom searching by title if you are't satisfied with the tags filter.": "如果您對標籤的過濾結果不滿意，您也可以在這裡直接搜尋標題。",
+  "nickname or email":"使用者名稱或電郵",
+  "please input your passsword":"請輸入您的密碼",
+  "Save account info locally":"在本地保存您的賬戶信息",
+  "Uploaded time":"提交時間",
+  "Category":"分類",
+  "Size":"大小",
+  "Seed stat":"種子情況",
+  "Uploader":"上傳者",
+  "Welcome to Bangumi.moe": "歡迎使用 番組、萌え"
 }

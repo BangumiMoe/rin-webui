@@ -144,10 +144,6 @@
               color:#333;
               white-space: nowrap;
               padding-left: 0;
-
-              &:hover{
-                background: #EEE;
-              }
             }
 
             .uploader-avatar{
@@ -264,7 +260,7 @@
         <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
           <thead>
             <tr>
-              <th width="90"><span class="title">{{'Start'|locale}}</th>
+              <th width="90"><span class="title">{{'Uploaded time'|locale}}</th>
               <th width="7%"><span class="title">{{'Category'|locale}}</span></th>
               <th  ><span class="title">{{'Title'|locale}}</span></th>
               <th width="5%" nowrap="nowrap"><span class="title">{{'magnet'|locale}}</span></th>

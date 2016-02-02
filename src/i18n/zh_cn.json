@@ -165,5 +165,14 @@
   "Here, you can get a rss link and add to your own subscription if you have signin.": "从这里，您可以获得您的过滤器对应的 RSS 链接。如果您已经登录，还可以将此过滤器保存到您的订阅。",
   "Then, you can add or remove tags to filter by clicking the tags, and get the results instantly.": "接下来，您可以通过点击来增加/删除标签，变更后的搜索结果会即时显示。",
   "Some tags are't list here, you can search them here.": "一些标签没有被列出，您可以在这里搜索其他标签。",
-  "After all, you can also do custom searching by title if you are't satisfied with the tags filter.": "当然，如果您不满意标签过滤器的搜索结果，您还可以在这里直接搜索资源标题。"
+  "After all, you can also do custom searching by title if you are't satisfied with the tags filter.": "当然，如果您不满意标签过滤器的搜索结果，您还可以在这里直接搜索资源标题。",
+  "nickname or email":"用户名或E-Mail",
+  "please input your passsword":"请输入您的密码",
+  "Save account info locally":"在本地保存您的账户信息",
+  "Uploaded time":"提交时间",
+  "Category":"分类",
+  "Size":"大小",
+  "Seed stat":"种子情况",
+  "Uploader":"上传者",
+  "Welcome to Bangumi.moe": "欢迎使用 番組、萌え"
 }
