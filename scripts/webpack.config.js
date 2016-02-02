@@ -9,13 +9,14 @@ module.exports = {
     publicPath: '/build/'
   },
   resolve: {
-    extensions: ['', '.js', '.vue', '.jpg', '.png']
+    extensions: ['', '.js', '.vue', '.jpg', '.png','.json']
   },
   module: {
     loaders: [
       { test: /\.js$/,            loaders: ['babel'], exclude: [/node_modules/] },
       { test: /\.vue$/,           loaders: ['vue'] },
       { test: /\.less$/,          loader: 'style!css!less' },
+      { test: /\.json$/,          loader: 'json' },
       { test: /\.(png|jpg|gif)$/, loader: 'file?name=[hash].[ext]?' }// loader: 'file?name=[name].[ext]?[hash]' }
     ]
   },

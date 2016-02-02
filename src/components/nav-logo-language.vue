@@ -9,7 +9,7 @@
   bottom: 1.2em;
   left: 7px;
 
-  a i{font-size: 28px}
+  a i{font-size: 20px}
 
   .chooser {
     font-family: fantasy;

@@ -17,14 +17,14 @@
     <div class="rin-row">
       <div class="rin-col">
         <span class="rin-input">
-          <label for="signin_username">Username</label>
+          <label for="signin_username">{{"Username" | locale}}</label>
           <input id="signin_username" type="text" v-model="username" placeholder="nickname or email">
         </span>
       </div>
 
       <div class="rin-col" style="margin-left:0.3em;">
         <span class="rin-input">
-          <label for="signin_password">Password</label>
+          <label for="signin_password">{{"Password" | locale}}</label>
           <input id="signin_password" type="password" v-model="password" placeholder="please input your passsword">
         </span>
       </div>

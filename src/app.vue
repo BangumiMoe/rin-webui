@@ -59,10 +59,10 @@
     },
     methods: {
       updateLocales (lng) {
-        // TODO busy controller
         let self = this;
-        self.$http.get('https://bangumi.moe/i18n/'+ lng +'.json', {}, function(data) {
-          self.locales[lng] = data;
+        // TODO busy controller
+        try{
+          self.locales[lng] = require('./i18n/'+lng+'.json');
           self.lang = lng;
 
           // site title update
@@ -70,9 +70,10 @@
           Cookies.set('locale', lng);
 
           self.$broadcast('LangChanged', lng);
-        }, function() {
+        }catch(err){
+          console.log('opps',err);
           self.$broadcast('LangChangedFail', lng);
-        });
+        }
       }
     },
     events:{
