@@ -7,11 +7,12 @@
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
+  position: relative;
   .rin-avatar{
     position: absolute;
     top: 40vh;
     margin-top: -80px;
-    width: calc(~"100% - 120px");
+    width: 100%;
     z-index: 20;
   }
 }
@@ -24,6 +25,7 @@
   padding: 80px 100px 0 100px;
   max-width: 960px;
   margin: auto;
+  margin-bottom: 100px;
 }
 .rin-inline-tag {
   display: inline-block;
@@ -43,27 +45,52 @@
 .name{
   text-align: center;
 }
+.teams{
+  position: relative;;
+  top: -80px - (160px - 80px) /2 ;
+  left: calc(~'50% + 80px');
+  .team{
+    margin-left: 20px;
+    display: inline-block;
+    .team-icon{
+      height: 80px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      width: 80px;
+      border-radius: 50%;
+      border: solid 2px white;
+      display: inline-block;
+    }
+  }
+}
 </style>
 
 <template>
   <div class="rin-wrapper">
     <div class="rin-avatar">
       <rin-avatar v-bind:hash="user.emailHash"></rin-avatar>
+      <div class="teams" v-show="loaded" transition="rin-fade">
+        <a title="{{i.name}}" class="team" v-link="'/team/'+i._id" v-for="i in user.teams">
+          <span class="team-icon" style="background-image:url({{'https://bangumi-moe.phoenixstatic.com/' + i.icon}})">
+          </span>
+        </a>
+      </div>
     </div>
+
     <div class="background" v-show="loaded" transition='rin-fade'></div>
     <div class="content" v-show="loaded" transition="rin-fade">
       <h1 class="name">{{user.username}}</h1>
-      <h2>最近番组</h2>
+      <h2>{{"最近番组" | locale}}</h2>
       <div class="tags">
-        <a class="rin-inline-tag" v-link="'/team/' + i._id" v-for="i in user.teams">
-          <img src="'https://bangumi-moe.phoenixstatic.com/' + i.icon" v-if="i.icon" class="team-icon" alt="" />
-          <span>{{i.name}}</span>
+        <a class="rin-inline-tag" v-link="'/team/' + i._id" v-for="i in bangumi">
+          <img v-bind:src="'https://bangumi-moe.phoenixstatic.com/' + i.icon" v-if="i.icon" class="icon" alt="" />
+          <span>{{i.name | locale}}</span>
         </a>
       </div>
-      <h2>最近种子</h2>
+      <h2>{{"最近种子" | locale}}</h2>
       <div class="torrents">
-        <a class="rin-inline-tag" v-link="'/torrent/' + i._id" v-for="i in torrents">
-          <span>{{i.name}}</span>
+        <a class="rin-inline-tag" v-link="'/torrent/' + i._id" v-for="i in torrents.torrents">
+          <span>{{i.title}}</span>
         </a>
       </div>
     </div>
@@ -90,19 +117,28 @@ export default {
       })
     },
     getUserTorrent(){
-      return this.$http({"method": "GET", "url": `https://bangumi.moe/api/v2/bangumi/user/${this.$route.params.id}`}).then((response)=>{
+      return this.$http({"method": "GET", "url": `https://bangumi.moe/api/v2/torrent/user/${this.$route.params.id}`}).then((response)=>{
         this.$set("torrents", response.data)
+      })
+    },
+    getUserBangumi(){
+      return this.$http({"method": "GET", "url": `https://bangumi.moe/api/v2/bangumi/user/${this.$route.params.id}`}).then((response)=>{
+        this.$set("bangumi", response.data)
       })
     }
   },
+  route:{
+    canReuse: false
+  },
   events: {
     "avatar.loaded": function(e){
-      this.loaded = true
+      this.$set('loaded', true)
     }
   },
   ready(){
     this.getUserInfo().then(()=>{
       this.getUserTorrent()
+      this.getUserBangumi()
     })
   }
 }

@@ -227,6 +227,7 @@
 
   .tri-circles-content {
     z-index: 20;
+    background-color: black;
     background-repeat: no-repeat;
     background-size: contain;
   }
@@ -287,7 +288,7 @@
       <div class="tri-circles-bg-circle left"></div>
       <div class="tri-circles-bg-circle right"></div>
     </div>
-    <div class="tri-circles-content" style="background-image: url({{ content }})" v-if="loaded" transition="rin-fade">
+    <div class="tri-circles-content" style="background-image: url({{ display }})" transition="rin-fade">
     </div>
   </div>
 </template>
@@ -307,6 +308,7 @@ export default {
       // todo, check if is already loaded
       avatarUrl: "//bangumi.moe/avatar/",
       finished: false,
+      display: ''
     }
   },
   computed: {
@@ -316,13 +318,15 @@ export default {
   },
   watch: {
     hash: function(n, o){
-      if(n != o && n && n.length){
+      if(n != o && n ){
         let img = new Image()
         this.loaded = false
         this.finished = false
-        img.src= this.content
+        this.display = ""
+        img.src = this.content
         img.onload = function(){
           this.loaded = true
+          this.display = this.content
           setTimeout(()=>{
             this.finished = true
             this.$dispatch("avatar.loaded")
