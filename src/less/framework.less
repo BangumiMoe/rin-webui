@@ -124,12 +124,13 @@ form {
     display:inline-block;
     height:20px;
     line-height:20px;
-    padding-right:5px;
+    padding: 0 5px;
     margin: 0 4px;
     margin-top:8px;
     background: #eee;
     color: #6d6d6d;
     overflow:hidden;
+    transition: all .2s;
 
     a{
       color:#6d6d6d;
@@ -141,12 +142,41 @@ form {
       vertical-align: top;
     }
 
+    &.rin-tag-haspic{ padding-left: 0 }
+
     &:hover{
       color:#fff;
       background:@color-secondary-2-2;
     }
   }
 }
+
+.rin-inline-tag {
+  display: inline-block;
+  color: @color-inline-tag;
+  background-color: @color-inline-tag-bg;
+  height: 20px;
+  padding-right: 5px;
+  padding-left:5px;
+  margin-right: 5px;
+  transition: all .2s;
+  line-height: 20px;
+
+  img{
+    width:20px;
+    height:20px;
+    vertical-align: top;
+  }
+
+  &.rin-inline-tag-haspic{
+    padding-left: 0;
+  }
+
+  &:hover{
+    background-color:#fff !important;
+  }
+}
+
 
 /* From:http://designshack.net/articles/css/html5-css3-anchor-link-tooltips/ */
 .rin-tip {

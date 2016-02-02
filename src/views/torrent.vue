@@ -55,9 +55,6 @@
     	padding-bottom: 20px;
     	text-align:center;
 
-    	>span{
-    		padding:0 5px;
-    	}
 		}
 
 		.rin-details-intro{
@@ -295,7 +292,8 @@
 					 {{'submitted' | locale}} {{data.publish_time | date 'yyyy/MM/dd HH:mm'}}
 				</p>
 				<div class="rin-tag">
-					<span v-for="t in data.tags" class="rin-inline-tag">
+					<span v-for="t in data.tags"  v-bind:class="{ 'rin-tag-haspic' : t.type == 'bangumi'}">
+						<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+t.bangumi.icon" alt="{{t | locale}}" v-if="t.type == 'bangumi'">
 						<a v-bind:href="'/tag/'+t._id">{{t | locale}}</a>
 					</span>
 				</div>

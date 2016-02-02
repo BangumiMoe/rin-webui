@@ -106,14 +106,6 @@
             }
 
             .rin-team{
-              padding-left:0px;
-
-              .team-icon{
-                width: 20px;
-                height: 20px;
-                vertical-align: top;
-              }
-
               span{ line-height: 20px; }
             }
             &.rin-seed-stats{
@@ -128,9 +120,7 @@
             text-align: left;
 
             >a{
-              color:#333;
               white-space: nowrap;
-              padding-left: 0;
             }
 
             .uploader-avatar{
@@ -218,10 +208,10 @@
               </div>
             </td>
             <td class="title"  style="text-align:left;">
-              <a class="rin-team rin-inline-tag" href="/team/{{t.team._id}}" v-if="t.team">
-                <img class="team-icon"  v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
-                <img class="team-icon" src="../assets/akarin.jpg" v-if="!t.team.icon"/>
-                <span>{{t.team.name}}</span>
+              <a class="rin-team rin-inline-tag rin-inline-tag-haspic" href="/team/{{t.team._id}}" v-if="t.team">
+                <img  v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
+                <img  src="../assets/akarin.jpg" v-if="!t.team.icon"/>
+                <span>{{t.team.tag | locale}}</span>
               </a>
               <a target="_blank">{{t.title}}</a>
             </td>
@@ -235,8 +225,8 @@
               <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
             </td>
             <td class="rin-uploader">
-              <a v-link="'/user/' + t.uploader._id" class='rin-inline-tag'>
-                <img class="uploader-avatar" v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" />
+              <a v-link="'/user/' + t.uploader._id" class='rin-inline-tag rin-inline-tag-haspic'>
+                <img  v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" />
                 <span>{{t.uploader.username}}</span>
               </a>
             </td>
