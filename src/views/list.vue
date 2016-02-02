@@ -246,7 +246,7 @@ ul,li,p{
 								</p>
 							</div>
 							<div class="rin-tag">
-									<span v-for="t in d.team" class="rin-tag-haspic">
+									<span v-for="t in d.team" class="haspic">
 										<a href="/search/{{d.tag_id}}+{{t.tag_id}}">
 											<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+(t.icon?t.icon:'data/images/2015/01/0fm7ihnu7lh2me3fog6.jpg')" alt="{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}">
 											{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}

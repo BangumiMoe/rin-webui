@@ -208,7 +208,7 @@
               </div>
             </td>
             <td class="title"  style="text-align:left;">
-              <a class="rin-team rin-inline-tag rin-inline-tag-haspic" href="/team/{{t.team._id}}" v-if="t.team">
+              <a class="rin-team rin-inline-tag haspic" href="/team/{{t.team._id}}" v-if="t.team">
                 <img  v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
                 <img  src="../assets/akarin.jpg" v-if="!t.team.icon"/>
                 <span>{{t.team.tag | locale}}</span>
@@ -225,7 +225,7 @@
               <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
             </td>
             <td class="rin-uploader">
-              <a v-link="'/user/' + t.uploader._id" class='rin-inline-tag rin-inline-tag-haspic'>
+              <a v-link="'/user/' + t.uploader._id" class='rin-inline-tag haspic'>
                 <img  v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" />
                 <span>{{t.uploader.username}}</span>
               </a>
