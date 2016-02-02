@@ -84,6 +84,7 @@
 
 	  i.material-icons{
 	  	font-size:32px;
+			transition: all .2s;
 	  }
 
 	  &:hover{
@@ -294,7 +295,8 @@
 				<div class="rin-tag">
 					<span v-for="t in data.tags"  v-bind:class="{ 'haspic' : (t.type == 'bangumi' || t.type == 'team') }">
 						<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+t.bangumi.icon" alt="{{t | locale}}" v-if="t.type == 'bangumi'">
-						<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+t.team.icon" alt="{{t | locale}}" v-if="t.type == 'team'">
+						<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+t.team.icon" alt="{{t | locale}}" v-if="(t.type == 'team' && t.team.icon)">
+						<img src="../assets/akarin.jpg" v-if="(t.type == 'team' && !t.team.icon)"/>
 						<a v-bind:href="'/tag/'+t._id">{{t | locale}}</a>
 					</span>
 				</div>
