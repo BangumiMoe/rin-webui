@@ -1,13 +1,6 @@
 <style scoped lang="less">
   @import "../less/colors.less";
-  @color-tr-odd: rgba(233,233,233,0.25);
-  @color-tr-hover: rgba(200,200,200,0.7);
-  @color-th: rgba(233,233,233,0.9);
-  @color-th-bg: rgba(98,137,168,0.8);
-  @color-inline-tag: #6d6d6d;
-  @color-inline-tag-bg: #eeeeee;
-  @color-inline-tag-hover: #6d6d6d;
-  @color-inline-tag-bg-hover: #eeeeee;
+
 
   #rin-main {
     height: 100%;
@@ -104,20 +97,14 @@
 
             i{ line-height: 170%; }
 
-            .rin-magnet { color: @color-primary-4; }
-            .rin-inline-tag {
-              display: inline-block;
-              color: @color-inline-tag;
-              background-color: @color-inline-tag-bg;
-              height: 20px;
-              padding-right: 5px;
-              padding-left:5px;
-              margin-right: 5px;
-
+            .rin-magnet {
+              color: @color-primary-4;
+              transition: all .2s;
               &:hover{
-                background-color:#fff;
+                color: @color-primary-3;
               }
             }
+
             .rin-team{
               padding-left:0px;
 

@@ -8,6 +8,7 @@
   position: absolute;
   bottom: 1.2em;
   left: 7px;
+  width: 32px;
 
   a i{font-size: 20px}
 

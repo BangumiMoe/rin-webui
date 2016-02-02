@@ -295,7 +295,7 @@
 					 {{'submitted' | locale}} {{data.publish_time | date 'yyyy/MM/dd HH:mm'}}
 				</p>
 				<div class="rin-tag">
-					<span v-for="t in data.tags">
+					<span v-for="t in data.tags" class="rin-inline-tag">
 						<a v-bind:href="'/tag/'+t._id">{{t | locale}}</a>
 					</span>
 				</div>
