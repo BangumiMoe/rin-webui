@@ -4,6 +4,11 @@
   75% { opacity: 0.6; transform: none; }
   100% { opacity: 1; }
 }
+@keyframes fadeToBom {
+  0% { opacity: 1;  }
+  75% { opacity: 0.6; transform: none; }
+  100% { opacity: 0; transform: translate3d(0, 100%, 0)}
+}
 #rin-language {
   position: absolute;
   bottom: 1.2em;
@@ -14,12 +19,14 @@
 
   .chooser {
     font-family: fantasy;
-    display: none;
+    //display: none;
     z-index: 100;
 
-    &.show {
-      display: inline-block;
+    &.choice-enter {
       animation: fadeToUp 1s 1;
+    }
+    &.choice-leave {
+      animation: fadeToBom 1s 1;
     }
   }
 }
@@ -27,7 +34,7 @@
 
 <template>
   <div id="rin-language">
-    <div class="chooser" :class="{show: toggleFlag}">
+    <div class="chooser" v-if="toggleFlag" transition="choice">
         <button class="rin-button" @click="changeLang('zh_cn')">简</button>
         <button class="rin-button" @click="changeLang('zh_tw')">繁</button>
         <button class="rin-button" @click="changeLang('en')">EN</button>
@@ -52,6 +59,7 @@
       },
       changeLang (lng) {
         this.$dispatch('changeLang', lng);
+        this.toggleChooser()
       }
     }
   };
