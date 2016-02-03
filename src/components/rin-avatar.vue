@@ -284,7 +284,7 @@
       <div class="tri-circles-bg-circle left"></div>
       <div class="tri-circles-bg-circle right"></div>
     </div>
-    <div class="tri-circles-content" style="background-image: url({{ display }})">
+    <div class="tri-circles-content" v-bind:style="backgroundImage: display">
     </div>
   </div>
 </template>
@@ -304,7 +304,7 @@ export default {
       // todo, check if is already loaded
       avatarUrl: "//bangumi.moe/avatar/",
       finished: false,
-      display: ''
+      display: null
     }
   },
   computed: {
@@ -318,11 +318,11 @@ export default {
         let img = new Image()
         this.loaded = false
         this.finished = false
-        this.display = ""
+        this.display = null
         img.src = this.content
         img.onload = function(){
           this.loaded = true
-          this.display = this.content
+          this.display = `url(this.content)`
           setTimeout(()=>{
             this.finished = true
             this.$dispatch("avatar.loaded")
