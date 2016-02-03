@@ -111,7 +111,7 @@
       <rin-avatar v-bind:hash="user.emailHash"></rin-avatar>
       <div class="teams" v-show="loaded" transition="rin-fade">
         <a title="{{i.name}}" class="team" v-link="'/team/'+i._id" v-for="i in user.teams">
-          <span class="team-icon" style="background-image:url({{'https://bangumi-moe.phoenixstatic.com/' + i.icon}})">
+          <span class="team-icon" style="background-image:url({{getIcon(i)}})">
           </span>
         </a>
       </div>
@@ -139,6 +139,13 @@
 
 </template>
 <script>
+/*
+ 只加载。不处理加载完成的事件
+*/
+function cacheImage(link){
+  let tmp = new Image()
+  tmp.src = link
+}
 export default {
   data(){
     return {
@@ -151,6 +158,9 @@ export default {
     "rin-avatar": require("../components/rin-avatar")
   },
   methods: {
+    getIcon(i){
+      return i.icon ? 'https://bangumi-moe.phoenixstatic.com/' + i.icon : require('../assets/akarin.jpg');
+    },
     getUserInfo(){
       return this.$http({"method": "GET", "url": `https://bangumi.moe/api/v2/user/${this.$route.params.id || 'session'}`}).then((response)=>{
         this.$set("user", response.data)
@@ -164,6 +174,11 @@ export default {
     getUserBangumi(){
       return this.$http({"method": "GET", "url": `https://bangumi.moe/api/v2/bangumi/user/${this.$route.params.id}`}).then((response)=>{
         this.$set("bangumi", response.data)
+      })
+    },
+    aggressiveCaching(){
+      this.user.teams.forEach((t)=>{
+        t.icon && cacheImage(`https://bangumi-moe.phoenixstatic.com/${t.icon}`)
       })
     }
   },
@@ -179,6 +194,7 @@ export default {
     this.getUserInfo().then(()=>{
       this.getUserTorrent()
       this.getUserBangumi()
+      this.aggressiveCaching()
     })
   }
 }
