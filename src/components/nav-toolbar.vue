@@ -144,6 +144,8 @@
         if(!this.user._id) {
           this.signin_form_opened = true;
           this.$dispatch('displaySigninForm');
+        }else{
+          this.$router.go("/user/" + this.user._id)
         }
 
         /* } else {
