@@ -222,7 +222,6 @@
     height: 100%;
     border-radius: 50%;
     overflow: hidden;
-
   }
 
   .tri-circles-content {
@@ -235,7 +234,7 @@
   .tri-circles-bg-circle {
     position: absolute;
     z-index: -1;
-    /* transition: all 0.2s; */
+    transition: all 0.2s;
     top: 0;
     left: 0;
     transition: all .3s 1s;
@@ -254,7 +253,6 @@
   }
 
   .tri-circles-bg-circle.right {
-    /* TODO: implement in transform, make performance better*/
     transform: translate(10.642%, 5.031%);
     background: linear-gradient(45deg, #FAD689 0%, yellow 100%);
     animation: circle3 6.3s infinite;
@@ -272,23 +270,21 @@
     border-radius: 50%;
     z-index: -1;
     transition: all .6s .6s;
-    opacity: 0;
   }
   .tri-circles-container.stop::after{
-    transform: scale(1.1);
-    opacity: 1;
+    transform: scale(1.07);
   }
 
 </style>
 
 <template>
   <div class="tri-circles-container"  v-bind:class="{'stop': finished}">
-    <div class="tri-circles-bg" transition="rin-fade" v-if="!finished">
+    <div class="tri-circles-bg" transition="rin-fade" v-show="!finished">
       <div class="tri-circles-bg-circle top"></div>
       <div class="tri-circles-bg-circle left"></div>
       <div class="tri-circles-bg-circle right"></div>
     </div>
-    <div class="tri-circles-content" style="background-image: url({{ display }})" transition="rin-fade">
+    <div class="tri-circles-content" style="background-image: url({{ display }})">
     </div>
   </div>
 </template>

@@ -2,6 +2,9 @@
 @import "../less/colors.less";
 @color-inline-tag: #6d6d6d;
 @color-inline-tag-bg: #eeeeee;
+@user-avatar-size: 160px;
+@team-avatar-size: 80px;
+@team-avatar-border: 0.06 * @team-avatar-size;
 .rin-wrapper{
   height: 100%;
   overflow-x: hidden;
@@ -13,6 +16,7 @@
     top: 40vh;
     margin-top: -80px;
     width: 100%;
+    display: flex;
     z-index: 20;
   }
 }
@@ -46,28 +50,64 @@
   text-align: center;
 }
 .teams{
-  position: relative;;
-  top: -80px - (160px - 80px) /2 ;
-  left: calc(~'50% + 80px');
-  .team{
-    margin-left: 20px;
+  text-align: left;
+  a{
+    margin-left: 20px
+  }
+}
+.auditing_teams{
+  text-align: right;
+  a{
+    margin-right: 20px;
+    text-align: center;
+    .team-icon{
+      color: white;
+      font-size: @team-avatar-size * 0.7;
+      line-height: @team-avatar-size;
+      background-color: #ddd;
+    }
+  }
+  &.rin-fade-transition{
+    transition: transform .6s .6s, opacity .6s .6s;
+    &.rin-fade-enter, &.rin-fade-leave{
+      opacity: 0;
+      .team-icon{
+        transform: scale(.6);
+      }
+    }
+  }
+}
+.teams, .auditing_teams{
+  flex: 1;
+  height: @team-avatar-border * 2 + @team-avatar-size;
+  align-self: center;
+  a{
     display: inline-block;
     .team-icon{
-      height: 80px;
+      transition: transform .6s .6s;
+      height: @team-avatar-size;
       background-size: cover;
       background-repeat: no-repeat;
-      width: 80px;
+      width: @team-avatar-size;
       border-radius: 50%;
-      border: solid 2px white;
+      border: solid @team-avatar-border white;
       display: inline-block;
     }
   }
 }
+
 </style>
 
 <template>
   <div class="rin-wrapper">
     <div class="rin-avatar">
+      <div class="auditing_teams" v-show="loaded" transition="rin-fade">
+        <a title="{{i.name}}" class="team" v-link="'/team/'+i._id" v-for="i in user.auditing_teams">
+          <span class="team-icon">
+            {{i.name.slice(0, 1)}}
+          </span>
+        </a>
+      </div>
       <rin-avatar v-bind:hash="user.emailHash"></rin-avatar>
       <div class="teams" v-show="loaded" transition="rin-fade">
         <a title="{{i.name}}" class="team" v-link="'/team/'+i._id" v-for="i in user.teams">
