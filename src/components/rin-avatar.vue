@@ -284,7 +284,7 @@
       <div class="tri-circles-bg-circle left"></div>
       <div class="tri-circles-bg-circle right"></div>
     </div>
-    <div class="tri-circles-content" v-bind:style="backgroundImage: display">
+    <div class="tri-circles-content" v-bind:style="{ backgroundImage: display }">
     </div>
   </div>
 </template>
@@ -321,10 +321,10 @@ export default {
         this.display = null
         img.src = this.content
         img.onload = function(){
-          this.loaded = true
-          this.display = `url(this.content)`
+          this.$set('loaded', true)
+          this.$set('display', `url(${this.content})`)
           setTimeout(()=>{
-            this.finished = true
+            this.$set('finished', true)
             this.$dispatch("avatar.loaded")
             // 等两秒钟，放一会动画
           }, 2000)
