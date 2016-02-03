@@ -1,7 +1,7 @@
 
 <style scoped lang="less">
   input{
-    color:black;
+    color:white;
   }
   button{
     background-color: gray;
