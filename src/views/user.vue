@@ -31,21 +31,6 @@
   margin: auto;
   margin-bottom: 100px;
 }
-.rin-inline-tag {
-  display: inline-block;
-  color: @color-inline-tag;
-  background-color: @color-inline-tag-bg;
-  height: 20px;
-  line-height: 20px;
-  padding-right: 5px;
-  padding-left:5px;
-  margin-right: 5px;
-  transition: all .6s;
-  margin-top: 5px;
-  &:hover{
-    background-color:#fff;
-  }
-}
 .name{
   text-align: center;
 }
@@ -121,10 +106,10 @@
     <div class="content" v-show="loaded" transition="rin-fade">
       <h1 class="name">{{user.username}}</h1>
       <h2>{{"最近番组" | locale}}</h2>
-      <div class="tags">
-        <a class="rin-inline-tag" v-link="'/team/' + i._id" v-for="i in bangumi">
+      <div class="rin-tag">
+        <a class="haspic" v-link="'/tag/' + i.tag._id" v-for="i in bangumi">
           <img v-bind:src="'https://bangumi-moe.phoenixstatic.com/' + i.icon" v-if="i.icon" class="icon" alt="" />
-          <span>{{i.name | locale}}</span>
+          <span>{{ i.tag | locale }}</span>
         </a>
       </div>
       <h2>{{"最近种子" | locale}}</h2>
