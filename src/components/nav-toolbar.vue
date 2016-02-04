@@ -66,14 +66,14 @@
 
   <div class="rin-logo">
     <div class="rin-button round img-wrap" @click="userSignAction($event)">
-      <img src="../assets/akarin.jpg" v-show="!user.username" />
-      <img :src="'https://bangumi.moe/avatar/'+ user.emailHash" v-show="user.username" />
+      <img src="../assets/akarin.jpg" v-if="!user._id" />
+      <img :src="'https://bangumi.moe/avatar/'+ user.emailHash" v-if="user._id" />
     </div>
 
     <info-box :user="user" arrow="right"></info-box>
   </div>
 
-  <div class="user-toolbar" v-show="user.username">
+  <div class="user-toolbar" v-if="user._id">
     <a class="rin-button round rin-tip left" data-tool="团队">
       <i class="material-icons">&#xE7FC;</i>
     </a>
@@ -88,11 +88,11 @@
     </a>
   </div>
 
-  <a class="rin-button rin-torrents rin-tip left" data-tool="返回首页" href="#/">
+  <a class="rin-button rin-torrents rin-tip left" data-tool="返回首页" v-link="'/'">
     <i class="material-icons">&#xE5C4;</i>
   </a>
 
-  <a class="rin-button rin-week rin-tip left" data-tool="番组表" href="#/bangumi/list">
+  <a class="rin-button rin-week rin-tip left" data-tool="番组表" v-link="'/bangumi/list'">
     <i class="material-icons">&#xE8EF;</i>
   </a>
 
