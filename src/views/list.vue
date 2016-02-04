@@ -236,11 +236,11 @@ ul,li,p{
 								<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+d.icon" alt="{{d.name}}">
 							</div>
 							<div class="content">
-								<p class="title rin-text-overflow"><a href="/tag/{{d.tag_id}}" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
+								<p class="title rin-text-overflow"><a v-link="'/tag/' + d.tag_id" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
 								<p class="date">
 									{{locale.time[this.$root.lang]}}: {{d.startDate | handleDate 'yyyy/MM/dd HH:mm'}}
-									<span class="thisweek" v-show="d.showOn == thisWeek">
+									<span class="thisweek" v-if="d.showOn == thisWeek">
 										今
 									</span>
 								</p>

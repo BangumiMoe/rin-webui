@@ -280,7 +280,7 @@
 				<p class="rin-details-info">
 
 					<span class="team-info">
-						<a class="team" href="/team/{{data.team._id}}" v-if="data.team.name">
+						<a class="team" v-link="'/team/' + data.team._id" v-if="data.team.name">
 							<img v-if="data.team.icon" v-bind:src="'//bangumi-moe.phoenixstatic.com/'+data.team.icon">
 							<img src="../assets/akarin.jpg" v-if="!data.team.icon"/>
 							<b class="name">{{data.team.name}}</b>

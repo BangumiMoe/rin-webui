@@ -172,8 +172,8 @@
     <div  id="rin-wrapper" class="rin-wrapper" v-show="!busy" transition="rin-fade">
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" >
-          <a class="page-nav-btn btn-down-last rin-col-2" href="https://bangumi.moe/rss/latest" target="_blank" >
-          <i class="material-icons" style="    transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>
+          <a class="page-nav-btn btn-down-last rin-col-2" href="https://bangumi.moe/rss/latest" target="_blank">
+          <i class="material-icons" style="transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>
           </a>
           <a class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v-bind:class="{'disabled':1-currentPage==0}">
           <i class="material-icons">&#xE020;</i>
@@ -208,7 +208,7 @@
               </div>
             </td>
             <td class="title"  style="text-align:left;">
-              <a class="rin-team rin-inline-tag haspic" href="/team/{{t.team._id}}" v-if="t.team">
+              <a class="rin-team rin-inline-tag haspic" v-link="'/team/' + t.team._id" v-if="t.team">
                 <img  v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
                 <img  src="../assets/akarin.jpg" v-if="!t.team.icon"/>
                 <span>{{t.team.tag | locale}}</span>
