@@ -239,7 +239,7 @@ ul,li,p{
 								<p class="title rin-text-overflow"><a v-link="'/tag/' + d.tag_id" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
 								<p class="date">
-									{{locale.time[this.$root.lang]}}: {{d.startDate | handleDate 'yyyy/MM/dd HH:mm'}}
+									{{'On air' | locale}}: {{d.startDate | handleDate 'yyyy/MM/dd HH:mm'}}
 									<span class="thisweek" v-if="d.showOn == thisWeek">
 										今
 									</span>
@@ -272,11 +272,6 @@ export default{
   data (){
   	return{
     	locale:{
-    		time:{
-    			zh_cn:"播放时间",
-    			zh_tw:"播放時間",
-    			en:"On air",
-    		},
     		week:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
     	},
       datas:[],
