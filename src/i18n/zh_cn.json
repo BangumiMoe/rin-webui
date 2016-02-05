@@ -175,5 +175,9 @@
   "Seed stat":"种子情况",
   "Uploader":"上传者",
   "Welcome to Bangumi.moe": "欢迎使用 番組、萌え",
-  "On air": "播放时间"
+  "On air": "播放时间",
+  "Login": "登录",
+  "Logout": "退出",
+  "Back to Index": "返回首页",
+  "Customize RSS": "自定义 RSS"
 }

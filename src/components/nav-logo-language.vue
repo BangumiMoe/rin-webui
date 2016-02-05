@@ -29,6 +29,11 @@
       animation: fadeToBom 1s 1;
     }
   }
+  
+  /* fix tooltip position */
+  .rin-tooltip-wrap.rin-tooltip-right {
+    right: 0;
+  }
 }
 </style>
 
@@ -39,11 +44,11 @@
         <button class="rin-button" @click="changeLang('zh_tw')">繁</button>
         <button class="rin-button" @click="changeLang('en')">EN</button>
     </div>
-    <a class="rin-button round rin-tip left"
+    <a class="rin-button round rin-button-small"
       href="javascript:void(0)"
-      data-tool="{{'Choose language'|locale}}"
       @click="toggleChooser">
       <i class="material-icons">&#xE894;</i>
+      <tooltip :info="'Choose language' | locale"></tooltip>
     </a>
   </div>
 </template>
@@ -53,6 +58,9 @@
     data () { return {
       toggleFlag: false,
     }},
+    components: {
+      'tooltip': require('./nav-tooltip')
+    },
     methods:{
       toggleChooser (ev) {
         this.toggleFlag =! this.toggleFlag;

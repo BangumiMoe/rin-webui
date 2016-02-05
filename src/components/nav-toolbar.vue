@@ -68,39 +68,47 @@
     <div class="rin-button round img-wrap" @click="userSignAction($event)">
       <img src="../assets/akarin.jpg" v-if="!user._id" />
       <img :src="'https://bangumi.moe/avatar/'+ user.emailHash" v-if="user._id" />
+      <tooltip :info="'Login' | locale" v-if="!user._id"></tooltip>
     </div>
 
-    <info-box :user="user" arrow="right"></info-box>
+    <info-box :user="user" arrow="right" v-if="user._id"></info-box>
   </div>
 
   <div class="user-toolbar" v-if="user._id">
-    <a class="rin-button round rin-tip left" data-tool="团队">
+    <a class="rin-button round">
       <i class="material-icons">&#xE7FC;</i>
+      <tooltip :info="'Team' | locale"></tooltip>
     </a>
-    <a class="rin-button round rin-tip left" data-tool="发布">
+    <a class="rin-button round">
       <i class="material-icons">&#xE89D;</i>
+      <tooltip :info="'Publish' | locale"></tooltip>
     </a>
-    <a class="rin-button round rin-tip left" data-tool="自定义RSS">
+    <a class="rin-button round">
       <i class="material-icons">&#xE03B;</i>
+      <tooltip :info="'Customize RSS' | locale"></tooltip>
     </a>
-    <a class="rin-button round rin-tip left" data-tool="退出" @click="userSignout">
+    <a class="rin-button round" @click="userSignout">
       <i class="material-icons">&#xE0E4;</i>
+      <tooltip :info="'Logout' | locale"></tooltip>
     </a>
   </div>
 
-  <a class="rin-button rin-torrents rin-tip left" data-tool="返回首页" v-link="'/'">
+  <a class="rin-button rin-torrents" v-link="'/'">
     <i class="material-icons">&#xE5C4;</i>
+    <tooltip :info="'Back to Index' | locale"></tooltip>
   </a>
 
-  <a class="rin-button rin-week rin-tip left" data-tool="番组表" v-link="'/bangumi/list'">
+  <a class="rin-button rin-week" v-link="'/bangumi/list'">
     <i class="material-icons">&#xE8EF;</i>
+    <tooltip :info="'Bangumi List' | locale"></tooltip>
   </a>
 
-  <span class="rin-button rin-search rin-tip left" data-tool="搜索" id="rin-search"
+  <span class="rin-button rin-search" id="rin-search"
     @mouseenter="searchBarShow"
     @mouseleave="searchBarHide"
     @click="searchBarToggle">
     <i class="material-icons">&#xE8B6;</i>
+    <tooltip :info="'Search' | locale"></tooltip>
   </span>
 
   <!-- Search Added By LancerComet at 23:07, 2015.12.08. -->
@@ -161,7 +169,8 @@
     },
     components: {
       'search-bar': require('./nav-toolbar-search'),
-      'info-box': require('./nav-toolbar-infobox')
+      'info-box': require('./nav-toolbar-infobox'),
+      'tooltip': require('./nav-tooltip')
     },
     events: {
       UserSignInOK (user) {
