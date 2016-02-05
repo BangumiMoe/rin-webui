@@ -53,8 +53,7 @@
 		>.rin-tag{
 			border-bottom: 1px solid #ddd;
     	padding-bottom: 20px;
-    	text-align:center;
-
+    	text-align: center;
 		}
 
 		.rin-details-intro{
@@ -72,40 +71,12 @@
 	}
 }
 
-	.rin-bar-btn{
-		position:relative;
-		display:block;
-		height: 60px;
-    line-height: 80px;
-		text-align:center;
-		cursor:pointer;
-	  color: #fff;
-	  text-shadow: 0 0 5px #DC778B;
-
-	  i.material-icons{
-	  	font-size:32px;
-			transition: all .2s;
-	  }
-
-	  &:hover{
-    	color: #F8D7DE;
-	  }
-
-	  &.rin-tip:hover:after{
-	  	line-height:initial;
-	  	right: 100%;
-    	bottom: 22%;
-	  }
-	  &.rin-tip:hover:before{
-			right: 84%;
-    	bottom: 38%;
-	  }
-	}
 	.rin-sidebar{
 		opacity:0;
     position: absolute;
     right: 64px;
     bottom: 155px;
+		padding-bottom: 4px;
     height: auto;
     z-index: 2;
 		flex-direction:column-reverse;
@@ -117,7 +88,15 @@
 	    animation-fill-mode: both;
 			animation-name: fadeInUp;
 		}
+		
+		.rin-button {
+			margin: 4px 12px;
+			text-shadow: 0 0 5px @color-primary-3;
+			
+			i { font-size: 32px; }
+		}
 	}
+	
 	.rin-bar-comment{
     position: absolute;
     right:128px;
@@ -208,13 +187,17 @@
 	}
 .rin-left{
   position: absolute;
-  padding: 14px;
+  padding: 5px;
   left:0;
   top: 0;
   bottom:0;
+	
+	i {	font-size: 24px; }
 
   &:hover{
+		color: #c0ded6;
   	background-color: #7894AB;
+		i { color: #c0ded6; }
   }
 }
 .team-info{
@@ -252,9 +235,15 @@
 </style>
 <template>
 	<div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
-		<a class="rin-bar-btn rin-tip left" v-bind:href="data.downloadTorrent || ''" data-tool="{{'torrent' | locale}}"><i class="material-icons">&#xE2C4;</i></a>
-		<a class="rin-bar-btn rin-tip left" v-bind:href="data.magnet" data-tool="{{'magnet' | locale}}"><i class="material-icons">&#xE8AB;</i></a>
-		<a class="rin-bar-btn" href="javascript:void(0);"
+		<a class="rin-button" v-bind:href="data.downloadTorrent || ''">
+			<i class="material-icons">&#xE2C4;</i>
+			<tooltip :info="'torrent' | locale"></tooltip>
+		</a>
+		<a class="rin-button" v-bind:href="data.magnet">
+			<i class="material-icons">&#xE8AB;</i>
+			<tooltip :info="'magnet' | locale"></tooltip>
+		</a>
+		<a class="rin-button" href="javascript:void(0);"
 					v-on:click="toggleComment"
 					v-on:mouseenter="showComment"
 					v-on:mouseleave="hideComment">
@@ -351,7 +340,8 @@ export default {
   	'date':require('../filters/dateFormat.js')
   },
   components: {
-    'rin-loader': RLoader
+    'rin-loader': RLoader,
+		'tooltip': require('./../components/nav-tooltip')
   },
   ready () {
     let self = this;

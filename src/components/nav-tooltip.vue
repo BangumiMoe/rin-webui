@@ -8,7 +8,6 @@
     @p_m_lr1: 10px + @p_m_lr0;
     
     .rin-tooltip {
-      max-width: @diameter;
       border-radius: @diameter / 2;
       
       p {
@@ -66,6 +65,7 @@
     padding: 0;
     width: auto;
     height: 100%;
+    max-width: 0;
     background-color: @color-primary-1;
     transition: all .2s ease-in-out;
     color: @color-primary-1;

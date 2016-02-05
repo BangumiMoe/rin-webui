@@ -5,29 +5,22 @@
     background-color: @color-primary-0;
     color: @color-primary-2;
     z-index:1;
-
+    
     .rin-button {
-      width: 40px;
-      height: 40px;
-      margin: 8px 8px;
-      color: @color-primary-2;
-      background: @color-primary-3;
-      border: 4px solid @color-primary-2;
+      margin: 8px;
+      text-shadow: 0 0 5px @color-primary-3;
+    }
+    
+    .user-toolbar, .rin-logo {
+      .rin-button {
+        text-shadow: none;
+        background: @color-primary-3;
+        border: 4px solid @color-primary-2;
 
-      i {
-        font-size: 2em;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      &:hover {
-        color: @color-primary-1;
-        background: @color-primary-4;
-        border: 4px solid @color-primary-1;
-
-        i {color: @color-primary-1;}
+        &:hover {
+          background: @color-primary-4;
+          border: 4px solid @color-primary-1;
+        }
       }
     }
 
@@ -47,17 +40,15 @@
     }
 
     .rin-search, .rin-week, .rin-torrents {
-      text-shadow: 0 0 5px @color-primary-3;
-      background-color: transparent !important;
-      border-color: transparent !important;
       position: absolute;
+      margin: 4px 12px;
 
       i { font-size: 32px; }
     }
 
-    .rin-search { bottom: 0; }
-    .rin-week { bottom: 48px; }
-    .rin-torrents { bottom: 96px; }
+    .rin-search { bottom: 8px; }
+    .rin-week { bottom: 56px; }
+    .rin-torrents { bottom: 104px; }
   }
 </style>
 

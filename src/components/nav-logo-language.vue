@@ -1,4 +1,6 @@
-<style scoped media="screen" lang="less">
+<style scoped lang="less">
+@import "../less/colors.less";
+
 @keyframes fadeToUp {
   0% { opacity: 0; transform: translate3d(0, 100%, 0) }
   75% { opacity: 0.6; transform: none; }
@@ -11,7 +13,7 @@
 }
 #rin-language {
   position: absolute;
-  bottom: 1.2em;
+  bottom: 1em;
   left: 7px;
   width: 32px;
 
@@ -28,11 +30,25 @@
     &.choice-leave {
       animation: fadeToBom 1s 1;
     }
+    
+    .rin-button {
+      color: @color-primary-0;
+      
+      &:hover {
+        color: @color-secondary-2-1;
+        i { color: @color-secondary-2-1; }
+      }
+    }
   }
   
-  /* fix tooltip position */
-  .rin-tooltip-wrap.rin-tooltip-right {
-    right: 0;
+  > .rin-button {
+    text-shadow: 0 0 5px @color-primary-3;
+  }
+  
+  .rin-button {
+    width: 20px;
+    height: 20px;
+    margin: 6px 6px;
   }
 }
 </style>

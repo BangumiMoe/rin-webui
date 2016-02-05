@@ -178,8 +178,11 @@ form {
 }
 
 .rin-button {
-  border: 0;
+  width: 40px;
+  height: 40px;
+  color: @color-primary-2;
   background-color: transparent;
+  border: none;
 
   position: relative;
   display: flex;
@@ -189,17 +192,35 @@ form {
   outline: none;
   transition: all .2s;
 
-
-  i { color: white; transition:inherit;}
+  i {
+    font-size: 2em;
+    color: white;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:inherit;
+  }
 
   &.round {
     border-radius: 50%;
   }
+  
+  &.rin-button-small {
+    width: 20px;
+    height: 20px;
+    i { height: 20px; }
+  }
 
   &:hover {
+    color: @color-primary-1;
+    i {color: @color-primary-1;}
+  }
+  
+  /* &:hover {
     color: @color-secondary-2-1;
     i { color: @color-secondary-2-1; }
-  }
+  } */
 }
 
 .rin-left {
