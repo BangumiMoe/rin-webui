@@ -16,10 +16,24 @@
         text-shadow: none;
         background: @color-primary-3;
         border: 4px solid @color-primary-2;
+        
+        i {
+          z-index: 2;
+          width: 40px;
+          border-radius: 20px;
+          background: @color-primary-3;
+          transition: all .2s;
+        }
 
         &:hover {
           background: @color-primary-4;
           border: 4px solid @color-primary-1;
+          
+          i { background: @color-primary-4; }
+        }
+        
+        .rin-tooltip-wrap {
+          z-index: 1;
         }
       }
     }
@@ -35,6 +49,7 @@
         img {
           border-radius: 50%;
           width: 48px;
+          z-index: 2;
         }
       }
     }
