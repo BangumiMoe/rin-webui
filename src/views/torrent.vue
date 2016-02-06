@@ -88,15 +88,15 @@
 	    animation-fill-mode: both;
 			animation-name: fadeInUp;
 		}
-		
+
 		.rin-button {
 			margin: 4px 12px;
 			text-shadow: 0 0 5px @color-primary-3;
-			
+
 			i { font-size: 32px; }
 		}
 	}
-	
+
 	.rin-bar-comment{
     position: absolute;
     right:128px;
@@ -191,7 +191,7 @@
   left:0;
   top: 0;
   bottom:0;
-	
+
 	i {	font-size: 24px; }
 
   &:hover{
@@ -285,7 +285,7 @@
 					<a v-for="t in data.tags" v-link="'/tag/'+t._id" v-bind:class="{ 'haspic' : (t.type == 'bangumi' || t.type == 'team') }">
 						<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+t.bangumi.icon" alt="{{t | locale}}" v-if="t.type == 'bangumi'">
 						<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+t.team.icon" alt="{{t | locale}}" v-if="(t.type == 'team' && t.team.icon)">
-						<img src="../assets/akarin.jpg" v-if="(t.type == 'team' && !t.team.icon)"/>
+						<img src="../assets/akarin.jpg" v-if="(t.type == 'team' && (!t.team || !t.team.icon))"/>
 						<span>{{t | locale}}</span>
 					</a>
 				</div>
