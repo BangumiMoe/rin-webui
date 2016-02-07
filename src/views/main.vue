@@ -105,9 +105,6 @@
               }
             }
 
-            .rin-team{
-              span{ line-height: 20px; }
-            }
             &.rin-seed-stats{
               color:#d4d4d4;
             }

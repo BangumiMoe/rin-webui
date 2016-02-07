@@ -142,7 +142,14 @@ form {
       vertical-align: top;
     }
 
-    &.haspic{ padding-left: 0 }
+    &.haspic{
+      padding-left: 0;
+
+      span {
+        height: 20px;
+        line-height: 22px;
+      }
+    }
 
     &:hover{
       color:#fff;
@@ -170,6 +177,10 @@ form {
 
   &.haspic{
     padding-left: 0;
+    span {
+      height: 20px;
+      line-height: 21px;      
+    }
   }
 
   &:hover{
@@ -205,7 +216,7 @@ form {
   &.round {
     border-radius: 50%;
   }
-  
+
   &.rin-button-small {
     width: 20px;
     height: 20px;
@@ -216,7 +227,7 @@ form {
     color: @color-primary-1;
     i {color: @color-primary-1;}
   }
-  
+
   /* &:hover {
     color: @color-secondary-2-1;
     i { color: @color-secondary-2-1; }
