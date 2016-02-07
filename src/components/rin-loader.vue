@@ -1,4 +1,4 @@
-<style scoped lang="less">
+<style lang="less">
   @keyframes waves-l2r {
       0% { background-position:    0   0 }
       5% { background-position:   64px 0 }
