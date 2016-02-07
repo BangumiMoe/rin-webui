@@ -1,4 +1,4 @@
-<style lang="less">
+<style scoped lang="less">
   @keyframes waves-l2r {
       0% { background-position:    0   0 }
       5% { background-position:   64px 0 }
@@ -8,7 +8,7 @@
      95% { background-position:   64px 0 }
     100% { background-position:    0   0 }
   }
-  
+
   .rin-loader {
     display: block;
     background: white;
@@ -19,7 +19,7 @@
     left: 0;
     right: 0;
     z-index: 10;
-    
+
     .wrapper {
       position: absolute;
       top: 50%;
@@ -28,30 +28,31 @@
       min-width: 128px;
       transform: translateX(-50%) translateY(-50%);
       overflow: hidden;
-      
+
       .rin-moe {
         position: relative;
         z-index: 10;
-        
+
         img {
           display: block;
           width: 100%;
         }
-      }   
-      
+      }
+
       .rin-water-1, .rin-water-2, .rin-water-3 {
         position: absolute;
         bottom: 0;
-        
+
         height: 40%;
         width: 99%;
-        background: url("../assets/rin-loader-water.png") repeat-x bottom;
-        
+        background-repeat: repeat-x;
+        background-position: bottom;
+
         left: 0;
         animation: waves-l2r 19.2s linear infinite;
         z-index: 1;
       }
-      
+
       .rin-water-2 {
         height: 60%;
         width: 99%;
@@ -59,7 +60,7 @@
         z-index: 2;
         opacity: 0.8;
       }
-      
+
       .rin-water-3 {
         height: 0;
         width: 99%;
@@ -68,9 +69,15 @@
         opacity: 0.9;
       }
     }
-    
+
   }
 
+</style>
+
+<style media="screen" scoped>
+  .rin-water-1, .rin-water-2, .rin-water-3 {
+    background-image: url("../assets/rin-loader-water.png");
+  }
 </style>
 
 <template>
