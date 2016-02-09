@@ -29,6 +29,11 @@ export default {
         self.$dispatch('UserSignInFailed', '本地已经登录，请注销后重试');
         return;
       }
+
+      if(!password) {
+        self.$dispatch('UserSignInFailed', 'please input your passsword');
+        return;        
+      }
       
       return self.$http.post('/api/user/signin', {username: username, password: SparkMD5.hash(password)}, function(data) {
         if(data.success) {
@@ -44,7 +49,7 @@ export default {
         } else {
           self.user = {};
           self.is_signined = false;
-          self.$dispatch('UserSignInFailed', data.message);
+          self.$dispatch('UserSignInFailed', data.message || 'login failed');
         }
       }, {
         xhr: {
