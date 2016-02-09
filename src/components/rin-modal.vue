@@ -18,7 +18,7 @@
       transform: translateY(-50%);
       .alert-line{
         position:absolute;
-        width:100%;
+        width:200%;
         height:30px;
       }
       .black-yellow-up{
@@ -120,8 +120,12 @@
         animation:line-scroll 2.5s linear infinite;
       }
       @keyframes line-scroll{
-        from {background-position-y :0px;}
-        to {background-position-y:200px;}
+        from {
+          transform: translateX(-200px);
+        }
+        to {
+          transform: translateX(0px);
+        }
       }
 
     }
