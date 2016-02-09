@@ -18,7 +18,7 @@
       transform: translateY(-50%);
       .alert-line{
         position:absolute;
-        width:100%;
+        width:200%;
         height:30px;
       }
       .black-yellow-up{
@@ -120,8 +120,12 @@
         animation:line-scroll 2.5s linear infinite;
       }
       @keyframes line-scroll{
-        from {background-position-y :0px;}
-        to {background-position-y:200px;}
+        from {
+          transform: translateX(-200px);
+        }
+        to {
+          transform: translateX(0px);
+        }
       }
 
     }
@@ -284,6 +288,7 @@
           self.modalCtrl.danger=false;
         }, 500);
 
+        document.body.removeEventListener('keyup', this.keyListener);
       },
       "openModal":function(opt){
         if (opt){
@@ -295,6 +300,7 @@
         this.$dispatch("open-modal-blur");
         this.modalCtrl.visible=true;
 
+        document.body.addEventListener('keyup', this.keyListener = keyListener.bind(this));
       },
       "doOK":function(){
         var evt="modal-ok-click";
@@ -308,4 +314,18 @@
       }
     }
   };
+
+  function keyListener(event) {
+    switch(event.keyCode) {
+      case 13://enter
+        this.doOK();
+      break;
+      case 27://escape
+        if(this.modalCtrl.noCancel) {
+          break;
+        }
+        this.closeModal();
+      break;
+    }
+  }
 </script>

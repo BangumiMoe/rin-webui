@@ -9,7 +9,7 @@
 </style>
 
 <template>
-<rin-modal modal-id="modal-signin">
+<rin-modal modal-id="modal-signin" v-on:keyup="onKeyup">
   <h1>{{"Welcome to Bangumi.moe" | locale}}</h1>
   <form>
     <div class="rin-message rin-error" v-if="message">{{ message | locale}}</div>
@@ -49,7 +49,8 @@
       return { username: null, password: null, message: null, loading: false };
     },
     methods:{
-      'cancel' () { return 0; }
+      'cancel' () { return 0; },
+      'onKeyup' () { this.message = ''; }
     },
     events:{
       'modal-ok-click' () {

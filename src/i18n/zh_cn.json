@@ -168,6 +168,7 @@
   "After all, you can also do custom searching by title if you are't satisfied with the tags filter.": "当然，如果您不满意标签过滤器的搜索结果，您还可以在这里直接搜索资源标题。",
   "nickname or email":"用户名或E-Mail",
   "please input your passsword":"请输入您的密码",
+  "login failed":"登录失败，请稍候重试",
   "Save account info locally":"在本地保存您的账户信息",
   "Uploaded time":"提交时间",
   "Category":"分类",

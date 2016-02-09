@@ -107,8 +107,8 @@
           this.$broadcast("close-modal");
         }
       },
-      'UserSignInFailed' () {
-        this.$broadcast('UserSignInFailed');
+      'UserSignInFailed' (...args) {
+        this.$broadcast('UserSignInFailed', ...args);
       },
       'UserSignOut' () {
         this.$broadcast('rinUserSignOut');
