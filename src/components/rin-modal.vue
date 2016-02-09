@@ -288,6 +288,7 @@
           self.modalCtrl.danger=false;
         }, 500);
 
+        document.body.removeEventListener('keyup', this.keyListener);
       },
       "openModal":function(opt){
         if (opt){
@@ -299,6 +300,7 @@
         this.$dispatch("open-modal-blur");
         this.modalCtrl.visible=true;
 
+        document.body.addEventListener('keyup', this.keyListener = keyListener.bind(this));
       },
       "doOK":function(){
         var evt="modal-ok-click";
@@ -312,4 +314,18 @@
       }
     }
   };
+
+  function keyListener(event) {
+    switch(event.keyCode) {
+      case 13://enter
+        this.doOK();
+      break;
+      case 27://escape
+        if(this.modalCtrl.noCancel) {
+          break;
+        }
+        this.closeModal();
+      break;
+    }
+  }
 </script>
