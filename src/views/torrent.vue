@@ -304,8 +304,6 @@
 	</div>
 </template>
 <script>
-import RLoader from '../components/rin-loader';
-
 export default {
 	data(){
 		return {
@@ -340,7 +338,7 @@ export default {
   	'date':require('../filters/dateFormat.js')
   },
   components: {
-    'rin-loader': RLoader,
+    'rin-loader': require('./../components/rin-loader'),
 		'tooltip': require('./../components/nav-tooltip')
   },
   ready () {

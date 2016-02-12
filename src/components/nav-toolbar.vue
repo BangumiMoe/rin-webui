@@ -152,6 +152,28 @@
       // Definition: 搜索图标点击 Toggle 事件.
       searchBarToggle: function (event) {
         this.searchBar.fixed = !this.searchBar.fixed;
+
+        /**** 点击其他地方时，关闭搜索 ****/
+        if(this.searchBar.fixed){
+
+          let el = document.querySelectorAll(".rin-search-bar")[0];
+          let openSearchBtn = document.getElementById("rin-search"); //打开搜索的按钮
+          let openSearchIcon = openSearchBtn.children[0]; //按钮内的icon
+          let self = this;
+
+          function search(event){
+            //判断点击的目标是不是[搜索]
+            if( !(el !== event.target && el.contains(event.target)) && event.target !== openSearchBtn && event.target !== openSearchIcon ) {
+              self.searchBar.fixed = false;
+
+              //移除监听事件
+              document.removeEventListener("click",search,false)
+            }
+          }
+
+          document.addEventListener("click",search,false);
+        }
+        
       },
 
       userSignAction (ev) {
@@ -188,23 +210,6 @@
       },
       UserSignInFailed () { this.user = {};   },
       UserSignOutOK ()    { this.user = {};   },
-    },
-    ready () {
-      let self = this;
-
-      /**** 点击其他地方时，关闭搜索 ****/
-      let el = document.querySelectorAll(".rin-search-bar")[0];
-      let openSearchBtn = document.getElementById("rin-search"); //打开搜索的按钮
-      let openSearchIcon = openSearchBtn.children[0]; //按钮内的icon
-
-      document.onclick = event => {
-        //判断点击的目标是不是[搜索]
-        if( !(el !== event.target && el.contains(event.target)) && event.target !== openSearchBtn && event.target !== openSearchIcon ) {
-            self.searchBar.fixed = false;
-        }
-
-      };
-
     }
   };
 </script>

@@ -233,7 +233,7 @@ ul,li,p{
 
 						<div class="item" v-for="d in item">
 							<div class="preview">
-								<img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+d.icon" alt="{{d.name}}">
+								<img v-bind:src="serverUrl + d.icon" alt="{{d.name}}">
 							</div>
 							<div class="content">
 								<p class="title rin-text-overflow"><a v-link="'/tag/' + d.tag_id" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
@@ -247,7 +247,11 @@ ul,li,p{
 							</div>
 							<div class="rin-tag">
 									<a v-for="t in d.team" class="haspic" v-link="'/search/' + d.tag_id + '+' + t.tag_id">
-                    <img v-bind:src="'https://bangumi-moe.phoenixstatic.com/'+(t.icon?t.icon:'data/images/2015/01/0fm7ihnu7lh2me3fog6.jpg')" alt="{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}">
+										<img src="../assets/akarin.jpg" v-if="!t.icon" />
+                    <img
+                    v-if="t.icon"
+                    v-bind:src="serverUrl + t.icon"
+                    alt="{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}" />
 										<span>{{ t.tag | locale }}</span>
 									</a>
 							</div>
@@ -279,6 +283,7 @@ export default{
       thisWeek:new Date().getDay(),
       week:['日','月','火','水','木','金','土'],
 			busy:true,
+			serverUrl:'https://bangumi-moe.phoenixstatic.com/'
   	}
   },
   filters:{
