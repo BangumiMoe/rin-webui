@@ -9,7 +9,7 @@
     top:0;
     left:0;
     .rin-modal{
-      overflow-y: hidden;
+      overflow: hidden;
       width: 100%;
       height:60%;
       left:0;
