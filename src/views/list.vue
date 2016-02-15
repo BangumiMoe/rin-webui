@@ -7,30 +7,29 @@ ul,li,p{
   list-style-type: none
 }
 .rin-column{
+	position:relative;
 	width:65px;
-	padding:25px;
 	box-sizing:border-box;
 	color:#fff;
 	background:@color-secondary-2-3;
 	cursor:pointer;
-
 	display:flex;
 	align-items: center;
 	justify-content: center;
-
-	>span{
-		/*fix firefox error*/
-		padding-right: 4px;
-		width:100%;
-	}
+	flex:1 0 auto;
 }
 .rin-vertical{
 	/*文字竖排*/
-  -webkit-writing-mode: vertical-lr;
-  -ms-writing-mode: tb-lr;
   writing-mode: vertical-lr;
   unicode-bidi: bidi-override;
   letter-spacing: 3px;
+	text-align:center;
+
+	/*垂直居中*/
+	position:absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
 }
 .rin-text-overflow{
 	/*文字截断*/
@@ -40,16 +39,15 @@ ul,li,p{
 }
 
 .rin-week{
-	height:100%;
-	overflow-y:auto;
+	overflow-y:hidden;
 
 	.rin-week-item{
+		flex:1 0 auto;
 		background: #eee;
 
 		.rin-week-title{
 			position:relative;
 			width:46px;
-			padding:15px;
 			box-sizing: border-box;
 			background:#ddd;
 			color:#fff;
@@ -91,8 +89,9 @@ ul,li,p{
 			overflow:hidden;
 
 			&.off{
-				width:0!important;
+				width:1px!important;
 				padding:0;
+				margin-left:-1px;
 			}
 
 			.item{
@@ -212,6 +211,7 @@ ul,li,p{
 .rin-loader{
   margin-right: 128px;
   margin-left: 65px;
+  transition: opacity .6s ease;
 }
 </style>
 <template>
@@ -394,7 +394,6 @@ export default{
 			}
 		}
 		function mac_mouse_wheel(e){
-			console.log(e,e.detail,e.wheelDelta);
 			var wrapWidth = wrap.scrollWidth/25;
 			if(e.wheelDelta<=-120){
 				wrap.scrollLeft += wrapWidth;
