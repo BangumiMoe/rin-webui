@@ -73,7 +73,12 @@
       }
 
       .list-item-title {
+        position:relative;
         float: left;
+        width: 40px;
+        height: 100%;
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
       }
 
       .day-item {
@@ -84,11 +89,12 @@
       }
 
       .list-item-ctnr {
-        /*max-width: 30em;*/
         width: auto;
-        height: 20em;
         padding-left: 1em;
         float: right;
+        flex-direction: column;
+        flex-wrap: wrap;
+        transition:all .3s linear;
       }
 
     }
@@ -125,6 +131,7 @@
 
     /* Tags Container. */
     .tag-item {
+      width:200px;
       display: inline-block;
       padding: .5em;
       margin: .5em .5em .5em 0;
@@ -139,6 +146,7 @@
       cursor: pointer;
       transition: all @cubicEase .4s;
       user-select: none;
+
 
       &:hover {
         border-color: @color-secondary-2-3;
@@ -219,7 +227,7 @@
 
     <!-- Preview Title. | 预览标题节点. -->
     <h4 class="preview-title">
-      <i class="material-icons search">&#xE8B6;</i> <span class="search-bar-title">搜索.</span> <span class="search-hint vertical-middle">( 点击固定 )</span>
+      <i class="material-icons search">&#xE8B6;</i> <span class="search-bar-title">搜索</span> <span class="search-hint vertical-middle">( 点击固定 )</span>
     </h4>
 
     <!-- Search Result List Container. | 搜索结果容器. -->
@@ -232,14 +240,14 @@
         <div class="day-item" v-for="(day, results) in dataObject.recentPrograms" role="listitem">
 
           <!-- 当日 Day 标题. -->
-          <div class="list-item-title" role="heading" v-text="day"></div>
+          <div class="list-item-title" role="heading">
+            <span class="rin-vertical">{{day | handleDay | locale}}</span>
+          </div>
 
           <!-- 当日结果列表. -->
-          <div class="list-item-ctnr" role="list">
+          <div class="list-item-ctnr rin-row" role="list">
 
-            <div class="list-column" v-for="(columnNum, column) in Math.ceil(results.length / 5)">
-              <div class="list-item tag-item" v-for="item in results | limitBy 5 columnNum*5" v-on:click="addUserTag" data-tag="{{item.tag.locale.zh_cn}}" v-text="item.tag.locale.zh_cn" role="listitem"></div>
-            </div>
+              <div class="list-item tag-item" v-for="item in results" v-on:click="addUserTag" data-tag="{{item.tag | locale}}" role="listitem">{{item.tag | locale}}</div>
 
           </div>
 
@@ -249,7 +257,7 @@
 
       <!-- 建议 Tag 容器. -->
       <div class="recommend-tags" role="list" v-show="nodeControl.recommendTags.show">
-        <div class="list-item tag-item" role="listitem" v-for="tag in dataObject.recommendTags" v-text="tag.locale.zh_cn" data-tag="{{tag.locale.zh_cn}}" v-on:click="addRecommendTag"></div>
+        <div class="list-item tag-item" role="listitem" v-for="tag in dataObject.recommendTags" v-text="tag | locale" data-tag="{{tag | locale}}" v-on:click="addRecommendTag"></div>
       </div>
 
       <!-- 搜索进度条 -->
@@ -334,8 +342,22 @@
     }
   },
 
+  filters:{
+    "handleDay":function(str){
+      // 将首字母转为大写,才能找到对应的字段
+      return str.substring(0,1).toUpperCase()+str.substring(1);
+    }
+  },
+
   // 事件处理函数定义.
   methods: {
+
+    setWidth: function(){
+      var allItem = document.querySelectorAll(".list-item-ctnr");
+      for(var i = 0;i<allItem.length;i++){
+        allItem[i].style.width = (allItem[i].scrollWidth>300 ? allItem[i].scrollWidth+20 : allItem[i].scrollWidth) +"px";
+      }
+    },
 
     // Definition: 获取最近四天的番组.
     recentProgramRequest: function () {
@@ -351,6 +373,10 @@
 
         // 数据绑定.
         self.dataObject.recentPrograms = result;
+
+        setTimeout(()=>{
+          self.setWidth();
+        },100)
       }
     },
 
@@ -467,6 +493,38 @@
         self.nodeControl.recentProgramList.show = true;
         self.nodeControl.recommendTags.show = false;
       }, 200);
+    }
+  },
+  ready() {
+
+
+    //横向滚动
+    var wrap = document.querySelector(".search-list-ctnr");
+    var eventName = document.onmousewheel !== undefined ? "mousewheel" : "DOMMouseScroll";
+    function mouse_wheel(e){
+      var wrapWidth = wrap.scrollWidth/25;
+
+      var e = window.event || e;
+      if(e.detail > 0 || e.wheelDelta < 0){
+        wrap.scrollLeft += wrapWidth;
+      }
+      else{
+        wrap.scrollLeft -= wrapWidth;
+      }
+    }
+    function mac_mouse_wheel(e){
+      var wrapWidth = wrap.scrollWidth/25;
+      if(e.wheelDelta<=-120){
+        wrap.scrollLeft += wrapWidth;
+      }else if(e.wheelDelta >= 120){
+        wrap.scrollLeft -= wrapWidth;
+      }
+    }
+    let is = navigator.userAgent.toLowerCase().match(/mac |chrome/g);
+    if(is && is.length > 1){
+      wrap.addEventListener(eventName,mac_mouse_wheel);
+    }else{
+      wrap.addEventListener(eventName,mouse_wheel);
     }
   }
 

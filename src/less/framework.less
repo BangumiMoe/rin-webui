@@ -244,3 +244,17 @@ form {
 .rin-hide {
   display: none;
 }
+
+.rin-vertical{
+  /*文字竖排*/
+  writing-mode: vertical-lr;
+  unicode-bidi: bidi-override;
+  letter-spacing: 3px;
+  text-align:center;
+
+  /*垂直居中*/
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+}

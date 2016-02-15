@@ -18,19 +18,7 @@ ul,li,p{
 	justify-content: center;
 	flex:1 0 auto;
 }
-.rin-vertical{
-	/*文字竖排*/
-  writing-mode: vertical-lr;
-  unicode-bidi: bidi-override;
-  letter-spacing: 3px;
-	text-align:center;
 
-	/*垂直居中*/
-	position:absolute;
-	top:50%;
-	left:50%;
-	transform: translate(-50%, -50%);
-}
 .rin-text-overflow{
 	/*文字截断*/
 	overflow: hidden;
