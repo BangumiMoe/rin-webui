@@ -9,6 +9,7 @@
     .rin-button {
       margin: 8px;
       text-shadow: 0 0 5px @color-primary-3;
+      z-index:2;
     }
     
     .user-toolbar, .rin-logo {
