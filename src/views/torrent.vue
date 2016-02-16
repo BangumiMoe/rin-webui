@@ -344,7 +344,7 @@ export default {
 			for (let img of images){
 				if (!img.attributes['style']) break;
 				let style=img.attributes['style'].value,styleWidth,styleHeight;
-				[styleWidth,styleHeight]= [style.match(/width\s*?:\s*?([0-9]*?)px/i)[1] || (img.img.attributes['width'] ? img.img.attributes['width'].value : null), style.match(/height\s*?:\s*?([0-9]*?)px/i)[1] || (img.img.attributes['height'] ? img.img.attributes['width'].value : null)];
+				[styleWidth,styleHeight]= [style.match(/width\s*?:\s*?([0-9]*?)px/i)[1] || (img.attributes['width'] ? img.attributes['width'].value : null), style.match(/height\s*?:\s*?([0-9]*?)px/i)[1] || (img.attributes['height'] ? img.attributes['width'].value : null)];
 				if ((!styleWidth || !styleHeight) || ( styleWidth<wrapperWidth) ) break;
 				styleHeight=Math.round(styleHeight * wrapperWidth / styleWidth);
 				styleWidth=wrapperWidth;
