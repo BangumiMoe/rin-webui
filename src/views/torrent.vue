@@ -47,8 +47,11 @@
 
 .rin-content{
 	position:relative;
-  padding-top: 53px;
   width: 100%;
+
+	&.head-fixed{
+		padding-top: 53px;
+	}
 
 	.rin-details{
 		width:100%;
@@ -269,7 +272,7 @@
         <span>{{data.title || 'loading...'}}</span>
       </h3>
 		</div>
-		<div class="rin-content" v-show="!busy" transition="rin-fade">
+		<div class="rin-content" v-show="!busy" transition="rin-fade" v-bind:style="{ paddingTop :( headerFixed ? getHeadHeight() :0) +'px'}">
 			<div class="rin-details">
 				<p class="rin-details-info">
 
@@ -331,7 +334,12 @@ export default {
 			this.commentStatus = false;
 		},
     backHomepage () {
-      window.history.back()
+			if (window.history.lentgh>1){
+				window.history.back()
+			}else{
+				this.$route.router.go({name:"index"});
+			}
+
     },
 		getScrollWidth () {
 			var noScroll, scroll, oDiv = document.createElement("DIV");
@@ -341,6 +349,9 @@ export default {
 			scroll = oDiv.clientWidth;
 			document.body.removeChild(oDiv);
 			return noScroll-scroll;
+		},
+		getHeadHeight(){
+		 return	document.getElementsByClassName('rin-head')[0].clientHeight + 3;
 		},
 		resizeImage () {
 			var wrapper=document.getElementsByClassName('rin-details-intro')[0],
