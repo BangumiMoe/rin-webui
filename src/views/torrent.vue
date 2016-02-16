@@ -30,6 +30,7 @@
 	overflow:hidden;
 	width:100%;
 	margin-right:128px;
+	min-height: 53px;
 	&.head-fixed{
 		position: fixed;
 		width: auto;
