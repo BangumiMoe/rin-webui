@@ -351,11 +351,16 @@ export default {
 				if (!img.attributes['style']) break;
 				let style=img.attributes['style'].value,styleWidth,styleHeight;
 				[styleWidth,styleHeight]= [style.match(/width\s*?:\s*?([0-9]*?)px/i)[1] || (img.attributes['width'] ? img.attributes['width'].value : null), style.match(/height\s*?:\s*?([0-9]*?)px/i)[1] || (img.attributes['height'] ? img.attributes['width'].value : null)];
-				if ((!styleWidth || !styleHeight) || ( styleWidth<wrapperWidth) ) break;
-				styleHeight=Math.round(styleHeight * wrapperWidth / styleWidth);
-				styleWidth=wrapperWidth;
-				img.style.width=styleWidth+'px';
-				img.style.height=styleHeight+'px';
+				if ((!styleWidth || !styleHeight)) break;
+				if (!img.getAttribute('data-origin-width')) {
+					img.setAttribute('data-origin-width',styleWidth);
+				}
+				if (img.getAttribute('data-origin-width') > wrapperWidth){
+					styleHeight=Math.round(styleHeight * wrapperWidth / styleWidth);
+					styleWidth=wrapperWidth;
+					img.style.width=styleWidth+'px';
+					img.style.height=styleHeight+'px';
+				}
 			}
 		},
 		fixHeader (e){
