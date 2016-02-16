@@ -357,7 +357,7 @@ export default {
 			var wrapper=document.getElementsByClassName('rin-details-intro')[0],
 					images=wrapper.getElementsByTagName('img'),
 					wrapperWidth=wrapper.clientWidth-60;
-			if (images.length == 0) return;
+			if (images.length == 0 || wrapperWidth<5) return;
 			for (let img of images){
 				if (!img.attributes['style']) break;
 				let style=img.attributes['style'].value,styleWidth,styleHeight;
