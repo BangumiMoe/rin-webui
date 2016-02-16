@@ -256,7 +256,7 @@
 
   <div id="rin-main" style="width: calc(100% - 128px);">
     <div is="rin-loader" :progress="progress" v-show="busy" transition="rin-fade"></div>
-		<div class="rin-head" v-show="!busy" transition="rin-fade">
+		<div class="rin-head" v-show="!busy" transition="rin-fade" style="margin-right:{{getScrollWidth()+128}}px;">
 			<h3>
         <a class="rin-button rin-left" href="javascript:void(0)" @click="backHomepage">
           <i class="material-icons">&#xE5C4;</i>
@@ -327,6 +327,31 @@ export default {
     backHomepage () {
       window.history.back()
     },
+		getScrollWidth:()=>{
+			var noScroll, scroll, oDiv = document.createElement("DIV");
+			oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
+			noScroll = document.body.appendChild(oDiv).clientWidth;
+			oDiv.style.overflowY = "scroll";
+			scroll = oDiv.clientWidth;
+			document.body.removeChild(oDiv);
+			return noScroll-scroll;
+		},
+		resizeImage:()=>{
+			var wrapper=document.getElementsByClassName('rin-details-intro')[0],
+					images=wrapper.getElementsByTagName('img'),
+					wrapperWidth=wrapper.clientWidth-60;
+			if (images.length == 0) return;
+			for (let img of images){
+				if (!img.attributes['style']) break;
+				let style=img.attributes['style'].value,styleWidth,styleHeight;
+				[styleWidth,styleHeight]= [style.match(/width\s*?:\s*?([0-9]*?)px/i)[1] || (img.img.attributes['width'] ? img.img.attributes['width'].value : null), style.match(/height\s*?:\s*?([0-9]*?)px/i)[1] || (img.img.attributes['height'] ? img.img.attributes['width'].value : null)];
+				if ((!styleWidth || !styleHeight) || ( styleWidth<wrapperWidth) ) break;
+				styleHeight=Math.round(styleHeight * wrapperWidth / styleWidth);
+				styleWidth=wrapperWidth;
+				img.style.width=styleWidth+'px';
+				img.style.height=styleHeight+'px';
+			}
+		}
 	},
 	route: {
 		data (t) {
@@ -347,9 +372,16 @@ export default {
 			self.data = data;
 			//torrent文件
 			self.data.downloadTorrent = "/download/torrent/" + self.id + "/" + data.infoHash + ".torrent";
-
 			self.busy = false;
+			setTimeout(()=>{
+				self.resizeImage();
+				window.addEventListener('resize',()=>{
+					this.resizeImage();
+				});
+			},100)
+
 		});
+
   }
 }
 </script>
