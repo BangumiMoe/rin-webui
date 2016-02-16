@@ -19,7 +19,7 @@
 }
 
 .rin-head{
-	position:fixed;
+	position:relative;;
 	top:0;
 	left:0;
 	right:0;
@@ -28,7 +28,12 @@
 	background-color: @color-th-bg;
 	z-index:1;
 	overflow:hidden;
+	width:100%;
 	margin-right:128px;
+	&.head-fixed{
+		position: fixed;
+		width: auto;
+	}
 
 	h3{
 		color:@color-th;
@@ -254,9 +259,9 @@
 		评论内容
 	</div>
 
-  <div id="rin-main" style="width: calc(100% - 128px);">
+  <div id="rin-main" style="width: calc(100% - 128px);" v-on:scroll="fixHeader">
     <div is="rin-loader" :progress="progress" v-show="busy" transition="rin-fade"></div>
-		<div class="rin-head" v-show="!busy" transition="rin-fade" style="margin-right:{{getScrollWidth()+128}}px;">
+		<div class="rin-head" v-show="!busy" transition="rin-fade" style="margin-right:{{getScrollWidth()+128}}px;" v-bind:class="{ 'head-fixed' : headerFixed}">
 			<h3>
         <a class="rin-button rin-left" href="javascript:void(0)" @click="backHomepage">
           <i class="material-icons">&#xE5C4;</i>
@@ -311,6 +316,7 @@ export default {
 			isShow:false,
 			commentStatus:false,
 			busy:true,
+			headerFixed:false
 		}
 	},
 	methods:{
@@ -327,7 +333,7 @@ export default {
     backHomepage () {
       window.history.back()
     },
-		getScrollWidth:()=>{
+		getScrollWidth () {
 			var noScroll, scroll, oDiv = document.createElement("DIV");
 			oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
 			noScroll = document.body.appendChild(oDiv).clientWidth;
@@ -336,7 +342,7 @@ export default {
 			document.body.removeChild(oDiv);
 			return noScroll-scroll;
 		},
-		resizeImage:()=>{
+		resizeImage () {
 			var wrapper=document.getElementsByClassName('rin-details-intro')[0],
 					images=wrapper.getElementsByTagName('img'),
 					wrapperWidth=wrapper.clientWidth-60;
@@ -350,6 +356,13 @@ export default {
 				styleWidth=wrapperWidth;
 				img.style.width=styleWidth+'px';
 				img.style.height=styleHeight+'px';
+			}
+		},
+		fixHeader (e){
+			if (e.target.scrollTop==0){
+				if (this.headerFixed) this.headerFixed=false;
+			}else if (!this.headerFixed){
+				this.headerFixed=true;
 			}
 		}
 	},
@@ -376,9 +389,11 @@ export default {
 			setTimeout(()=>{
 				self.resizeImage();
 				window.addEventListener('resize',()=>{
-					this.resizeImage();
+					self.resizeImage();
 				});
 			},100)
+
+
 
 		});
 
