@@ -361,15 +361,18 @@ export default {
 			if (images.length == 0 || wrapperWidth<5) return;
 			for (let img of images){
 				if (!img.attributes['style']) break;
-				let style=img.attributes['style'].value,styleWidth,styleHeight;
+				let style=img.attributes['style'].value,styleWidth,styleHeight,originDom,origin;
 				[styleWidth,styleHeight]= [style.match(/width\s*?:\s*?([0-9]*?)px/i)[1] || (img.attributes['width'] ? img.attributes['width'].value : null), style.match(/height\s*?:\s*?([0-9]*?)px/i)[1] || (img.attributes['height'] ? img.attributes['width'].value : null)];
 				if ((!styleWidth || !styleHeight)) break;
-				if (!img.getAttribute('data-origin-width')) {
-					img.setAttribute('data-origin-width',styleWidth);
+				originDom=img.getAttribute('data-origin-info');
+				if (!originDom) {
+					img.setAttribute('data-origin-info',styleWidth+":"+(styleHeight/styleWidth));
+					originDom=img.getAttribute('data-origin-info');
 				}
-				if (img.getAttribute('data-origin-width') > wrapperWidth){
-					styleHeight=Math.round(styleHeight * wrapperWidth / styleWidth);
+				origin = originDom.split(':');
+				if (origin[0]> wrapperWidth){
 					styleWidth=wrapperWidth;
+					styleHeight=Math.round(styleWidth * origin[1]);
 					img.style.width=styleWidth+'px';
 					img.style.height=styleHeight+'px';
 				}
