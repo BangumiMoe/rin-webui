@@ -224,7 +224,7 @@ ul,li,p{
 								<img v-bind:src="serverUrl + d.icon" alt="{{d.name}}">
 							</div>
 							<div class="content">
-								<p class="title rin-text-overflow"><a v-link="'/tag/' + d.tag_id" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
+								<p class="title rin-text-overflow"><a v-link="'/search/`' + d.tag_id + '`'" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
 								<p class="date">
 									{{'On air' | locale}}: {{d.startDate | handleDate 'yyyy/MM/dd HH:mm'}}
@@ -234,7 +234,7 @@ ul,li,p{
 								</p>
 							</div>
 							<div class="rin-tag">
-									<a v-for="t in d.team" class="haspic" v-link="'/search/' + d.tag_id + '+' + t.tag_id">
+									<a v-for="t in d.team" class="haspic" v-link="'/search/' + '`' + d.tag_id + '` `' + t.tag_id + '`'">
 										<img src="../assets/akarin.jpg" v-if="!t.icon" />
                     <img
                     v-if="t.icon"

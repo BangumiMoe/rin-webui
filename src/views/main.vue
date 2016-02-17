@@ -263,7 +263,8 @@
         },
         modalBlur:false,
         gravatarUrl:"https://bangumi-moe.phoenixstatic.com/avatar/",
-        teamIconBaseUrl:"https://bangumi-moe.phoenixstatic.com/"
+        teamIconBaseUrl:"https://bangumi-moe.phoenixstatic.com/",
+        searchKey:null
       }
     },
     methods: {
@@ -279,11 +280,25 @@
   //          }, 2000);
         });
       },
+      doSearch: function(key) {
+        let self = this;
+        self.searchKey=key;
+        self.busy=true;
+        this.$http.get('https://bangumi.moe/api/v2/torrent/search', {limit:50,p:self.currentPage,query:key}, function(data) {
+          self.torrent.lastest = data.torrents;
+          self.torrent.pageNum=data.page_count;
+          self.busy=false;
+        });
+      },
       chgPage:function(offset){
         if (!offset) return;
         let self=this;
         if ((self.currentPage+offset>=1)&&(self.currentPage+offset<=self.torrent.pageNum)){
-          self.$route.router.go({name:"page",params:{number:self.currentPage+=offset}});
+          if (self.searchKey){
+            self.$route.router.go({name:"search",params:{number:self.currentPage+=offset,key:self.searchKey}});
+          }else{
+            self.$route.router.go({name:"page",params:{number:self.currentPage+=offset}});
+          }
           setTimeout(function(){
             document.getElementById("rin-wrapper").scrollTop=0;
           },300)
@@ -354,8 +369,11 @@
            break;
         case "search":
           //TODO:搜索处理
+          if ((self.$route.params.number==parseInt(self.$route.params.number))&&parseInt(self.$route.params.number)>0){
+            self.currentPage=parseInt(self.$route.params.number);
+          }
           console.log("Search in process");
-          alert("搜索请求Get√，Key="+self.$route.params.key);
+          self.doSearch(self.$route.params.key);
           break;
          default:
            self.getTorrents();

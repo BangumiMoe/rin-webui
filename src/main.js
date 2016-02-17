@@ -11,6 +11,7 @@ router.map({
   '/': { name:"index", component: require('./views/main') ,mode:"normal"},
   '/page/:number': {name:"page" ,component: require('./views/main') ,mode:"page"},
   '/search/:key': { name:"search" ,component: require('./views/main'),mode:"search" },
+  '/search/:key/:number': { name:"search" ,component: require('./views/main'),mode:"search" },
   '/bangumi/list' :{
   	name:'list',
   	component: require('./views/list')
