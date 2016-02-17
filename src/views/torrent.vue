@@ -335,7 +335,7 @@ export default {
 			this.commentStatus = false;
 		},
     backHomepage () {
-			if (window.history.lentgh>1){
+			if (window.history.length>1){
 				window.history.back()
 			}else{
 				this.$route.router.go({name:"index"});

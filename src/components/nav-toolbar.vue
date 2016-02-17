@@ -5,19 +5,19 @@
     background-color: @color-primary-0;
     color: @color-primary-2;
     z-index:1;
-    
+
     .rin-button {
       margin: 8px;
       text-shadow: 0 0 5px @color-primary-3;
       z-index:2;
     }
-    
+
     .user-toolbar, .rin-logo {
       .rin-button {
         text-shadow: none;
         background: @color-primary-3;
         border: 4px solid @color-primary-2;
-        
+
         i {
           z-index: 2;
           width: 40px;
@@ -29,10 +29,10 @@
         &:hover {
           background: @color-primary-4;
           border: 4px solid @color-primary-1;
-          
+
           i { background: @color-primary-4; }
         }
-        
+
         .rin-tooltip-wrap {
           z-index: 1;
         }
@@ -100,7 +100,7 @@
     </a>
   </div>
 
-  <a class="rin-button rin-torrents" v-link="'/'">
+  <a class="rin-button rin-torrents" @click="backHomepage">
     <i class="material-icons">&#xE5C4;</i>
     <tooltip :info="'Back to Index' | locale"></tooltip>
   </a>
@@ -174,7 +174,14 @@
 
           document.addEventListener("click",search,false);
         }
-        
+
+      },
+      backHomepage () {
+  			if (window.history.length>1){
+  				window.history.back()
+  			}else{
+  				this.$route.router.go({name:"index"});
+  			}
       },
 
       userSignAction (ev) {
@@ -194,7 +201,8 @@
         if(this.user._id) {
           this.$dispatch('UserSignOut');
         }
-      }
+      },
+
     },
     components: {
       'search-bar': require('./nav-toolbar-search'),
