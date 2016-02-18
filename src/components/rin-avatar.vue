@@ -226,7 +226,7 @@
 
   .tri-circles-content {
     z-index: 20;
-    background-color: black;
+    /* background-color: black; */
     background-repeat: no-repeat;
     background-size: contain;
   }
