@@ -95,6 +95,12 @@
             padding:5px 0;
             text-align: center;
 
+            span.rin-table-comments{
+              color: gray;
+              font-size: 12px;
+              padding-left: 5px;
+            }
+
             i{ line-height: 170%; }
 
             .rin-magnet {
@@ -211,6 +217,7 @@
                 <span>{{t.team.tag | locale}}</span>
               </a>
               <a target="_blank">{{t.title}}</a>
+              <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{ ((t.comments >1) ? 'Comments' :'Comment' )| locale }}</span>
             </td>
             <td nowrap="nowrap" align="center">
               <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}{{magnentt}}"><i class="material-icons">&#xE2C4;</i></a>

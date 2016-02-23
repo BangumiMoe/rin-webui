@@ -179,5 +179,7 @@
   "Login": "Login",
   "Logout": "Logout",
   "Back to Index": "Back to Index",
-  "Customize RSS": "Custom RSS"
+  "Customize RSS": "Custom RSS",
+  "Comments" : "Comments",
+  "Comment" : "Comment"
 }
