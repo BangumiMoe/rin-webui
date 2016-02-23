@@ -277,11 +277,10 @@ table.rin-table {
       transition: all .2s;
 
       td {
-        line-height: 170%;
         padding: 12px 0;
-
-        i{ line-height: 170%; }
       }
+
+      i { color: @color-primary-3 }
 
       &:nth-child(odd) {
         background-color: @color-tr-odd;
@@ -296,4 +295,11 @@ table.rin-table {
       padding: 8px 0;
     }
   }
+}
+
+.rin-truncate {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

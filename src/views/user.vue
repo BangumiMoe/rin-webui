@@ -80,6 +80,10 @@
     }
   }
 }
+table td:first-child {
+  padding-left: 1em;
+  padding-right: 1em;
+}
 
 </style>
 
@@ -114,32 +118,51 @@
       </div>
       <h2>{{"最近种子" | locale}}</h2>
 
-      <table class="torrents rin-table">
-        <tbody>
-          <tr v-for="i in torrents.torrents">
-            <td class="rin-center">
-              <a class="rin-inline-tag haspic" v-link="'/team/' + i.team._id" v-if="i.team">
-                <img  v-if="i.team.icon" v-bind:src="'https://bangumi-moe.phoenixstatic.com/' + i.team.icon" />
-                <img  src="../assets/akarin.jpg" v-if="!i.team.icon"/>
-                <span>{{ (i.team.tag || 'No Team' ) | locale }}</span>
-              </a>
+          <table class="torrents rin-table">
+            <tbody>
+              <tr v-for="i in torrents.torrents">
+                <td class="rin-center">{{i.publish_time | date 'lately'}}</td>
 
-              <a class="rin-inline-tag haspic" v-if="!i.team">
-                <img v-bind:src="'https://bangumi-moe.phoenixstatic.com/' + i.uploader.emailHash" />
-                <span>{{ i.uploader.username }}</span>
-              </a>
-            </td>
-            <td>
-              <a v-link="'/torrent/' + i._id" >
-                <span>{{i.title}}</span>
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <td>
+                  <a class="rin-inline-tag haspic" v-link="'/team/' + i.team._id" v-if="i.team">
+                    <img  v-if="i.team.icon" v-bind:src="teamIconBaseUrl + i.team.icon" />
+                    <img  src="../assets/akarin.jpg" v-if="!i.team.icon"/>
+                    <span>{{ (i.team.tag || 'No Team' ) | locale }}</span>
+                  </a>
+
+                  <a class="rin-inline-tag haspic" v-if="!i.team">
+                    <img v-bind:src="'https://bangumi-moe.phoenixstatic.com/' + i.uploader.emailHash" />
+                    <span>{{ i.uploader.username }}</span>
+                  </a>
+
+                  <a class="rin-truncate" style="width:60%" v-link="'/torrent/' + i._id">
+                    <span>{{i.title}}</span>
+                    <span class="rin-inline-tag" v-if="i.comments">{{i.comments}} {{'Comments'|locale}}</span>
+                  </a>
+                </td>
+
+                <td>
+                  <button class="rin-button">
+                    <i class="material-icons">&#xE254;</i>
+                    <tooltip :info="'Edit' | locale"></tooltip>
+                  </button>
+                </td>
+
+                <td>
+                  <button class="rin-button">
+                    <i class="material-icons">&#xE872;</i>
+                    <tooltip :info="'Delete' | locale"></tooltip>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
     </div>
+
+
   </div>
+
 
 
 </template>
@@ -156,11 +179,15 @@ export default {
     return {
       user: {},
       loaded: false,
-      torrents: []
+      torrents: [],
+      teamIconBaseUrl: "https://bangumi-moe.phoenixstatic.com/",
     }
   },
   components: {
     "rin-avatar": require("../components/rin-avatar")
+  },
+  filters: {
+     'date':require('../filters/dateFormat.js')
   },
   methods: {
     getIcon(i){
