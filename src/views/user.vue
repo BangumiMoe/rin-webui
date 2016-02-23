@@ -113,11 +113,31 @@
         </a>
       </div>
       <h2>{{"最近种子" | locale}}</h2>
-      <div class="torrents">
-        <a class="rin-inline-tag" v-link="'/torrent/' + i._id" v-for="i in torrents.torrents">
-          <span>{{i.title}}</span>
-        </a>
-      </div>
+
+      <table class="torrents rin-table">
+        <tbody>
+          <tr v-for="i in torrents.torrents">
+            <td class="rin-center">
+              <a class="rin-inline-tag haspic" v-link="'/team/' + i.team._id" v-if="i.team">
+                <img  v-if="i.team.icon" v-bind:src="'https://bangumi-moe.phoenixstatic.com/' + i.team.icon" />
+                <img  src="../assets/akarin.jpg" v-if="!i.team.icon"/>
+                <span>{{ (i.team.tag || 'No Team' ) | locale }}</span>
+              </a>
+
+              <a class="rin-inline-tag haspic" v-if="!i.team">
+                <img v-bind:src="'https://bangumi-moe.phoenixstatic.com/' + i.uploader.emailHash" />
+                <span>{{ i.uploader.username }}</span>
+              </a>
+            </td>
+            <td>
+              <a v-link="'/torrent/' + i._id" >
+                <span>{{i.title}}</span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
 

@@ -258,3 +258,42 @@ form {
   left:50%;
   transform: translate(-50%, -50%);
 }
+
+table.rin-table {
+  width: 100%;
+  font-size:0.9em;
+
+  thead {
+    color: @color-th;
+    background-color: @color-th-bg;
+    th {font-weight: 400}
+  }
+
+  tbody {
+    padding-top:33px;
+
+    tr {
+      cursor: pointer;
+      transition: all .2s;
+
+      td {
+        line-height: 170%;
+        padding: 12px 0;
+
+        i{ line-height: 170%; }
+      }
+
+      &:nth-child(odd) {
+        background-color: @color-tr-odd;
+      }
+      &:hover{
+        background-color: @color-tr-hover;
+      }
+    }
+
+    th{
+      text-align: center;
+      padding: 8px 0;
+    }
+  }
+}
