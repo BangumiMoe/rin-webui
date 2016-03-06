@@ -90,13 +90,25 @@
 
       .list-item-ctnr {
         width: auto;
-        padding-left: 1em;
+        padding:0 1em;
         float: right;
         flex-direction: column;
         flex-wrap: wrap;
         transition:all .3s linear;
-      }
+        font-size:14px;
 
+        a{
+          padding:5px;
+        }
+      }
+      
+      .recommend-tags{
+        font-size:14px;
+
+        a{
+          padding:5px;
+        }
+      }
     }
 
     /* Search Bar Container. | 搜索条部分. */
@@ -104,6 +116,7 @@
     @searchButtonWidth : 50px;
 
       .search-bar {
+        position:relative;
         padding: 1em 0 .5em 0;
       }
 
@@ -112,11 +125,42 @@
         font-size: 14px;
         font-family: "Microsoft YaHei";
         float: left;
+        height:40px;
+        line-height:40px;
+        box-sizing: border-box;
+      }
+
+      .search-input-tag{
+        position:absolute;
+        
+        >a{
+          position:relative;
+
+          i.material-icons{
+            opacity:0;
+            transition:opacity .2s linear;
+            font-size:12px;
+            position:absolute;
+            right:0;
+            top:0;
+            padding:4px;
+            background:#eee;
+          }
+
+          &:hover{
+            i.material-icons{
+              opacity:1;
+              color:#6d6d6d;
+            }
+          }
+
+        }
       }
 
       .search-submit-btn {
         background-color: transparent;
         width: @searchButtonWidth;
+        height: 40px;
         border: none;
         float: right;
       }
@@ -243,11 +287,11 @@
           <div class="list-item-title" role="heading">
             <span class="rin-vertical">{{day | handleDay | locale}}</span>
           </div>
-
+ 
           <!-- 当日结果列表. -->
-          <div class="list-item-ctnr rin-row" role="list">
+          <div class="list-item-ctnr rin-row rin-tag" role="list">
 
-              <div class="list-item tag-item" v-for="item in results" v-on:click="addUserTag" data-tag="{{item.tag | locale}}" role="listitem">{{item.tag | locale}}</div>
+              <a href="javascript:void(0);" v-for="item in results" v-on:click="addUserTag(item.tag,$event)" data-tag="{{item.tag | locale}}" role="listitem">{{item.tag | locale}}</a>
 
           </div>
 
@@ -256,8 +300,14 @@
       </div>
 
       <!-- 建议 Tag 容器. -->
-      <div class="recommend-tags" role="list" v-show="nodeControl.recommendTags.show">
-        <div class="list-item tag-item" role="listitem" v-for="tag in dataObject.recommendTags" v-text="tag | locale" data-tag="{{tag | locale}}" v-on:click="addRecommendTag"></div>
+      <div class="recommend-tags rin-tag" role="list" v-show="nodeControl.recommendTags.show">
+        <a 
+          role="listitem" 
+          v-for="tag in dataObject.recommendTags"
+          data-tag="{{tag | locale}}"
+          v-on:click="addRecommendTag(tag, $event)"
+          href="javascript:void(0);"
+          >{{tag | locale}}</a>
       </div>
 
       <!-- 搜索进度条 -->
@@ -273,15 +323,33 @@
       <!-- Search Bar Container. | 搜索栏容器. -->
       <div class="search-bar clear-float">
         <!-- 搜索栏本体. -->
-        <input type="text" class="rin-input vertical-middle search-input" v-model="searchBarValue" role="search" aria-label="在这里搜索当前团队内容." placeholder="在这里搜索..." v-on:click="getRecommendTags" v-on:keyup="getRecommendTags" v-on:keyup.13="searchSubmit" v-on:blur="showRecentProgram">
+
+        <div class="search-input-tag rin-tag">
+          <a 
+            v-for="tag in userTagList"
+            track-by="$index"
+            href="javascript:void(0);"
+            data-value="{{tag}}"
+            v-on:click="removeUserTag($index,$event)"
+            class="recommendTags"
+          >
+          {{tag | locale}}
+          <i class="material-icons recommendTags" data-value="{{tag}}">&#xE5CD;</i></a>
+        </div>
+        <input 
+          type="text" class="rin-input vertical-middle search-input" 
+          v-on:keyup="getRecommendTags" 
+          v-on:keyup.13="searchSubmit" 
+          v-on:blur="showRecentProgram"
+          v-bind:style="searchObjectStyle"
+          v-model="searchBarValue"
+          placeholder="{{'Type to search title' | locale}}"
+        >
 
         <!-- Rock'n Roll! -->
-        <button type="submit" role="button" class="search-submit-btn" v-on:click="searchSubmit"><i class="material-icons search">&#xE8B6;</i></button>
-      </div>
-
-      <!-- User-input-tags Container. | 用户已输入标签容器. -->
-      <div class="tags-ctnr">
-        <div class="tag-item" v-for="userTag in userTagList" v-text="userTag" data-value="{{userTag}}" v-on:click="removeUserTag"></div>
+        <button type="submit" role="button" class="search-submit-btn" v-on:click="searchSubmit">
+          <i class="material-icons search">&#xE8B6;</i>
+        </button>
       </div>
 
     </div>
@@ -303,6 +371,10 @@
       cursorKeyword: "",  // 光标处 Tag.
       loadingText: "正在努力获取最近四天的番组... > <",
       userTagList: [],  // 用户输入标签数组.
+      searchObjectStyle:{
+        paddingLeft:0,
+        marginTop:0
+      },
 
       // 节点控制对象.
       nodeControl: {
@@ -319,12 +391,13 @@
       dataObject: {
         // 最近四天番剧数据.
         recentPrograms: {
-          thursday: [],
-          friday: []
+
         },
 
         // 推荐 Tag 数据:
-        recommendTags: []
+        recommendTags: [],
+        // 推荐 tag数据的缓存
+        recommendTagsCache:{}
       },
 
       // 搜索事件相关数据.
@@ -355,10 +428,13 @@
     setWidth: function(){
       var allItem = document.querySelectorAll(".list-item-ctnr");
       for(var i = 0;i<allItem.length;i++){
+        allItem[i].style.width = "initial";
         allItem[i].style.width = (allItem[i].scrollWidth>300 ? allItem[i].scrollWidth+20 : allItem[i].scrollWidth) +"px";
       }
     },
-
+    locale: function(obj){
+          return obj.locale ? obj.locale[this.$root.lang] : obj.name;
+    },
     // Definition: 获取最近四天的番组.
     recentProgramRequest: function () {
       // 发送请求获取最近数据.
@@ -371,35 +447,67 @@
         self.loadingText = "搜索完成惹！";
         self.nodeControl.loading = false;
 
+        function sortLenth(val1,val2){
+          if(self.locale(val1.tag).length > self.locale(val2.tag).length){
+            return 0;
+          }else{
+            return 1;
+          }
+        }
+
+        // 按文字长度排序
+        for(let r in result){
+          result[r].sort(sortLenth)
+        }
         // 数据绑定.
         self.dataObject.recentPrograms = result;
 
         setTimeout(()=>{
           self.setWidth();
-        },100)
+        },0)
       }
     },
 
     // Definition: 从最近番组中选择 Tag.
-    addUserTag: function (event) {
-      var tagData = event.target.attributes["data-tag"].value || event.srcElement.attributes["data-tag"].value;
-      if (this.searchBarValue.indexOf(tagData) > -1) { return; }  // 如果已存在该 Tag 则返回.
-      this.searchBarValue += tagData + " ";
+    addUserTag: function (tag,event) {
+
+      var tagData = this.locale(tag);
+
+      for(let i = 0,len = this.userTagList.length; i < len; i++){
+        if(this.userTagList[i]._id == tag._id){
+          return; // 如果已存在该 Tag 则返回.
+        }
+      }
+
+      this.userTagList.push(tag)
+
+      setTimeout(() =>{
+        this.setSearchInputStyle();
+      },0)
     },
 
-    addRecommendTag: function (event) {
+    addRecommendTag: function (tag,event) {
       var self = this;
       clearTimeout(self.searchEvent.searchBlurTimeout);
-      var tagData = event.target.attributes["data-tag"].value || event.srcElement.attributes["data-tag"].value;
-      if (this.searchBarValue.indexOf(tagData) > -1) { return; }  // 如果已存在该 Tag 则返回.
-      this.searchBarValue = this.searchBarValue.replace(self.cursorKeyword, tagData)
+
+      var tagData = self.locale(tag);
+      if (this.userTagList.indexOf(tagData) > -1) { return; }  // 如果已存在该 Tag 则返回.
+
+      this.userTagList.push(tag)
+
+      setTimeout(() =>{
+        this.setSearchInputStyle();
+      },0)
+
     },
 
     // Definition: 删除搜索栏中的 Tag.
-    removeUserTag: function (event) {
-      var targetElement = event.srcElement || event.target;
-      var value = targetElement.attributes["data-value"].value;
-      this.userTagList.indexOf(value) > -1 && this.userTagList.splice(this.userTagList.indexOf(value), 1);
+    removeUserTag: function (index,event) {
+      this.userTagList[index] && this.userTagList.splice(index, 1);
+
+      setTimeout(() =>{
+        this.setSearchInputStyle();
+      },0)
     },
 
     // Definition: 当提交搜索时生成 Tag.
@@ -410,30 +518,51 @@
     // 搜索请求事件.
     searchSubmit: function () {
       var self = this;
-      self.userTagList = [];  // 清空之前的 Tag.
+      // self.userTagList = [];  // 清空之前的 Tag.
       self.nodeControl.recentProgramList.show = true;
       self.nodeControl.recommendTags.show = false;
 //    self.generateTags();  // 生成 Tag.
 
+      // 拼接 tag id
+      let tagIds = "";
+      if(self.userTagList.length > 0){
+        for(let i in self.userTagList){
+          tagIds += "`" + self.userTagList[i]._id + "` ";
+        }
+      }
+
       var keyword = self.searchBarValue;
       keyword = keyword.replace(/"/g, "'");
-      keyword = keyword.replace(/\s/g, "|");
+      keyword = tagIds + keyword.replace(/\s/g, "|");
+
+      this.setSearchInputStyle();
 
       console.log(keyword);
 
-      // TODO: 广播发送搜索请求至相应视图.
+      // go search
+      if(keyword.trim()){
+        this.$route.router.go({name:"search",params:{key:keyword,number:1}})
+      }
 
-//      self.$http.post("https://bangumi.moe/api/tag/search", { query: self.cursorKeyword }).then(requestFinished);
-//      function requestFinished (result) {
-//        self.dataObject.recommendTags = result;
-//      }
     },
-
+    setSearchInputStyle:function(){
+      let el = document.querySelector(".search-input-tag");
+      if(el.clientHeight > 35 || el.clientWidth > (document.body.offsetWidth-300) ){
+        this.searchObjectStyle.paddingLeft = 0;
+        this.searchObjectStyle.marginTop = el.clientHeight + 5 + "px";
+      }else{
+        this.searchObjectStyle.marginTop = 0;
+        this.searchObjectStyle.paddingLeft = el.clientWidth + 5 + "px";
+      }
+    },
     // 获得推荐 Tag 事件.
     getRecommendTags: function (event) {
+
       let self = this;
       let target = event.target || event.srcElement;
+
       let cursorPosition = getPositionForInput(target);  // 光标位置.
+      // self.searchBarValue = target.textContent.trim();
 
       // 获取光标附近关键字.
       let leftPart = self.searchBarValue.slice(0, cursorPosition);
@@ -449,28 +578,41 @@
 
       if (self.cursorKeyword.length < 2) { return; }
 
-      clearTimeout(self.searchEvent.recommendTagTimeout);
-      self.searchEvent.recommendTagTimeout = setTimeout(function () {
+      // cache 搜索的关键词存在
+      if(self.dataObject.recommendTagsCache[self.cursorKeyword]){
 
-        // vue-resource 跨域 post 搞不定, 先用原生了.
-        var data = new FormData();
-        data.append("keywords", "true");
-        data.append("multi", "true");
-        data.append("name", self.cursorKeyword);
+        clearTimeout(self.searchEvent.recommendTagTimeout);
+        self.dataObject.recommendTags = self.dataObject.recommendTagsCache[self.cursorKeyword];
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://bangumi.moe/api/tag/search", true);
-        xhr.onreadystatechange = function () {
-          if ( xhr.readyState == 4 && xhr.status == 200 ) {
-            var result = JSON.parse(xhr.responseText);
-            self.dataObject.recommendTags = result.tag;
-          } else {
+      }else{
 
-          }
-        };
-        xhr.send(data);
+        clearTimeout(self.searchEvent.recommendTagTimeout);
+        self.searchEvent.recommendTagTimeout = setTimeout(function () {
 
-      }, 350);
+          // vue-resource 跨域 post 搞不定, 先用原生了.
+          var data = new FormData();
+          data.append("keywords", "true");
+          data.append("multi", "true");
+          data.append("name", self.cursorKeyword);
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "https://bangumi.moe/api/tag/search", true);
+          xhr.onreadystatechange = function () {
+            if ( xhr.readyState == 4 && xhr.status == 200 ) {
+              var result = JSON.parse(xhr.responseText);
+              self.dataObject.recommendTags = result.tag;
+
+              // 存一份到缓存
+              self.dataObject.recommendTagsCache[self.cursorKeyword] = result.tag;
+            } else {
+
+            }
+          };
+          xhr.send(data);
+
+        }, 350);
+
+      }
 
 
       function getPositionForInput (element) {
@@ -493,10 +635,14 @@
         self.nodeControl.recentProgramList.show = true;
         self.nodeControl.recommendTags.show = false;
       }, 200);
+
+      setTimeout(function(){
+        self.setWidth();
+      },300)
+
     }
   },
   ready() {
-
 
     //横向滚动
     var wrap = document.querySelector(".search-list-ctnr");

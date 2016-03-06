@@ -168,6 +168,11 @@
     }
     .fixed-show{ opacity: 0.9 }
   }
+  .no-data{
+    text-align: center;
+    color: #999;
+    margin: 2em 0;
+  }
 </style>
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
@@ -251,6 +256,9 @@
             </tr>
           </thead>
         </table>
+      </div>
+      <div class="no-data" v-show="torrent.lastest.length == 0">
+        没有更多数据了╮(╯_╰)╭
       </div>
     </div>
   </div>
