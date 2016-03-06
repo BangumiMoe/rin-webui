@@ -196,12 +196,16 @@
 	}
 .rin-left{
   position: absolute;
-  padding: 5px;
   left:0;
   top: 0;
   bottom:0;
+  height:100%;
+  padding:0 .8em;
 
-	i {	font-size: 24px; }
+	i {
+		height:100%;
+		font-size: 24px;
+	}
 
   &:hover{
 		color: #c0ded6;

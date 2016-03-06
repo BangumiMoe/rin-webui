@@ -162,7 +162,7 @@ ul,li,p{
 .rin-datatip{
 	opacity:0;
 	position:absolute;
-	top:0;
+	top:-999em;
 	left:0;
 	background:#681558;
 	color:#fff;
