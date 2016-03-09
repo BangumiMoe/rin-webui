@@ -225,7 +225,7 @@
               <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{ ((t.comments >1) ? 'Comments' :'Comment' )| locale }}</span>
             </td>
             <td nowrap="nowrap" align="center">
-              <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}{{magnentt}}"><i class="material-icons">&#xE2C4;</i></a>
+              <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}{{magnentt}}" @click.stop><i class="material-icons">&#xE2C4;</i></a>
             </td>
             <td nowrap="nowrap" align="center">{{t.size}}</td>
             <td nowrap="nowrap" align="center" class="rin-seed-stats">
