@@ -121,7 +121,7 @@ table td:first-child {
           <table class="torrents rin-table">
             <tbody>
               <tr v-for="i in torrents.torrents">
-                <td class="rin-center">{{i.publish_time | date 'lately'}}</td>
+                <td class="rin-center">{{i.publish_time | date 'lately HH:MM'}}</td>
 
                 <td>
                   <a class="rin-inline-tag haspic" v-link="'/team/' + i.team._id" v-if="i.team">
@@ -135,21 +135,21 @@ table td:first-child {
                     <span>{{ i.uploader.username }}</span>
                   </a>
 
-                  <a class="rin-truncate" style="width:60%" v-link="'/torrent/' + i._id">
+                  <a style="width:60%" v-link="'/torrent/' + i._id">
                     <span>{{i.title}}</span>
                     <span class="rin-inline-tag" v-if="i.comments">{{i.comments}} {{'Comments'|locale}}</span>
                   </a>
                 </td>
 
                 <td>
-                  <button class="rin-button">
+                  <button class="rin-button" v-show="canModify(i)">
                     <i class="material-icons">&#xE254;</i>
                     <tooltip :info="'Edit' | locale"></tooltip>
                   </button>
                 </td>
 
                 <td>
-                  <button class="rin-button">
+                  <button class="rin-button" v-show="canModify(i)">
                     <i class="material-icons">&#xE872;</i>
                     <tooltip :info="'Delete' | locale"></tooltip>
                   </button>
@@ -159,12 +159,7 @@ table td:first-child {
           </table>
 
     </div>
-
-
   </div>
-
-
-
 </template>
 <script>
 /*
@@ -212,6 +207,25 @@ export default {
       this.user.teams.forEach((t)=>{
         t.icon && cacheImage(`https://bangumi-moe.phoenixstatic.com/${t.icon}`)
       })
+    },
+    canModify(torrent){
+      uid = this.user._id;
+      if (uid == undefined) return false;
+      if (torrent.uploader._id == uid) { return true };
+
+      for( i in this.user.teams) {
+        if(this.user.teams[i]._id == torrent.team._id) {
+          for(j in this.user.teams[i].admin_ids) {
+            if(uid == this.user.teams[i].admin_ids[j]) {
+              return true;
+              break;
+            }
+          }
+          break;
+        }
+      }
+
+      return false;
     }
   },
   route:{
