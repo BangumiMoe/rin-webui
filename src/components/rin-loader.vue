@@ -34,7 +34,7 @@
         z-index: 10;
 
         img {
-          display: block;
+          display: inline;
           width: 100%;
         }
       }
@@ -51,6 +51,11 @@
         left: 0;
         animation: waves-l2r 19.2s linear infinite;
         z-index: 1;
+      }
+
+      /* fix unkown broder in bottom */
+      .rin-water-1 {
+        border-bottom: 1px solid white;
       }
 
       .rin-water-2 {
