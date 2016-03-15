@@ -136,7 +136,7 @@
           fixed: false
         },
         signin_form_opened: false,
-        is_homepage: false,
+        is_homepage: (location.pathname == "/"),
       };
     },
     methods: {
