@@ -176,7 +176,7 @@
 </style>
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
-    <div is="rin-loader" v-if="busy" :progress="progress" transition="rin-fade"></div>
+    <div is="rin-loader" v-show="busy" :progress="progress" transition="rin-fade"></div>
     <div  id="rin-wrapper" class="rin-wrapper" v-show="!busy" transition="rin-fade">
       <div class="page-nav clearfix" >
         <div  class="rin-row page-nav-inner" >
