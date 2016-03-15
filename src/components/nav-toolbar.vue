@@ -100,7 +100,7 @@
     </a>
   </div>
 
-  <a class="rin-button rin-torrents" @click="backHomepage">
+  <a class="rin-button rin-torrents" v-show="!is_homepage" v-link="{ path: '/', exact: true }">
     <i class="material-icons">&#xE5C4;</i>
     <tooltip :info="'Back to Index' | locale"></tooltip>
   </a>
@@ -136,6 +136,7 @@
           fixed: false
         },
         signin_form_opened: false,
+        is_homepage: false,
       };
     },
     methods: {
@@ -174,13 +175,13 @@
 
 
       },
-      backHomepage () {
+      /* backHomepage () {
   			if (window.history.length>1){
   				window.history.back()
   			}else{
   				this.$route.router.go({name:"index"});
   			}
-      },
+      },*/
 
       userSignAction (ev) {
         if(!this.user._id) {
@@ -217,6 +218,11 @@
       },
       UserSignInFailed () { this.user = {};   },
       UserSignOutOK ()    { this.user = {};   },
+    },
+    watch: {
+      '$route' ()  {
+        this.is_homepage = (location.pathname == "/");
+      }
     }
   };
 </script>
