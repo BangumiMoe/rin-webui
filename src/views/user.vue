@@ -5,6 +5,61 @@
 @user-avatar-size: 160px;
 @team-avatar-size: 80px;
 @team-avatar-border: 0.06 * @team-avatar-size;
+
+    .page-nav{
+      width: 250px;
+      right: 190px;
+      height: 40px;
+      position: fixed;
+      bottom:40px;
+      text-align: center;
+      line-height: 40px;
+      font-size: 1.2em;
+      box-shadow: 1px 1px 25px 1px #DC7788;
+      border-radius: 5px;
+      overflow: hidden;
+
+      .page-nav-inner{
+        width:100%;
+        float: right;
+        transition: width .5s;
+      }
+
+      .page-nav-btn{
+        cursor: pointer;
+        color: white;
+        transition: background-color .2s;
+
+        i { line-height: 40px; transition: font-size .2s }
+
+        &.btn-up{ background-color: @color-primary-2 }
+        &.btn-up-first{ background-color: @color-primary-2 }
+        &:not(.disabled):hover{
+          background-color: @color-primary-3;
+
+          i{ font-size:2em; }
+        }
+
+        &.btn-down{ background-color: @color-primary-2; }
+        &.btn-down-last{ background-color: @color-primary-2; }
+      }
+
+      .page-nav-num{color: @color-primary-0; }
+      .page-nav-num.cur{
+        color: @color-secondary-1-3;
+        background-color: @color-secondary-1-2 !important;
+        cursor:default;
+      }
+      .page-nav-num{
+        background-color: @color-primary-1;
+        font-size: 0.9em;
+      }
+      .page-nav-num:nth-child(odd){
+        background-color: @color-primary-2;
+      }
+      .disabled{ cursor: default; }
+    }
+
 .rin-wrapper{
   height: 100%;
   overflow-x: hidden;
@@ -100,7 +155,7 @@ table td:first-child {
       <rin-avatar v-bind:hash="user.emailHash"></rin-avatar>
       <div class="teams" v-show="loaded" transition="rin-fade">
         <a title="{{i.name}}" class="team" v-link="'/team/'+i._id" v-for="i in user.teams">
-          <span class="team-icon" style="background-image:url({{getIcon(i)}})">
+          <span class="team-icon" :style="{'background-image': 'url(' + getIcon(i) +')'}">
           </span>
         </a>
       </div>
@@ -116,8 +171,27 @@ table td:first-child {
           <span>{{ i.tag | locale }}</span>
         </a>
       </div>
-      <h2>{{"最近种子" | locale}}</h2>
+      <h2>
+        {{"最近种子" | locale}}
 
+        <div class="page-nav clearfix">
+          <div  class="rin-row page-nav-inner" >
+            <a class="page-nav-btn btn-down-last rin-col-2" href="https://bangumi.moe/rss/latest" target="_blank">
+              <i class="material-icons" style="transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>
+            </a>
+            <a class="page-nav-btn btn-up-first rin-col-2" v-on:click="chgPage(1-currentPage)" v-bind:class="{'disabled':1-currentPage==0}">
+              <i class="material-icons">&#xE020;</i>
+            </a>
+            <a class="page-nav-btn btn-up rin-col-2" v-on:click="chgPage(-1)" v-bind:class="{'disabled':currentPage==1}">
+              <i class="material-icons">&#xE314;</i>
+            </a>
+            <a class="cur rin-col-4  page-nav-btn page-nav-num">{{currentPage}}</a>
+            <a class="page-nav-btn btn-down rin-col-2" v-on:click="chgPage(+1)" v-bind:class="{'disabled':currentPage==torrents.page_count}">
+              <i class="material-icons">&#xE315;</i>
+            </a>
+          </div>
+        </div>
+      </h2>
           <table class="torrents rin-table">
             <tbody>
               <tr v-for="i in torrents.torrents">
@@ -172,9 +246,11 @@ function cacheImage(link){
 export default {
   data(){
     return {
-      user: {},
-      loaded: false,
-      torrents: [],
+      currentPage:  1,
+      currentLimit: 25,
+      user:         {},
+      loaded:       false,
+      torrents:     {},
       teamIconBaseUrl: "https://bangumi-moe.phoenixstatic.com/",
     }
   },
@@ -185,6 +261,18 @@ export default {
      'date':require('../filters/dateFormat.js')
   },
   methods: {
+    chgPage(offset) {
+      var self = this;
+      var newPage = self.currentPage + (offset);
+      if (newPage <= 0) {
+        newPage = 1;
+      } else if (newPage > self.torrents.page_count) {
+        newPage = self.torrents.page_count;
+      }
+      self.currentPage = newPage;
+      self.torrents = {};
+      self.getUserTorrent();
+    },
     getIcon(i){
       return i.icon ? 'https://bangumi-moe.phoenixstatic.com/' + i.icon : require('../assets/akarin.jpg');
     },
@@ -194,8 +282,10 @@ export default {
       })
     },
     getUserTorrent(){
-      return this.$http({"method": "GET", "url": `https://bangumi.moe/api/v2/torrent/user/${this.$route.params.id}`}).then((response)=>{
-        this.$set("torrents", response.data)
+      return this.$http
+        .get(`https://bangumi.moe/api/v2/torrent/user/${this.$route.params.id}?p=${this.currentPage}&limit=${this.currentLimit}`, {limit:25})
+        .then((response)=>{
+          this.$set("torrents", response.data)
       })
     },
     getUserBangumi(){
@@ -211,6 +301,7 @@ export default {
     canModify(torrent){
       uid = this.user._id;
       if (uid == undefined) return false;
+
       if (torrent.uploader._id == uid) { return true };
 
       for( i in this.user.teams) {
@@ -218,7 +309,6 @@ export default {
           for(j in this.user.teams[i].admin_ids) {
             if(uid == this.user.teams[i].admin_ids[j]) {
               return true;
-              break;
             }
           }
           break;
