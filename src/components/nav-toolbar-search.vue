@@ -125,7 +125,6 @@
         font-size: 14px;
         font-family: "Microsoft YaHei";
         float: left;
-        height:40px;
         line-height:40px;
         box-sizing: border-box;
       }
@@ -262,8 +261,16 @@
     }
 
   }
-</style>
 
+</style>
+<style>
+  .recommendTags{
+    vertical-align:top;
+  }
+  #searchInput[contenteditable="true"] div{
+    display:inline-block;
+  }
+</style>
 <!-- SearchBar 模板定义. -->
 <template>
 
@@ -336,15 +343,16 @@
           {{tag | locale}}
           <i class="material-icons recommendTags" data-value="{{tag}}">&#xE5CD;</i></a>
         </div>
-        <input 
-          type="text" class="rin-input vertical-middle search-input" 
+        <div
+          contenteditable="true" 
+          id="searchInput"
+          class="rin-input vertical-middle search-input rin-tag" 
           v-on:keyup="getRecommendTags" 
+          v-on:click="getRecommendTags"
           v-on:keyup.13="searchSubmit" 
-          v-on:blur="showRecentProgram"
-          v-bind:style="searchObjectStyle"
-          v-model="searchBarValue"
-          placeholder="{{'Type to search title' | locale}}"
-        >
+          v-on:blur="showRecentProgram">
+          {{searchBarValue}}
+          </div>
 
         <!-- Rock'n Roll! -->
         <button type="submit" role="button" class="search-submit-btn" v-on:click="searchSubmit">
@@ -471,19 +479,18 @@
     // Definition: 从最近番组中选择 Tag.
     addUserTag: function (tag,event) {
 
-      var tagData = this.locale(tag);
+      let Input = document.getElementById("searchInput");
 
-      for(let i = 0,len = this.userTagList.length; i < len; i++){
-        if(this.userTagList[i]._id == tag._id){
-          return; // 如果已存在该 Tag 则返回.
+      for(let i = 0,len = Input.childNodes.length;i<len;i++){
+        if(Input.childNodes[i].nodeName == "A" && Input.childNodes[i].getAttribute("data-id") == tag._id){
+          return;
         }
       }
 
-      this.userTagList.push(tag)
+      let html = "<a href='javascript:void(0)' class='recommendTags' data-id='"+tag._id+"' data-value='"+this.locale(tag)+"'>"+this.locale(tag)+"</a>";
 
-      setTimeout(() =>{
-        this.setSearchInputStyle();
-      },0)
+      Input.innerHTML += html;
+
     },
 
     addRecommendTag: function (tag,event) {
@@ -523,20 +530,22 @@
       self.nodeControl.recommendTags.show = false;
 //    self.generateTags();  // 生成 Tag.
 
-      // 拼接 tag id
-      let tagIds = "";
-      if(self.userTagList.length > 0){
-        for(let i in self.userTagList){
-          tagIds += "`" + self.userTagList[i]._id + "` ";
+      let Input = document.getElementById("searchInput");
+      let keyword = "";
+
+      for(let i = 0,len = Input.childNodes.length;i<len;i++){
+        if(Input.childNodes[i].nodeName == "A"){
+          let id = Input.childNodes[i].getAttribute("data-id");
+          keyword += "`" + id + "` ";
+        }else{
+          let value = (Input.childNodes[i].nodeValue || Input.childNodes[i].innerText).trim();
+          value = value.replace(/"/g, "'");
+          value = value.replace(/\s/g,"|");
+
+          keyword += value + " ";
         }
+
       }
-
-      var keyword = self.searchBarValue;
-      keyword = keyword.replace(/"/g, "'");
-      keyword = tagIds + keyword.replace(/\s/g, "|");
-
-      this.setSearchInputStyle();
-
       console.log(keyword);
 
       // go search
@@ -563,6 +572,69 @@
 
       let cursorPosition = getPositionForInput(target);  // 光标位置.
       // self.searchBarValue = target.textContent.trim();
+
+
+      // enter
+      if(event.keyCode === 13){
+        Input.innerHTML = Input.innerHTML.replace(/<div>/gi,'').replace(/<\/div>/gi,'').replace(/<br>/gi,'');
+      }
+      
+
+      //============= testing =============//
+      // get current cursor position
+      function getCursorPosition(editableDiv) {
+        var caretPos = 0,
+          sel, range;
+        if (window.getSelection) {
+          sel = window.getSelection();
+          if (sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            if (range.commonAncestorContainer.parentNode == editableDiv) {
+              caretPos = range.endOffset;
+            }
+          }
+        } else if (document.selection && document.selection.createRange) {
+          range = document.selection.createRange();
+          if (range.parentElement() == editableDiv) {
+            var tempEl = document.createElement("span");
+            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+            var tempRange = range.duplicate();
+            tempRange.moveToElementText(tempEl);
+            tempRange.setEndPoint("EndToEnd", range);
+            caretPos = tempRange.text.length;
+          }
+        }
+        return caretPos;
+      }
+
+      // move cursor position
+      function moveCursor(obj,position){
+          // obj.focus();
+          if (document.selection) {
+              var sel = obj.createTextRange();
+              sel.moveStart('character',position);
+              sel.collapse();
+              sel.select();
+          } else if (typeof obj.selectionStart == 'number' && typeof obj.selectionEnd == 'number') {
+              obj.selectionStart = obj.selectionEnd = position;
+          }
+      }
+
+
+      let Input = document.getElementById("searchInput");
+      let curPos = getCursorPosition(Input);
+      let prev;
+
+      // console.log(event,curPos,event.target.nextElementSibling)
+
+      let sel = window.getSelection();
+      let range;
+      if (sel.rangeCount) {
+        range = sel.getRangeAt(0);
+        // console.log(curPos,range.commonAncestorContainer.nextElementSibling,range.commonAncestorContainer.previousElementSibling)
+      }
+
+      //============= testing =============//
 
       // 获取光标附近关键字.
       let leftPart = self.searchBarValue.slice(0, cursorPosition);
