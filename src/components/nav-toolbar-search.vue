@@ -121,12 +121,20 @@
       }
 
       .search-input {
-        width : calc(~"100% - @{searchButtonWidth}");
+        width : calc(~"100% - 49px");
         font-size: 14px;
         font-family: "Microsoft YaHei";
         float: left;
+        height:40px;
         line-height:40px;
         box-sizing: border-box;
+        border: .1em solid #ddd;
+        padding-left:10px;
+        transition:border-color .2s linear;
+
+        &:focus,&:hover{
+          border-color:#97c8ef;
+        }
       }
 
       .search-input-tag{
@@ -162,6 +170,8 @@
         height: 40px;
         border: none;
         float: right;
+        margin-left: -1px;
+        border: .1em solid #97c8ef;
       }
 
     }
@@ -267,6 +277,9 @@
   .recommendTags{
     vertical-align:top;
   }
+  .recommendTags.del_confirm{
+    background:#999;
+  }
   #searchInput[contenteditable="true"] div{
     display:inline-block;
   }
@@ -347,9 +360,8 @@
           contenteditable="true" 
           id="searchInput"
           class="rin-input vertical-middle search-input rin-tag" 
-          v-on:keyup="getRecommendTags" 
+          v-on:keydown="getRecommendTags($event)" 
           v-on:click="getRecommendTags"
-          v-on:keyup.13="searchSubmit" 
           v-on:blur="showRecentProgram">
           {{searchBarValue}}
           </div>
@@ -487,7 +499,7 @@
         }
       }
 
-      let html = "<a href='javascript:void(0)' class='recommendTags' data-id='"+tag._id+"' data-value='"+this.locale(tag)+"'>"+this.locale(tag)+"</a>";
+      let html = "<a href='javascript:void(0)' contenteditable='false' class='recommendTags' data-id='"+tag._id+"' data-value='"+this.locale(tag)+"'>"+this.locale(tag)+"</a> ";
 
       Input.innerHTML += html;
 
@@ -523,7 +535,7 @@
     },
 
     // 搜索请求事件.
-    searchSubmit: function () {
+    searchSubmit: function (event) {
       var self = this;
       // self.userTagList = [];  // 清空之前的 Tag.
       self.nodeControl.recentProgramList.show = true;
@@ -538,7 +550,7 @@
           let id = Input.childNodes[i].getAttribute("data-id");
           keyword += "`" + id + "` ";
         }else{
-          let value = (Input.childNodes[i].nodeValue || Input.childNodes[i].innerText).trim();
+          let value = (Input.childNodes[i].nodeValue || Input.childNodes[i].innerText) ? (Input.childNodes[i].nodeValue || Input.childNodes[i].innerText).trim() : "";
           value = value.replace(/"/g, "'");
           value = value.replace(/\s/g,"|");
 
@@ -548,8 +560,10 @@
       }
       console.log(keyword);
 
+      keyword = keyword.trim();
+
       // go search
-      if(keyword.trim()){
+      if(keyword){
         this.$route.router.go({name:"search",params:{key:keyword,number:1}})
       }
 
@@ -567,18 +581,35 @@
     // 获得推荐 Tag 事件.
     getRecommendTags: function (event) {
 
+      //enter
+      if(event.keyCode == 13){
+        event.preventDefault();
+        // search
+        this.searchSubmit(event);
+      }else if(event.keyCode == 8){
+      // backspace
+        let sel = window.getSelection();
+        let range;
+        if (sel.rangeCount) {
+          range = sel.getRangeAt(0);
+          let prevEl = range.commonAncestorContainer.previousElementSibling;
+
+          // 要删除上一个元素时，高亮提醒
+          if(prevEl && prevEl.nodeName == "A" && range.endOffset == 1){
+            prevEl.className += " del_confirm";
+            setTimeout(()=>{
+              prevEl ? prevEl.className = "recommendTags" : "";
+            },300)
+          }
+        }
+      }
+
+
       let self = this;
       let target = event.target || event.srcElement;
 
       let cursorPosition = getPositionForInput(target);  // 光标位置.
       // self.searchBarValue = target.textContent.trim();
-
-
-      // enter
-      if(event.keyCode === 13){
-        Input.innerHTML = Input.innerHTML.replace(/<div>/gi,'').replace(/<\/div>/gi,'').replace(/<br>/gi,'');
-      }
-      
 
       //============= testing =============//
       // get current cursor position
@@ -627,13 +658,6 @@
 
       // console.log(event,curPos,event.target.nextElementSibling)
 
-      let sel = window.getSelection();
-      let range;
-      if (sel.rangeCount) {
-        range = sel.getRangeAt(0);
-        // console.log(curPos,range.commonAncestorContainer.nextElementSibling,range.commonAncestorContainer.previousElementSibling)
-      }
-
       //============= testing =============//
 
       // 获取光标附近关键字.
@@ -649,7 +673,7 @@
       self.nodeControl.recommendTags.show = true;
 
       if (self.cursorKeyword.length < 2) { return; }
-
+console.log(self.cursorKeyword)
       // cache 搜索的关键词存在
       if(self.dataObject.recommendTagsCache[self.cursorKeyword]){
 
