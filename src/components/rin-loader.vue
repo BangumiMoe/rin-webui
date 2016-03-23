@@ -79,7 +79,7 @@
 
 </style>
 
-<style media="screen" scoped>
+<style lang="css" scoped>
   .rin-water-1, .rin-water-2, .rin-water-3 {
     background-image: url("../assets/rin-loader-water.png");
   }

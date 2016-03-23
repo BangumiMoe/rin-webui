@@ -17,7 +17,7 @@ module.exports = {
       { test: /\.vue$/,           loaders: ['vue'] },
       { test: /\.less$/,          loader: 'style!css!less' },
       { test: /\.json$/,          loader: 'json' },
-      { test: /\.(png|jpg|gif)$/, loader: 'file?name=[hash].[ext]?' }// loader: 'file?name=[name].[ext]?[hash]' }
+      { test: /\.(png|jpg|gif)$/, loader: 'file?name=[hash].[ext]' }// loader: 'file?name=[name].[ext]?[hash]' }
     ]
   },
   vue: {
