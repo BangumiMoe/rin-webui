@@ -1,4 +1,4 @@
-<style scoped lang="less">
+<style scoped lang="less" scoped>
 @import "../less/colors.less";
 
 @color-tr-odd: rgba(233,233,233,0.25);
