@@ -11,6 +11,7 @@
 @color-inline-tag-bg-hover: #eeeeee;
 
 @color-sidebar:#517896;
+
 #rin-main{
 	position:relative;
 	height: 100%;
@@ -247,28 +248,8 @@
 }
 </style>
 <template>
-	<div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
-		<a class="rin-button" v-bind:href="data.downloadTorrent || ''">
-			<i class="material-icons">&#xE2C4;</i>
-			<tooltip :info="'torrent' | locale"></tooltip>
-		</a>
-		<a class="rin-button" v-bind:href="data.magnet">
-			<i class="material-icons">&#xE8AB;</i>
-			<tooltip :info="'magnet' | locale"></tooltip>
-		</a>
-		<a class="rin-button" href="javascript:void(0);"
-					v-on:click="toggleComment"
-					v-on:mouseenter="showComment"
-					v-on:mouseleave="hideComment">
-			<i class="material-icons">&#xE0B9;</i>
-		</a>
-	</div>
-	<div class="rin-bar-comment" v-bind:class="{'active':isShow,'action':commentStatus}">
-		评论内容
-	</div>
-
   <div id="rin-main" style="width: calc(100% - 128px);" v-on:scroll="fixHeader">
-    <div is="rin-loader" :progress="progress" v-show="busy" transition="rin-fade"></div>
+    <div is="rin-loader" v-bind:progress="70" v-show="busy" transition="rin-fade"></div>
 		<div class="rin-head" v-show="!busy" transition="rin-fade" style="margin-right:{{getScrollWidth()+128}}px;" v-bind:class="{ 'head-fixed' : headerFixed}">
 			<h3>
         <a class="rin-button rin-left" href="javascript:void(0)" @click="backHomepage">
@@ -292,7 +273,8 @@
 							<b class="name">{{data.uploader.username}}</b>
 						</a>
 					</span>
-					 {{'submitted' | locale}} {{data.publish_time | date 'yyyy/MM/dd HH:mm'}}
+          
+					{{'submitted' | locale}} {{data.publish_time | date 'yyyy/MM/dd HH:mm'}}
 				</p>
 				<div class="rin-tag">
 					<a v-for="t in data.tags" v-link="'/tag/'+t._id" v-bind:class="{ 'haspic' : (t.type == 'bangumi' || t.type == 'team') }">
@@ -315,112 +297,132 @@
 			</div>
 		</div>
 	</div>
+  
+	<div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
+		<a class="rin-button" v-bind:href="data.downloadTorrent || ''">
+			<i class="material-icons">&#xE2C4;</i>
+			<tooltip :info="'torrent' | locale"></tooltip>
+		</a>
+		<a class="rin-button" v-bind:href="data.magnet">
+			<i class="material-icons">&#xE8AB;</i>
+			<tooltip :info="'magnet' | locale"></tooltip>
+		</a>
+		<a class="rin-button" href="javascript:void(0);"
+					v-on:click="toggleComment"
+					v-on:mouseenter="showComment"
+					v-on:mouseleave="hideComment">
+			<i class="material-icons">&#xE0B9;</i>
+		</a>
+	</div>
+	<div class="rin-bar-comment" v-bind:class="{'active':isShow,'action':commentStatus}">
+		评论内容
+	</div>
 </template>
+
 <script>
 export default {
-	data(){
-		return {
-			data:{},
-			isShow:false,
-			commentStatus:false,
-			busy:true,
-			headerFixed:false
-		}
-	},
-	methods:{
-		toggleComment:function(){
-			this.isShow = !this.isShow;
-			this.commentStatus = false;
-		},
-		showComment:function(){
-			this.commentStatus = true;
-		},
-		hideComment:function(){
-			this.commentStatus = false;
-		},
-    backHomepage () {
-			if (window.history.length>1){
-				window.history.back()
-			}else{
-				this.$route.router.go({name:"index"});
-			}
-
+  data() {
+    return {
+      data: {},
+      isShow: false,
+      commentStatus: false,
+      busy: true,
+      headerFixed: false,
+    };
+  },
+  methods: {
+    toggleComment() {
+      this.isShow = !this.isShow;
+      this.commentStatus = false;
     },
-		getScrollWidth () {
-			var noScroll, scroll, oDiv = document.createElement("DIV");
-			oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
-			noScroll = document.body.appendChild(oDiv).clientWidth;
-			oDiv.style.overflowY = "scroll";
-			scroll = oDiv.clientWidth;
-			document.body.removeChild(oDiv);
-			return noScroll-scroll;
-		},
-		getHeadHeight(){
-		 return	document.getElementsByClassName('rin-head')[0].clientHeight + 3;
-		},
-		resizeImage () {
-			var wrapper=document.getElementsByClassName('rin-details-intro')[0],
-					images=wrapper.getElementsByTagName('img'),
-					wrapperWidth=wrapper.clientWidth-60;
-			if (images.length == 0 || wrapperWidth<5) return;
-			for (let img of images){
-				if (!img.attributes['style']) break;
-				let style=img.attributes['style'].value,styleWidth,styleHeight,originDom,origin;
-				[styleWidth,styleHeight]= [style.match(/width\s*?:\s*?([0-9]*?)px/i)[1] || (img.attributes['width'] ? img.attributes['width'].value : null), style.match(/height\s*?:\s*?([0-9]*?)px/i)[1] || (img.attributes['height'] ? img.attributes['width'].value : null)];
-				if ((!styleWidth || !styleHeight)) break;
-				originDom=img.getAttribute('data-origin-info');
-				if (!originDom) {
-					img.setAttribute('data-origin-info',styleWidth+":"+(styleHeight/styleWidth));
-					originDom=img.getAttribute('data-origin-info');
-				}
-				origin = originDom.split(':');
-				if (origin[0]> wrapperWidth){
-					styleWidth=wrapperWidth;
-					styleHeight=Math.round(styleWidth * origin[1]);
-					img.style.width=styleWidth+'px';
-					img.style.height=styleHeight+'px';
-				}
-			}
-		},
-		fixHeader (e){
-			if (e.target.scrollTop==0){
-				if (this.headerFixed) this.headerFixed=false;
-			}else if (!this.headerFixed){
-				this.headerFixed=true;
-			}
-		}
-	},
-	route: {
-		data (t) {
-			var id = this.$route.params.key;
-      return { id: id}
-		}
-	},
-  filters:{
-  	'date':require('../filters/dateFormat.js')
+    showComment() {
+      this.commentStatus = true;
+    },
+    hideComment() {
+      this.commentStatus = false;
+    },
+    backHomepage() {
+      if (window.history.length > 1) {
+        window.history.back()
+      } else {
+        this.$route.router.go({name: "index"});
+      }
+    },
+    getScrollWidth() {
+      var noScroll, scroll, oDiv = document.createElement("DIV");
+      oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
+      noScroll = document.body.appendChild(oDiv).clientWidth;
+      oDiv.style.overflowY = "scroll";
+      scroll = oDiv.clientWidth;
+      document.body.removeChild(oDiv);
+      return noScroll - scroll;
+    },
+    getHeadHeight() {
+      return document.getElementsByClassName('rin-head')[0].clientHeight + 3;
+    },
+    resizeImage() {
+      var wrapper = document.getElementsByClassName('rin-details-intro')[0],
+        images = wrapper.getElementsByTagName('img'),
+        wrapperWidth = wrapper.clientWidth - 60;
+      if (images.length == 0 || wrapperWidth < 5) return;
+      for (let img of images) {
+        if (!img.attributes['style']) break;
+        let style = img.attributes['style'].value,
+          styleWidth, styleHeight, originDom, origin;
+        [styleWidth, styleHeight] = [style.match(/width\s*?:\s*?([0-9]*?)px/i)[1] || (img.attributes['width'] ? img.attributes['width'].value : null), style.match(/height\s*?:\s*?([0-9]*?)px/i)[1] || (img.attributes['height'] ? img.attributes['width'].value : null)];
+        if ((!styleWidth || !styleHeight)) break;
+        originDom = img.getAttribute('data-origin-info');
+        if (!originDom) {
+          img.setAttribute('data-origin-info', styleWidth + ":" + (styleHeight / styleWidth));
+          originDom = img.getAttribute('data-origin-info');
+        }
+        origin = originDom.split(':');
+        if (origin[0] > wrapperWidth) {
+          styleWidth = wrapperWidth;
+          styleHeight = Math.round(styleWidth * origin[1]);
+          img.style.width = styleWidth + 'px';
+          img.style.height = styleHeight + 'px';
+        }
+      }
+    },
+    fixHeader(e) {
+      if (e.target.scrollTop == 0) {
+        if (this.headerFixed) this.headerFixed = false;
+      }
+      else if (!this.headerFixed) {
+        this.headerFixed = true;
+      }
+    }
+  },
+  route: {
+    data(t) {
+      var id = this.$route.params.key;
+      return {id: id};
+    }
+  },
+  filters: {
+    'date': require('../filters/dateFormat.js')
   },
   components: {
     'rin-loader': require('./../components/rin-loader'),
-		'tooltip': require('./../components/nav-tooltip')
+    'tooltip': require('./../components/nav-tooltip'),
   },
-  ready () {
+  ready() {
     let self = this;
-		self.$http.get("https://bangumi.moe/api/v2/torrent/"+this.id,{},function(data){
-			self.data = data;
-			//torrent文件
-			self.data.downloadTorrent = "/download/torrent/" + self.id + "/" + data.infoHash + ".torrent";
-			self.busy = false;
-			setTimeout(()=>{
-				self.resizeImage();
-				window.addEventListener('resize',()=>{
-					self.resizeImage();
-				});
-			},100)
+    self.$http.get("https://bangumi.moe/api/v2/torrent/" + this.id, {}, function(data) {
+      self.data = data;
+      
+      //torrent文件
+      self.data.downloadTorrent = "/download/torrent/" + self.id + "/" + data.infoHash + ".torrent";
+      self.busy = false;
 
-
-
-		});
-
+      setTimeout(() => {
+        self.resizeImage();
+        window.addEventListener('resize', () => {
+          self.resizeImage();
+        });
+      }, 100)
+    });
   }
 }
 </script>
