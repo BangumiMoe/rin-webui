@@ -6,19 +6,31 @@ import VueResource from 'vue-resource';
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
-const router = new VueRouter({history:true});
+const router = new VueRouter();
 router.map({
-  '/': { name:"index", component: require('./views/main') ,mode:"normal"},
-  '/page/:number': {name:"page" ,component: require('./views/main') ,mode:"page"},
-  '/search/:key/:number': { name:"search" ,component: require('./views/main'),mode:"search" },
-  '/bangumi/list' :{
-  	name:'list',
-  	component: require('./views/list')
+  '/': {
+    name: "index",
+    component: require('./views/main'),
+    mode: "normal"
   },
-  '/torrent/:key':{
-  	name:'torrent',
-  	component: require('./views/torrent'),
-  	mode:"hello"
+  '/page/:number': {
+    name: "page",
+    component: require('./views/main'),
+    mode: "page"
+  },
+  '/search/:key/:number': {
+    name: "search",
+    component: require('./views/main'),
+    mode: "search"
+  },
+  '/bangumi/list': {
+    name: 'list',
+    component: require('./views/list')
+  },
+  '/torrent/:key': {
+    name: 'torrent',
+    component: require('./views/torrent'),
+    mode: "hello"
   },
   '/user/:id': {
     name: "user",
