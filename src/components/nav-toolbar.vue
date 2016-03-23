@@ -150,7 +150,30 @@
       searchBarHide: function (event) {
         this.searchBar.visible = false;
       },
+      // 判断el是否在selector内
+      closest: function (el, selector) {
+          var matchesFn;
 
+          // find vendor prefix
+          ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
+              if (typeof document.body[fn] == 'function') {
+                  matchesFn = fn;
+                  return true;
+              }
+              return false;
+          })
+
+          // traverse parents
+          while (el!==null) {
+              parent = el.parentElement;
+              if (parent!==null && parent[matchesFn](selector)) {
+                  return parent;
+              }
+              el = parent;
+          }
+
+          return null;
+      },
       // Definition: 搜索图标点击 Toggle 事件.
       searchBarToggle: function (event) {
         this.searchBar.fixed = !this.searchBar.fixed;
@@ -163,10 +186,9 @@
           let self = this;
 
           function search(event){
-            //判断点击的目标是不是[搜索]
-            if( !(el !== event.target && el.contains(event.target)) && event.target !== openSearchBtn && event.target !== openSearchIcon && event.target.className.indexOf("recommendTags") == -1) {
+            if(el != event.target && !self.closest(event.target,".rin-search-bar") && event.target != openSearchIcon){
               self.searchBar.fixed = false;
-              //移除监听事件
+
               document.removeEventListener("click",search,false)
             }
           }
