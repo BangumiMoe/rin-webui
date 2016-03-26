@@ -243,7 +243,7 @@
     },
     watch: {
       '$route' ()  {
-        this.is_homepage = (location.pathname == "/#!");
+        this.is_homepage = (location.pathname == "/");
       }
     }
   };

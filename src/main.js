@@ -6,7 +6,7 @@ import VueResource from 'vue-resource';
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
-const router = new VueRouter();
+const router = new VueRouter({history:true});
 router.map({
   '/': {
     name: "index",
