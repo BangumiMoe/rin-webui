@@ -177,7 +177,8 @@
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
     <div is="rin-loader" v-if="busy" transition="rin-fade"></div>
-    <div  id="rin-wrapper" class="rin-wrapper" v-show="!busy" transition="rin-fade">
+    <div  id="rin-wrapper" class="rin-wrapper" v-show="!busy" transition="rin-fade" v-on:scroll='scrollHandler($event)'>
+      <!--
       <div class="page-nav clearfix">
         <div  class="rin-row page-nav-inner" >
           <a class="page-nav-btn btn-down-last rin-col-2" href="https://bangumi.moe/rss/latest" target="_blank">
@@ -195,6 +196,7 @@
           </a>
         </div>
       </div>
+    -->
       <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
         <thead style="opacity:0;">
           <tr>
@@ -207,7 +209,7 @@
             <th width="9%"><span class="title">{{'Uploader'|locale}}</span></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-infinite-scroll="alert()">
           <tr v-for="(index, t) in torrent.lastest"  v-on:click="goTorrent(t._id, $event)">
             <td style="font-size:12px;">{{t.publish_time | date 'lately HH:mm'}}</td>
             <td align="center">
@@ -272,6 +274,10 @@
         magnentt: '&tr=https%3A%2F%2Ftr.bangumi.moe%3A9696%2Fannounce&tr=http%3A%2F%2Ftr.bangumi.moe%3A6969%2Fannounce&tr=udp%3A%2F%2Ftr.bangumi.moe%3A6969%2Fannounce&tr=http%3A%2F%2Fopen.acgtracker.com%3A1096%2Fannounce&tr=http%3A%2F%2F208.67.16.113%3A8000%2Fannounce&tr=udp%3A%2F%2F208.67.16.113%3A8000%2Fannounce&tr=http%3A%2F%2Ftracker.ktxp.com%3A6868%2Fannounce&tr=http%3A%2F%2Ftracker.ktxp.com%3A7070%2Fannounce&tr=http%3A%2F%2Ft2.popgo.org%3A7456%2Fannonce&tr=http%3A%2F%2Fbt.sc-ol.com%3A2710%2Fannounce&tr=http%3A%2F%2Fshare.camoe.cn%3A8080%2Fannounce&tr=http%3A%2F%2F61.154.116.205%3A8000%2Fannounce&tr=http%3A%2F%2Fbt.rghost.net%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.publicbt.com%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.prq.to%2Fannounce&tr=http%3A%2F%2Fopen.nyaatorrents.info%3A6544%2Fannounce',
         busy: true,
         currentPage:1,
+        originPage:0,
+        lastestPage:0,
+        addDirection:true,
+        origionScroll:0,
         torrent: {
           lastest: [],
           pageNum:0,
@@ -283,11 +289,32 @@
       }
     },
     methods: {
+      scrollHandler: function(e) {
+        if (e.target.scrollHeight-e.target.clientHeight-e.target.scrollTop < 10 && !this.busy){
+          this.addDirection=true;
+          this.chgPage(this.lastestPage-this.currentPage+1);
+        }else if(e.target.scrollTop===0 && !this.busy){
+          this.addDirection=false;
+          this.origionScroll=e.target.scrollHeight;
+          this.chgPage(this.originPage-this.currentPage-1);
+        }
+
+      },
       getTorrents: function() {
         let self = this;
         self.busy=true;
         this.$http.get('https://bangumi.moe/api/v2/torrent/page/'+self.currentPage, {limit:50}, function(data) {
-          self.torrent.lastest = data.torrents;
+          if (self.torrent.lastest.length === 0) {self.lastestPage=self.originPage=self.currentPage}
+          if (self.lastestPage < self.currentPage) {self.lastestPage=self.currentPage}
+          if (self.originPage > self.currentPage) {self.originPage=self.currentPage}
+          if (this.addDirection){
+            self.torrent.lastest = self.torrent.lastest.concat(data.torrents) ;
+          }else{
+            self.torrent.lastest = data.torrents.concat(self.torrent.lastest) ;
+            setTimeout(function(){
+              document.getElementById("rin-wrapper").scrollTop=document.getElementById("rin-wrapper").scrollHeight-self.origionScroll;
+            },300)
+          }
           self.torrent.pageNum=data.page_count;
           self.busy=false;
   //          setTimeout(function() {
@@ -300,7 +327,14 @@
         self.searchKey=key;
         self.busy=true;
         this.$http.get('https://bangumi.moe/api/v2/torrent/search', {limit:50,p:self.currentPage,query:key}, function(data) {
-          self.torrent.lastest = data.torrents;
+          if (self.torrent.lastest.length === 0) {self.lastestPage=self.originPage=self.currentPage}
+          if (self.lastestPage < self.currentPage) {self.lastestPage=self.currentPage}
+          if (self.originPage > self.currentPage) {self.originPage=self.currentPage}
+          if (addDirection){
+            self.torrent.lastest = self.torrent.lastest.concat(data.torrents) ;
+          }else{
+            self.torrent.lastest = data.torrents.concat(self.torrent.lastest) ;
+          }
           self.torrent.pageNum=data.page_count;
           self.busy=false;
         });
@@ -312,11 +346,9 @@
           if (self.searchKey){
             self.$route.router.go({name:"search",params:{number:self.currentPage+=offset,key:self.searchKey}});
           }else{
+
             self.$route.router.go({name:"page",params:{number:self.currentPage+=offset}});
           }
-          setTimeout(function(){
-            document.getElementById("rin-wrapper").scrollTop=0;
-          },300)
           //self.getTorrents();
         }
       },
