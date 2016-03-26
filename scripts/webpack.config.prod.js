@@ -5,7 +5,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 config.bail = true
 config.output.filename = 'bundle.[hash].js'
-config.output.publicPath = './'
+config.output.publicPath = '/'
 config.plugins = [
   new webpack.optimize.OccurenceOrderPlugin(),
   new webpack.DefinePlugin({
