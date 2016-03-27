@@ -278,6 +278,7 @@
         lastestPage:0,
         addDirection:true,
         origionScroll:0,
+        ready2Refresh:false,
         torrent: {
           lastest: [],
           pageNum:0,
@@ -342,7 +343,12 @@
       chgPage:function(offset){
         if (!offset) return;
         let self=this;
-        if (self.currentPage+offset<1) {self.$route.router.go({name:"index"}); self.currentPage=1; self.torrent.lastest=[]; this.getTorrents(); }
+        if (self.currentPage+offset<1) {
+          setTimeout(()=>{
+            self.ready2Refresh=true;
+          },2000);
+
+        }
         if ((self.currentPage+offset>=1)&&(self.currentPage+offset<=self.torrent.pageNum)){
           if (self.searchKey){
             self.$route.router.go({name:"search",params:{number:self.currentPage+=offset,key:self.searchKey}});
@@ -352,6 +358,14 @@
           }
           //self.getTorrents();
         }
+      },
+      doRefresh:function(){
+        let self=this;
+        self.$route.router.go({name:"index"});
+        self.currentPage=1;
+        self.torrent.lastest=[];
+        self.getTorrents();
+        self.ready2Refresh=false;
       },
       getScrollWidth:function() {
         var noScroll, scroll, oDiv = document.createElement("DIV");
@@ -369,8 +383,9 @@
       }
     },
     ready: function() {
-      /*
+
       let self=this;
+      /*
       switch (self.$route.mode) {
         case "normal":
           self.getTorrents();
@@ -387,6 +402,16 @@
 
       console.log("path",this.$route.path)
       */
+      document.addEventListener('mousewheel',(e)=>{
+        if (!self.busy && self.ready2Refresh && e.wheelDeltaY>0){
+          self.doRefresh();
+
+        }
+        if (self.ready2Refresh && e.wheelDeltaY<0){
+          self.ready2Refresh=false;
+        }
+      })
+
     },
     components: {
       'rin-loader': RLoader
