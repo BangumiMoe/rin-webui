@@ -55,7 +55,7 @@
       }
     }
 
-    .rin-search, .rin-week, .rin-torrents {
+    .rin-search, .rin-week, .rin-torrents,.rin-rss  {
       position: absolute;
       margin: 4px 12px;
 
@@ -64,7 +64,8 @@
 
     .rin-search { bottom: 8px; }
     .rin-week { bottom: 56px; }
-    .rin-torrents { bottom: 104px; }
+    .rin-rss { bottom: 104px; }
+    .rin-torrents { bottom: 152px; }
   }
 </style>
 
@@ -108,6 +109,11 @@
   <a class="rin-button rin-week" v-link="'/bangumi/list'">
     <i class="material-icons">&#xE8EF;</i>
     <tooltip :info="'Bangumi List' | locale"></tooltip>
+  </a>
+
+  <a class="rin-button rin-rss" href="https://bangumi.moe/rss/latest" target="_blank">
+    <i class="material-icons" style="transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>
+    <tooltip :info="'RSS' | locale"></tooltip>
   </a>
 
   <span class="rin-button rin-search" id="rin-search"

@@ -85,7 +85,7 @@
 		opacity:0;
     position: absolute;
     right: 64px;
-    bottom: 155px;
+    bottom: 203px;
 		padding-bottom: 4px;
     height: auto;
     z-index: 2;
@@ -273,7 +273,7 @@
 							<b class="name">{{data.uploader.username}}</b>
 						</a>
 					</span>
-          
+
 					{{'submitted' | locale}} {{data.publish_time | date 'yyyy/MM/dd HH:mm'}}
 				</p>
 				<div class="rin-tag">
@@ -297,7 +297,7 @@
 			</div>
 		</div>
 	</div>
-  
+
 	<div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
 		<a class="rin-button" v-bind:href="data.downloadTorrent || ''">
 			<i class="material-icons">&#xE2C4;</i>
@@ -411,7 +411,7 @@ export default {
     let self = this;
     self.$http.get("https://bangumi.moe/api/v2/torrent/" + this.id, {}, function(data) {
       self.data = data;
-      
+
       //torrent文件
       self.data.downloadTorrent = "/download/torrent/" + self.id + "/" + data.infoHash + ".torrent";
       self.busy = false;
