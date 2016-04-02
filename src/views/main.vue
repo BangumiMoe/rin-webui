@@ -6,6 +6,11 @@
     height: 100%;
     overflow: hidden;
 
+    .loader-down{
+      position: relative;
+      height: 100px;
+    }
+
     .page-nav{
       width: 250px;
       right: 190px;
@@ -24,6 +29,7 @@
         float: right;
         transition: width .5s;
       }
+
 
       .page-nav-btn{
         cursor: pointer;
@@ -176,8 +182,8 @@
 </style>
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
-    <div is="rin-loader" v-if="busy" transition="rin-fade"></div>
-    <div  id="rin-wrapper" class="rin-wrapper" v-show="!busy" transition="rin-fade" v-on:scroll='scrollHandler($event)'>
+    <div is="rin-loader" v-if="busy && !nextBusy && !prevBusy" transition="rin-fade"></div>
+    <div  id="rin-wrapper" class="rin-wrapper" v-show="!busy || nextBusy || prevBusy" transition="rin-fade" v-on:scroll='scrollHandler'>
       <!--
       <div class="page-nav clearfix">
         <div  class="rin-row page-nav-inner" >
@@ -197,6 +203,9 @@
         </div>
       </div>
     -->
+    <div class='loader-down' v-if='prevBusy'>
+      <div is="rin-loader" v-if='prevBusy' transition="rin-fade"></div>
+    </div>
       <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
         <thead style="opacity:0;">
           <tr>
@@ -242,7 +251,9 @@
               </a>
             </td>
           </tr>
+
         </tbody>
+
       </table>
       <div class="table-title-fixed fixed-show" style="width:calc(100% - {{getScrollWidth()+128}}px)">
         <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
@@ -258,6 +269,10 @@
             </tr>
           </thead>
         </table>
+
+      </div>
+      <div class='loader-down' v-if='nextBusy'>
+        <div is="rin-loader" v-if='nextBusy' transition="rin-fade"></div>
       </div>
       <div class="no-data" v-show="torrent.lastest.length == 0">
         没有更多数据了╮(╯_╰)╭
@@ -278,6 +293,8 @@
         lastestPage:0,
         addDirection:true,
         origionScroll:0,
+        nextBusy:false,
+        prevBusy:false,
         ready2Refresh:false,
         torrent: {
           lastest: [],
@@ -294,7 +311,9 @@
         if (e.target.scrollHeight-e.target.clientHeight-e.target.scrollTop < 10 && !this.busy){
           this.addDirection=true;
           this.chgPage(this.lastestPage-this.currentPage+1);
+          this.nextBusy=true;
         }else if(e.target.scrollTop===0 && !this.busy){
+          this.prevBusy=true;
           this.addDirection=false;
           this.origionScroll=e.target.scrollHeight;
           this.chgPage(this.originPage-this.currentPage-1);
@@ -318,6 +337,8 @@
           }
           self.torrent.pageNum=data.page_count;
           self.busy=false;
+          self.nextBusy=false;
+          self.prevBusy=false;
   //          setTimeout(function() {
   //            self.busy = false;
   //          }, 2000);
@@ -345,6 +366,7 @@
         let self=this;
         if (self.currentPage+offset<1) {
           setTimeout(()=>{
+            self.prevBusy=false;
             self.ready2Refresh=true;
           },2000);
 
