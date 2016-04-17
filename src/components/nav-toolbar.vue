@@ -263,8 +263,8 @@
       getUserInfo(){
         this.$http({
             "method": "GET", 
-            // "url": "https://bangumi.moe/api/v2/user/session"
-            "url": "https://bangumi.moe/api/v2/user/55c06f9881cab750784cf1e3" // DEBUG remove it 
+            "url": "https://bangumi.moe/api/v2/user/session"
+            // "url": "https://bangumi.moe/api/v2/user/55c06f9881cab750784cf1e3" // DEBUG remove it 
         }).then((response)=>{
             this.$set("user.info", response.data)
         })
