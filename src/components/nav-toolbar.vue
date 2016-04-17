@@ -114,7 +114,7 @@
   </div>
 
   <div class="user-toolbar" v-if="user._id">
-    <a class="rin-button round">
+    <a class="rin-button round" v-if="user.info.teams.length > 0">
       <span class="team">
         <span class="team-icon" :style="{'background-image': 'url(' + getIcon(user.info.teams[0]) +')'}"></span>
       </span>
@@ -261,9 +261,10 @@
       
       
       getUserInfo(){
+        console.log(this.user)
         this.$http({
             "method": "GET", 
-            "url": "https://bangumi.moe/api/v2/user/session"
+            "url": "https://bangumi.moe/api/v2/user/" + this.user._id
             // "url": "https://bangumi.moe/api/v2/user/55c06f9881cab750784cf1e3" // DEBUG remove it 
         }).then((response)=>{
             this.$set("user.info", response.data)
