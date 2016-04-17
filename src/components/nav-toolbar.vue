@@ -72,6 +72,7 @@
     .team{
       text-align: center;
       float: left;
+      z-index: 10;
       .team-icon{
         display: block;
         margin: 0;
@@ -80,6 +81,7 @@
         border-radius: 20px;
         font-size: @team-avatar-size * 0.7;
         line-height: @team-avatar-size;
+        background-size: cover; 
       }
     } 
     .teams {
@@ -90,6 +92,9 @@
       .team .team-icon{
         margin: 4px;
         background-color: white;
+        &:last-child {
+          margin-right: 0;
+        }
       } 
     }
   }
@@ -114,7 +119,7 @@
         <span class="team-icon" :style="{'background-image': 'url(' + getIcon(user.info.teams[0]) +')'}"></span>
       </span>
       <tooltip>
-        <div class="teams" :style="{width: (48 * (user.info.teams.length - 1)) + 'px' }" slot="html" v-if="user.info">
+        <div class="teams" :style="{width: (48 * (user.info.teams.length - 1) - 4) + 'px' }" slot="html" v-if="user.info">
             <span class="team" v-for="i in user.info.teams.slice(1)">
                 <span class="team-icon" :style="{'background-image': 'url(' + getIcon(i) +')'}"></span>
             </span>
