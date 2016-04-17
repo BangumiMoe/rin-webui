@@ -56,7 +56,7 @@
 
   .rin-button:hover .rin-tooltip {
     display: block;
-    max-width: 150px;
+    max-width: 256px;
     opacity: 1;
   }
 
@@ -97,7 +97,10 @@
 <template>
   <div class="rin-tooltip-wrap rin-tooltip-{{direction}}">
     <div class="rin-tooltip">
-      <p>{{ info }}</p>
+      <p>
+        {{ info }}
+        <slot name="html"></slot>
+      </p>
     </div>
   </div>
 </template>

@@ -1,5 +1,6 @@
 <style scoped lang="less">
   @import "../less/colors.less";
+  @team-avatar-size: 80px;
 
   #rin-toolbar {
     background-color: @color-primary-0;
@@ -66,6 +67,31 @@
     .rin-week { bottom: 56px; }
     .rin-rss { bottom: 104px; }
     .rin-torrents { bottom: 152px; }
+    
+    
+    .team{
+      text-align: center;
+      float: left;
+      .team-icon{
+        display: block;
+        margin: 0;
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        font-size: @team-avatar-size * 0.7;
+        line-height: @team-avatar-size;
+      }
+    } 
+    .teams {
+      margin-top: -14px;
+      margin-left: -10px;
+      width: 158px;
+      height: 48px;
+      .team .team-icon{
+        margin: 4px;
+        background-color: white;
+      } 
+    }
   }
 </style>
 
@@ -84,8 +110,16 @@
 
   <div class="user-toolbar" v-if="user._id">
     <a class="rin-button round">
-      <i class="material-icons">&#xE7FC;</i>
-      <tooltip :info="'Team' | locale"></tooltip>
+      <span class="team">
+        <span class="team-icon" :style="{'background-image': 'url(' + getIcon(user.info.teams[0]) +')'}"></span>
+      </span>
+      <tooltip>
+        <div class="teams" :style="{width: (48 * (user.info.teams.length - 1)) + 'px' }" slot="html" v-if="user.info">
+            <span class="team" v-for="i in user.info.teams.slice(1)">
+                <span class="team-icon" :style="{'background-image': 'url(' + getIcon(i) +')'}"></span>
+            </span>
+        </div>
+      </tooltip>
     </a>
     <a class="rin-button round">
       <i class="material-icons">&#xE89D;</i>
@@ -203,14 +237,8 @@
 
 
       },
-      /* backHomepage () {
-  			if (window.history.length>1){
-  				window.history.back()
-  			}else{
-  				this.$route.router.go({name:"index"});
-  			}
-      },*/
 
+      // sigin or jump to user info page
       userSignAction (ev) {
         if(!this.user._id) {
           this.signin_form_opened = true;
@@ -218,16 +246,27 @@
         }else{
           this.$router.go("/user/" + this.user._id)
         }
-
-        /* } else {
-          this.$dispatch('UserSignOut');
-        }*/
       },
 
       userSignout (ev) {
         if(this.user._id) {
           this.$dispatch('UserSignOut');
         }
+      },
+      
+      
+      getUserInfo(){
+        this.$http({
+            "method": "GET", 
+            // "url": "https://bangumi.moe/api/v2/user/session"
+            "url": "https://bangumi.moe/api/v2/user/55c06f9881cab750784cf1e3" // DEBUG remove it 
+        }).then((response)=>{
+            this.$set("user.info", response.data)
+        })
+      },
+      
+      getIcon(i) {
+          return i.icon ? 'https://bangumi-moe.phoenixstatic.com/' + i.icon : require('../assets/akarin.jpg');
       },
 
     },
@@ -239,13 +278,14 @@
     events: {
       UserSignInOK (user) {
         this.user = user;
+        this.getUserInfo();
         if(this.signin_form_opened) {
           this.signin_form_opened = false;
           this.$dispatch('hideSigninForm');
         }
       },
-      UserSignInFailed () { this.user = {};   },
-      UserSignOutOK ()    { this.user = {};   },
+      UserSignInFailed () { this.user = {}; },
+      UserSignOutOK ()    { this.user = {}; },
     },
     watch: {
       '$route' ()  {

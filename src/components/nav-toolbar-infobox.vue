@@ -78,9 +78,8 @@
   <div class="rin-infobox-wrap rin-infobox-arrow-{{arrow}}">
     <div class="rin-infobox-inner">
       <div class="rin-infobox">
-        <slot>
+        <slot></slot>
         <p>Hi, {{user.username || "Anonymous" }}!</p>
-        </slot>
       </div>
     </div>
   </div>
