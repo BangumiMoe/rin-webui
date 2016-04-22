@@ -36,8 +36,8 @@
         &.btn-up-first{ background-color: @color-primary-2 }
         &:not(.disabled):hover{
           background-color: @color-primary-3;
-
-          i{ font-size:2em; }
+          /* 图标的大小改为1.6em,用2em时 图标发生位移, 而且有溢出 */
+          i{ font-size:1.6em; }
         }
 
         &.btn-down{ background-color: @color-primary-2; }
