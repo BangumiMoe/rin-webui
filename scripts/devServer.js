@@ -13,7 +13,13 @@ if (process.env.HOT) {
 
 app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath,
-  stats: { colors: true }
+  stats: {
+    colors: true,
+    modules: false,
+    children: false,
+    chunks: false,
+    chunkModules: false
+  }
 }))
 
 app.use('/api/user/signin', proxy(url.parse('https://bangumi.moe/api/user/signin')))
