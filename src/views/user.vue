@@ -255,7 +255,8 @@ export default {
     }
   },
   components: {
-    "rin-avatar": require("../components/rin-avatar")
+    "rin-avatar": require("../components/rin-avatar"),
+    "tooltip": require("../components/nav-tooltip")
   },
   filters: {
      'date':require('../filters/dateFormat.js')

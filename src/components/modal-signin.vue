@@ -31,7 +31,7 @@
     </div>
 
     <div class="rin-checkbox">
-      <input id="signin_cookie" type="checkbox" checked="checked" v-model="cookie">
+      <input id="signin_cookie" type="checkbox" checked="checked" v-model="store_in_cookie">
       <label for="signin_cookie">{{"Save account info locally" | locale}}</label>
     </div>
 
@@ -46,7 +46,7 @@
       'rin-modal': require('./rin-modal'),
     },
     data () {
-      return { username: null, password: null, message: null, loading: false };
+      return { username: null, password: null, message: null, loading: false, store_in_cookie:false };
     },
     methods:{
       'cancel' () { return 0; },

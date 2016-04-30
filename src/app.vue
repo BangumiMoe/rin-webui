@@ -10,10 +10,7 @@
     <nav-logo></nav-logo>
     <rin-modal></rin-modal>
     <rin-user></rin-user>
-    <!-- <modal-demo></modal-demo> -->
     <modal-signin></modal-signin>
-    <modal-lang></modal-lang>
-    <choose-langeuage></choose-langeuage>
   </div>
 </template>
 

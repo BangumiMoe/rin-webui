@@ -218,7 +218,7 @@
             <th width="9%"><span class="title">{{'Uploader'|locale}}</span></th>
           </tr>
         </thead>
-        <tbody v-infinite-scroll="alert()">
+        <tbody>
           <tr v-for="(index, t) in torrent.lastest"  v-on:click="goTorrent(t._id, $event)">
             <td style="font-size:12px;">{{t.publish_time | date 'lately HH:mm'}}</td>
             <td align="center">
@@ -255,7 +255,7 @@
         </tbody>
 
       </table>
-      <div class="table-title-fixed fixed-show" style="width:calc(100% - {{getScrollWidth()+128}}px)">
+      <div class="table-title-fixed fixed-show" :style="{width: 'calc(100% - ' + (getScrollWidth()+128) +' px)'}">
         <table id="rin-main-table" style="width:100%;"  class="rin-main-table" cellpadding="0" cellspacing="1" border="0" width="" frame="void">
           <thead>
             <tr>
@@ -352,11 +352,11 @@
           if (self.torrent.lastest.length === 0) {self.lastestPage=self.originPage=self.currentPage}
           if (self.lastestPage < self.currentPage) {self.lastestPage=self.currentPage}
           if (self.originPage > self.currentPage) {self.originPage=self.currentPage}
-          if (addDirection){
-            self.torrent.lastest = self.torrent.lastest.concat(data.torrents) ;
-          }else{
+          // if (addDirection){
+          //   self.torrent.lastest = self.torrent.lastest.concat(data.torrents) ;
+          // }else{
             self.torrent.lastest = data.torrents.concat(self.torrent.lastest) ;
-          }
+          // }
           self.torrent.pageNum=data.page_count;
           self.busy=false;
         });
@@ -468,7 +468,7 @@
           if ((self.$route.params.number==parseInt(self.$route.params.number))&&parseInt(self.$route.params.number)>0){
             self.currentPage=parseInt(self.$route.params.number);
           }
-          console.log("Search in process");
+          // console.log("Search in process");
           self.doSearch(self.$route.params.key);
           break;
          default:

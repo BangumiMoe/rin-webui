@@ -252,22 +252,22 @@
     },
     events:{
       "open-modal":function(opt){
-        console.log(this.modalId,opt.modalId);
+        // console.log(this.modalId,opt.modalId);
         if (this.modalId==opt.modalId){
 
           this.openModal(opt);
-          console.log("Ready2Show");
+          // console.log("Ready2Show");
         }
       },
       "close-modal":function(){
         this.closeModal();
       },
       "modal-start-loading":function(){
-        console.log("Ready2Loading");
+        // console.log("Ready2Loading");
         this.startLoading();
       },
       "modal-stop-loading":function(){
-        console.log("Ready2StopLoading");
+        // console.log("Ready2StopLoading");
         this.stopLoading();
       }
     },
