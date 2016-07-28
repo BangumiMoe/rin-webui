@@ -25,7 +25,7 @@ router.map({
   },
   '/bangumi/list': {
     name: 'list',
-    component: require('./views/list')
+    component: require('./views/bangumi-list')
   },
   '/torrent/:key': {
     name: 'torrent',
@@ -35,6 +35,10 @@ router.map({
   '/user/:id': {
     name: "user",
     component: require('./views/user'),
+  },
+  '/team/:id': {
+    name: "team-profile",
+    component: require('./views/team-profile'),
   }
 });
 
