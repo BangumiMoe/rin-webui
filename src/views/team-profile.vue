@@ -115,6 +115,9 @@
         return 'https://bangumi.moe/avatar/' + email_hash
       },
       fetch_icon(icon_url) {
+        if (icon_url === null) {
+          return require('../assets/akarin.jpg')
+        }
         return 'https://bangumi.moe/' + icon_url
       },
       fetch_info(id) {
