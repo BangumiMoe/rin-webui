@@ -59,14 +59,19 @@
 
 <style scoped lang="less">
   @import "../less/colors.less";
+  @table-header-fg: rgba(233, 233, 233, 0.9);
+  @table-header-bg: rgba(98, 137, 168, 1);
+  @table-body-odd: #efefef;
+  @table-body-even: white;
+  @table-body-hover: #cecece;
   table {
     height: ~"calc(100% - 24px)";
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
     thead {
-      background-color: @color-primary-4;
-      color: @color-primary-1;
+      background-color: @table-header-bg;
+      color: @table-header-fg;
       display: block;
       position: relative;
       tr {
@@ -127,13 +132,13 @@
         text-align: left;
         /*overflow: hidden;*/
         &:nth-child(odd) {
-          background-color: @color-primary-0;
+          background-color: @table-body-odd;
         }
         &:nth-child(even) {
-          background-color: @color-primary-2;
+          background-color: @table-body-even;
         }
         &:hover {
-          background-color: @color-primary-3;
+          background-color: @table-body-hover;
           td.title {
             .container a.rin-team-title {
               overflow: visible;
