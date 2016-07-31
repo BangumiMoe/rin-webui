@@ -32,7 +32,6 @@
       &.loaded {
         height: 100px;
         .team-name {
-
           opacity: 1;
         }
       }
@@ -51,6 +50,7 @@
           }
         }
         img {
+          background-color: white;
           height: 170px;
           width: 170px;
           border: 5px solid white;

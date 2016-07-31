@@ -200,6 +200,11 @@
     props: ['torrents', 'torrents_total', 'hide_team_name'],
     filters: {
       date: require('../filters/dateFormat.js')
+    },
+    data() {
+      return {
+        gravatarUrl: '//bangumi.moe/avatar/'
+      }
     }
   }
 </script>
