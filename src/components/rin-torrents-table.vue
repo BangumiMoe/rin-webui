@@ -25,7 +25,7 @@
       <td class="title">
         <div class="container">
           <a class="rin-team rin-inline-tag haspic" v-link="'/team/' + t.team._id" v-if="t.team" v-show="!hide_team_name">
-            <img v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
+            <img v-if="t.team.icon" v-bind:src="teamIconUrl + t.team.icon" alt="" />
             <img src="../assets/akarin.jpg" v-if="!t.team.icon" />
             <span>{{t.team.tag | locale}}</span>
           </a>
@@ -203,7 +203,8 @@
     },
     data() {
       return {
-        gravatarUrl: '//bangumi.moe/avatar/'
+        gravatarUrl: '//bangumi.moe/avatar/',
+        teamIconUrl: '//bangumi.moe/'
       }
     }
   }
