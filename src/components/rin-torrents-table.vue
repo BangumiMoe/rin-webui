@@ -24,7 +24,7 @@
       </th>
       <td class="title">
         <div class="container">
-          <a class="rin-team rin-inline-tag haspic" v-link="'/team/' + t.team._id" v-if="t.team">
+          <a class="rin-team rin-inline-tag haspic" v-link="'/team/' + t.team._id" v-if="t.team" v-show="!hide_team_name">
             <img v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
             <img src="../assets/akarin.jpg" v-if="!t.team.icon" />
             <span>{{t.team.tag | locale}}</span>
@@ -60,7 +60,7 @@
 <style scoped lang="less">
   @import "../less/colors.less";
   table {
-    height: 100%;
+    height: ~"calc(100% - 24px)";
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
@@ -197,7 +197,7 @@
 
 <script>
   export default {
-    props: ['torrents', 'torrents_total'],
+    props: ['torrents', 'torrents_total', 'hide_team_name'],
     filters: {
       date: require('../filters/dateFormat.js')
     }

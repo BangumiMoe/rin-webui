@@ -2,17 +2,17 @@
 <div id="rin-main" style="width: calc(100% - 128px);">
   <div class="rin-row">
     <div class="rin-col team-profile rin-center">
-      <span class="face-icon" v-show="team.torrents.length == 0">
-                    <img :src="fetch_icon(team.info.icon)" alt="team face">
-                    <h1 class="team-name" v-text="team.info.name"></h1>
-                </span>
-
-      <div class="team-topbar">
-
+      <div class="team-topbar" v-el:team_topbar>
+        <span class="face-icon" v-el:team_icon>
+            <img :src="fetch_icon(team.info.icon)" @load="img_changed">
+        </span>
+        <h1 class="team-name" v-text="team.info.name"></h1>
       </div>
 
-      <div class="team-content" v-show="team.torrents.length > 0">
-        <rin-torrents-table :torrents="team.torrents" :torrents_total="team.torrents_total"></rin-torrents-table>
+      <div class="team-content" v-el:team_content>
+        <div class="team_torrents_table">
+          <rin-torrents-table :torrents="team.torrents" :torrents_total="team.torrents_total" :hide_team_name="true"></rin-torrents-table>
+        </div>
       </div>
     </div>
   </div>
@@ -23,31 +23,64 @@
   @import "../less/colors.less";
   .team-profile {
     position: relative;
-    .face-icon {
-      position: absolute;
-      top: 40vh;
-      display: inline-block;
-      margin-top: -85px;
-      margin-left: -85px;
-      width: 170px;
-      img {
-        width: 160px;
-        border: 5px solid white;
-        border-radius: 50%;
+    .team-topbar {
+      height: 40vh;
+      display: block;
+      padding: 14px;
+      text-align: left;
+      transition: all 1s;
+      &.loaded {
+        height: 100px;
+        .team-name {
+
+          opacity: 1;
+        }
+      }
+      .face-icon {
+        display: inline-block;
+        margin-left: ~"calc(50vw - 128px - 14px)";
+        margin-top: ~"calc(40vh - 85px)";
+        transition: all 1s;
+        &.loaded {
+          margin-top: 0;
+          margin-left: 0;
+          img {
+            width: 90px;
+            height: 90px;
+            border-color: @color-primary-0;
+          }
+        }
+        img {
+          height: 170px;
+          width: 170px;
+          border: 5px solid white;
+          border-radius: 50%;
+          transition: all 2s, height 1s, width 1s;
+        }
       }
       .team-name {
         display: inline-block;
-        width: 100%;
-        color: white;
-        text-wrap: none;
+        margin-left: 0.3em;
+        color: @color-primary-3;
+        opacity: 0;
+        transition: opacity 1s linear;
       }
-    }
-    .team-topbar {
-      height: 40vh;
     }
     .team-content {
       height: 60vh;
       background-color: @color-primary-2;
+      transition: all 1s;
+      .team_torrents_table {
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s linear;
+      }
+      &.loaded {
+        height: ~"calc(100vh - 128px)";
+        .team_torrents_table {
+          opacity: 1;
+        }
+      }
     }
   }
 </style>
@@ -70,6 +103,14 @@
       }
     },
     methods: {
+      img_changed(ev) {
+        this.$els.team_icon.className += ' loaded'
+        let self = this
+        window.setTimeout(function() {
+          self.$els.team_topbar.className += ' loaded'
+          self.$els.team_content.className += ' loaded'
+        }, 1000)
+      },
       fetch_user_icon(email_hash) {
         return 'https://bangumi.moe/avatar/' + email_hash
       },
