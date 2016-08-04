@@ -9,35 +9,32 @@
             <th class="category" style="width: 8%"><span class="title">{{'Category'|locale}}</span></th>
       <th class="title"><span class="title">{{'Title'|locale}}</span></th>
       <th class="magnet"><span class="title">{{'magnet'|locale}}</span></th>
-      <th class="file_size"><span class="title">{{'Size'|locale}}</span></th>
       <th class="seed-stats"><span class="title">{{'Seed stat'|locale}}</span></th>
       <th class="uploader"><span class="title">{{'Uploader'|locale}}</span></th>
     </tr>
   </thead>
   <tbody>
     <tr v-for="(index, t) in torrents">
-      <td class="publish_time">{{t.publish_time | date 'lately HH:mm'}}</td>
-      <th class="category" style="width:8%">
-        <div class="rin-inline-tag">
-          <span>{{t.category_tag|locale}}</span>
-        </div>
-      </th>
+      <td class="publish_time">{{t.publish_time | date 'lately'}}</td>
+      <td class="category" style="width:8%">
+        <strong>{{t.category_tag|locale}}</strong>
+      </td>
       <td class="title">
-        <div class="container">
+        <div class="container" v-link="'/torrent/' + t._id" @mouseup.stop="title_right_click($event, t)" v-if="t">
           <a class="rin-team rin-inline-tag haspic" v-link="'/team/' + t.team._id" v-if="t.team" v-show="!hide_team_name">
             <img v-if="t.team.icon" v-bind:src="teamIconUrl + t.team.icon" alt="" />
             <img src="../assets/akarin.jpg" v-if="!t.team.icon" />
             <span>{{t.team.tag | locale}}</span>
           </a>
-          <a class="rin-team-title" target="_blank">{{t.title}}</a>
+          <a class="rin-team-title" target="_blank" v-if="t" >{{t.title}}</a>
           <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{ ((t.comments >1) ? 'Comments' :'Comment' )| locale }}</span>
         </div>
       </td>
       <td class="magnet">
-        <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}" @click.stop><i class="material-icons">&#xE2C4;</i></a>
+        <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}"><i class="material-icons">&#xE2C4;</i></a>
       </td>
-      <td class="file_size">{{t.size}}</td>
       <td class="seed-stats">
+        {{t.size}}
         <a class="rin-seed-online" href="javascript:void(0)" title="种子">{{t.seeders}}</a> /
         <a class="rin-seed-downloading" href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
         <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
@@ -59,16 +56,26 @@
 
 <style scoped lang="less">
   @import "../less/colors.less";
+  /* Home page table colors schema
   @table-header-fg: rgba(233, 233, 233, 0.9);
   @table-header-bg: rgba(98, 137, 168, 1);
   @table-body-odd: #efefef;
   @table-body-even: white;
-  @table-body-hover: #cecece;
+  @table-body-hover: #cecece;*/
+  
+  @table-header-fg: white;
+  @table-header-bg: @color-primary-0;
+  @table-body-odd: @color-table-odd-bg;
+  @table-body-even: @color-table-even-bg;
+  @table-body-hover: @color-primary-3;
+  @table-body-hover-color: @color-primary-2;
+  @table-font-size: 12px;
   table {
     height: ~"calc(100% - 24px)";
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
+    font-size: @table-font-size;
     thead {
       background-color: @table-header-bg;
       color: @table-header-fg;
@@ -95,13 +102,9 @@
           &.magnet {
             width: 5%;
           }
-          &.file_size {
-            text-align: right;
-            width: 7%;
-          }
           &.seed-stats {
-            text-align: left;
-            width: 8%;
+            text-align: center;
+            width: 15%;
           }
           &.uploader {
             text-align: left;
@@ -138,6 +141,7 @@
           background-color: @table-body-even;
         }
         &:hover {
+          color: @table-body-hover-color;
           background-color: @table-body-hover;
           td.title {
             .container a.rin-team-title {
@@ -145,18 +149,21 @@
             }
           }
         }
-        td {
+        td,
+        th {
           text-align: left;
-          padding: 15px 2px 5px 2px;
+          line-height: 32px;
           &.publish_time {
             text-align: center;
             width: 7%;
           }
           &.category {
+            color: @color-primary-4;
             text-align: center;
             width: 8%;
           }
           &.title {
+            cursor: pointer;
             width: 50%;
             overflow: hidden;
             .container {
@@ -180,12 +187,9 @@
             text-align: center;
             width: 5%;
           }
-          &.file_size {
-            text-align: right;
-            width: 8%;
-          }
           &.seed-stats {
-            width: 8%;
+            text-align: center;
+            width: 15%;
           }
           &.uploader {
             width: 14%;
@@ -211,6 +215,13 @@
         // magnentt: '&tr=https%3A%2F%2Ftr.bangumi.moe%3A9696%2Fannounce&tr=http%3A%2F%2Ftr.bangumi.moe%3A6969%2Fannounce&tr=udp%3A%2F%2Ftr.bangumi.moe%3A6969%2Fannounce&tr=http%3A%2F%2Fopen.acgtracker.com%3A1096%2Fannounce&tr=http%3A%2F%2F208.67.16.113%3A8000%2Fannounce&tr=udp%3A%2F%2F208.67.16.113%3A8000%2Fannounce&tr=http%3A%2F%2Ftracker.ktxp.com%3A6868%2Fannounce&tr=http%3A%2F%2Ftracker.ktxp.com%3A7070%2Fannounce&tr=http%3A%2F%2Ft2.popgo.org%3A7456%2Fannonce&tr=http%3A%2F%2Fbt.sc-ol.com%3A2710%2Fannounce&tr=http%3A%2F%2Fshare.camoe.cn%3A8080%2Fannounce&tr=http%3A%2F%2F61.154.116.205%3A8000%2Fannounce&tr=http%3A%2F%2Fbt.rghost.net%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.publicbt.com%3A80%2Fannounce&tr=http%3A%2F%2Ftracker.prq.to%2Fannounce&tr=http%3A%2F%2Fopen.nyaatorrents.info%3A6544%2Fannounce',
         gravatarUrl: '//bangumi.moe/avatar/',
         teamIconUrl: '//bangumi.moe/'
+      }
+    },
+    methods: {
+      title_right_click(ev, torrent) {
+        if (ev.which == 3) {
+          window.open('/torrent/' + torrent._id, '_blank')
+        }
       }
     }
   }

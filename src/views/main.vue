@@ -55,8 +55,8 @@
         color: @color-primary-0;
       }
       .page-nav-num.cur {
-        color: @color-secondary-1-3;
-        background-color: @color-secondary-1-2 !important;
+        /*color: @color-secondary-1-3;
+        background-color: @color-secondary-1-2 !important;*/
         cursor: default;
       }
       .page-nav-num {
@@ -74,7 +74,7 @@
       li {
         height: 3em;
         line-height: 3em;
-        border-bottom: 1px solid @color-secondary-1-4;
+        /*border-bottom: 1px solid @color-secondary-1-4;*/
       }
     }
     .rin-wrapper {
@@ -85,8 +85,8 @@
         table-layout: fixed;
         font-size: 0.9em;
         thead {
-          color: @color-th;
-          background-color: @color-th-bg;
+          color: @color-primary-1;
+          background-color: @color-primary-2;
           th {
             font-weight: 400
           }
@@ -146,13 +146,13 @@
             }
           }
           &:nth-child(odd) {
-            background-color: @color-tr-odd;
+            /*background-color: @color-tr-odd;*/
           }
           &:hover {
-            background-color: @color-tr-hover;
+            /*background-color: @color-tr-hover;*/
             .rin-inline-tag {
-              color: @color-inline-tag-hover;
-              background-color: @color-inline-tag-bg-hover;
+              /*color: @color-inline-tag-hover;
+              background-color: @color-inline-tag-bg-hover;*/
             }
           }
         }

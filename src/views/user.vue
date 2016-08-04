@@ -1,145 +1,161 @@
 <style scoped lang="less">
-@import "../less/colors.less";
-@color-inline-tag: #6d6d6d;
-@color-inline-tag-bg: #eeeeee;
-@user-avatar-size: 160px;
-@team-avatar-size: 80px;
-@team-avatar-border: 0.06 * @team-avatar-size;
-
-    .page-nav{
-      width: 250px;
-      right: 190px;
-      height: 40px;
-      position: fixed;
-      bottom:40px;
-      text-align: center;
-      line-height: 40px;
-      font-size: 1.2em;
-      box-shadow: 1px 1px 25px 1px #DC7788;
-      border-radius: 5px;
-      overflow: hidden;
-
-      .page-nav-inner{
-        width:100%;
-        float: right;
-        transition: width .5s;
+  @import "../less/colors.less";
+  @color-inline-tag: #6d6d6d;
+  @color-inline-tag-bg: #eeeeee;
+  @user-avatar-size: 160px;
+  @team-avatar-size: 80px;
+  @team-avatar-border: 0.06 * @team-avatar-size;
+  .page-nav {
+    width: 250px;
+    right: 190px;
+    height: 40px;
+    position: fixed;
+    bottom: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 1.2em;
+    box-shadow: 1px 1px 25px 1px #DC7788;
+    border-radius: 5px;
+    overflow: hidden;
+    .page-nav-inner {
+      width: 100%;
+      float: right;
+      transition: width .5s;
+    }
+    .page-nav-btn {
+      cursor: pointer;
+      color: white;
+      transition: background-color .2s;
+      i {
+        line-height: 40px;
+        transition: font-size .2s
       }
-
-      .page-nav-btn{
-        cursor: pointer;
-        color: white;
-        transition: background-color .2s;
-
-        i { line-height: 40px; transition: font-size .2s }
-
-        &.btn-up{ background-color: @color-primary-2 }
-        &.btn-up-first{ background-color: @color-primary-2 }
-        &:not(.disabled):hover{
-          background-color: @color-primary-3;
-
-          i{ font-size:2em; }
+      &.btn-up {
+        background-color: @color-primary-2
+      }
+      &.btn-up-first {
+        background-color: @color-primary-2
+      }
+      &:not(.disabled):hover {
+        background-color: @color-primary-3;
+        i {
+          font-size: 2em;
         }
-
-        &.btn-down{ background-color: @color-primary-2; }
-        &.btn-down-last{ background-color: @color-primary-2; }
       }
-
-      .page-nav-num{color: @color-primary-0; }
-      .page-nav-num.cur{
-        color: @color-secondary-1-3;
-        background-color: @color-secondary-1-2 !important;
-        cursor:default;
-      }
-      .page-nav-num{
-        background-color: @color-primary-1;
-        font-size: 0.9em;
-      }
-      .page-nav-num:nth-child(odd){
+      &.btn-down {
         background-color: @color-primary-2;
       }
-      .disabled{ cursor: default; }
+      &.btn-down-last {
+        background-color: @color-primary-2;
+      }
     }
-
-.rin-wrapper{
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  width: 100%;
-  position: relative;
-  .rin-avatar{
-    position: absolute;
-    top: 40vh;
-    margin-top: -80px;
+    .page-nav-num {
+      color: @color-primary-0;
+    }
+    .page-nav-num.cur {
+      /*color: @color-secondary-1-3;
+        background-color: @color-secondary-1-2 !important;*/
+      cursor: default;
+    }
+    .page-nav-num {
+      background-color: @color-primary-1;
+      font-size: 0.9em;
+    }
+    .page-nav-num:nth-child(odd) {
+      background-color: @color-primary-2;
+    }
+    .disabled {
+      cursor: default;
+    }
+  }
+  
+  .rin-wrapper {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
     width: 100%;
-    display: flex;
-    z-index: 20;
-  }
-}
-.background{
-  height: 40vh;
-  background-color: @rgba-primary-1;
-  width: 100%;
-}
-.content{
-  padding: 80px 100px 0 100px;
-  max-width: 960px;
-  margin: auto;
-  margin-bottom: 100px;
-}
-.name{
-  text-align: center;
-}
-.teams{
-  text-align: left;
-  a{
-    margin-left: 20px
-  }
-}
-.auditing_teams{
-  text-align: right;
-  a{
-    margin-right: 20px;
-    text-align: center;
-    .team-icon{
-      color: white;
-      font-size: @team-avatar-size * 0.7;
-      line-height: @team-avatar-size;
-      background-color: #ddd;
+    position: relative;
+    .rin-avatar {
+      position: absolute;
+      top: 40vh;
+      margin-top: -80px;
+      width: 100%;
+      display: flex;
+      z-index: 20;
     }
   }
-  &.rin-fade-transition{
-    transition: transform .6s .6s, opacity .6s .6s;
-    &.rin-fade-enter, &.rin-fade-leave{
-      opacity: 0;
-      .team-icon{
-        transform: scale(.6);
+  
+  .background {
+    height: 40vh;
+    width: 100%;
+  }
+  
+  .content {
+    padding: 80px 100px 0 100px;
+    max-width: 960px;
+    margin: auto;
+    margin-bottom: 100px;
+  }
+  
+  .name {
+    text-align: center;
+  }
+  
+  .teams {
+    text-align: left;
+    a {
+      margin-left: 20px
+    }
+  }
+  
+  .auditing_teams {
+    text-align: right;
+    a {
+      margin-right: 20px;
+      text-align: center;
+      .team-icon {
+        color: white;
+        font-size: @team-avatar-size * 0.7;
+        line-height: @team-avatar-size;
+        background-color: #ddd;
+      }
+    }
+    &.rin-fade-transition {
+      transition: transform .6s .6s, opacity .6s .6s;
+      &.rin-fade-enter,
+      &.rin-fade-leave {
+        opacity: 0;
+        .team-icon {
+          transform: scale(.6);
+        }
       }
     }
   }
-}
-.teams, .auditing_teams{
-  flex: 1;
-  height: @team-avatar-border * 2 + @team-avatar-size;
-  align-self: center;
-  a{
-    display: inline-block;
-    .team-icon{
-      transition: transform .6s .6s;
-      height: @team-avatar-size;
-      background-size: cover;
-      background-repeat: no-repeat;
-      width: @team-avatar-size;
-      border-radius: 50%;
-      border: solid @team-avatar-border white;
+  
+  .teams,
+  .auditing_teams {
+    flex: 1;
+    height: @team-avatar-border * 2 + @team-avatar-size;
+    align-self: center;
+    a {
       display: inline-block;
+      .team-icon {
+        transition: transform .6s .6s;
+        height: @team-avatar-size;
+        background-size: cover;
+        background-repeat: no-repeat;
+        width: @team-avatar-size;
+        border-radius: 50%;
+        border: solid @team-avatar-border white;
+        display: inline-block;
+      }
     }
   }
-}
-table td:first-child {
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
+  
+  table td:first-child {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
 </style>
 
 <template>
@@ -236,103 +252,113 @@ table td:first-child {
   </div>
 </template>
 <script>
-/*
- 只加载。不处理加载完成的事件
-*/
-function cacheImage(link){
-  let tmp = new Image()
-  tmp.src = link
-}
-export default {
-  data(){
-    return {
-      currentPage:  1,
-      currentLimit: 25,
-      user:         {},
-      loaded:       false,
-      torrents:     {},
-      teamIconBaseUrl: "https://bangumi-moe.phoenixstatic.com/",
-    }
-  },
-  components: {
-    "rin-avatar": require("../components/rin-avatar"),
-    "tooltip": require("../components/nav-tooltip")
-  },
-  filters: {
-     'date':require('../filters/dateFormat.js')
-  },
-  methods: {
-    chgPage(offset) {
-      var self = this;
-      var newPage = self.currentPage + (offset);
-      if (newPage <= 0) {
-        newPage = 1;
-      } else if (newPage > self.torrents.page_count) {
-        newPage = self.torrents.page_count;
-      }
-      self.currentPage = newPage;
-      self.torrents = {};
-      self.getUserTorrent();
-    },
-    getIcon(i){
-      return i.icon ? 'https://bangumi-moe.phoenixstatic.com/' + i.icon : require('../assets/akarin.jpg');
-    },
-    getUserInfo(){
-      return this.$http({"method": "GET", "url": `https://bangumi.moe/api/v2/user/${this.$route.params.id || 'session'}`}).then((response)=>{
-        this.$set("user", response.data)
-      })
-    },
-    getUserTorrent(){
-      return this.$http
-        .get(`https://bangumi.moe/api/v2/torrent/user/${this.$route.params.id}?p=${this.currentPage}&limit=${this.currentLimit}`, {limit:25})
-        .then((response)=>{
-          this.$set("torrents", response.data)
-      })
-    },
-    getUserBangumi(){
-      return this.$http({"method": "GET", "url": `https://bangumi.moe/api/v2/bangumi/user/${this.$route.params.id}`}).then((response)=>{
-        this.$set("bangumi", response.data)
-      })
-    },
-    aggressiveCaching(){
-      this.user.teams.forEach((t)=>{
-        t.icon && cacheImage(`https://bangumi-moe.phoenixstatic.com/${t.icon}`)
-      })
-    },
-    canModify(torrent){
-      uid = this.user._id;
-      if (uid == undefined) return false;
+  /*
+     只加载。不处理加载完成的事件
+    */
+  function cacheImage(link) {
+    let tmp = new Image()
+    tmp.src = link
+  }
+  export default {
+    data() {
+        return {
+          currentPage: 1,
+          currentLimit: 25,
+          user: {},
+          loaded: false,
+          torrents: {},
+          teamIconBaseUrl: "https://bangumi-moe.phoenixstatic.com/",
+        }
+      },
+      components: {
+        "rin-avatar": require("../components/rin-avatar"),
+        "tooltip": require("../components/nav-tooltip")
+      },
+      filters: {
+        'date': require('../filters/dateFormat.js')
+      },
+      methods: {
+        chgPage(offset) {
+          var self = this;
+          var newPage = self.currentPage + (offset);
+          if (newPage <= 0) {
+            newPage = 1;
+          } else if (newPage > self.torrents.page_count) {
+            newPage = self.torrents.page_count;
+          }
+          self.currentPage = newPage;
+          self.torrents = {};
+          self.getUserTorrent();
+        },
+        getIcon(i) {
+          return i.icon ? 'https://bangumi-moe.phoenixstatic.com/' + i.icon : require('../assets/akarin.jpg');
+        },
+        getUserInfo() {
+          return this.$http({
+            "method": "GET",
+            "url": `https://bangumi.moe/api/v2/user/${this.$route.params.id || 'session'}`
+          }).then((response) => {
+            this.$set("user", response.data)
+          })
+        },
+        getUserTorrent() {
+          return this.$http
+            .get(`https://bangumi.moe/api/v2/torrent/user/${this.$route.params.id}?p=${this.currentPage}&limit=${this.currentLimit}`, {
+              limit: 25
+            })
+            .then((response) => {
+              this.$set("torrents", response.data)
+            })
+        },
+        getUserBangumi() {
+          return this.$http({
+            "method": "GET",
+            "url": `https://bangumi.moe/api/v2/bangumi/user/${this.$route.params.id}`
+          }).then((response) => {
+            this.$set("bangumi", response.data)
+          })
+        },
+        aggressiveCaching() {
+          this.user.teams.forEach((t) => {
+            t.icon && cacheImage(`https://bangumi-moe.phoenixstatic.com/${t.icon}`)
+          })
+        },
+        canModify(torrent) {
+          uid = this.user._id;
+          if (uid == undefined) return false;
 
-      if (torrent.uploader._id == uid) { return true };
+          if (torrent.uploader._id == uid) {
+            return true
+          };
 
-      for( i in this.user.teams) {
-        if(this.user.teams[i]._id == torrent.team._id) {
-          for(j in this.user.teams[i].admin_ids) {
-            if(uid == this.user.teams[i].admin_ids[j]) {
-              return true;
+          for (i in this.user.teams) {
+            if (this.user.teams[i]._id == torrent.team._id) {
+              for (j in this.user.teams[i].admin_ids) {
+                if (uid == this.user.teams[i].admin_ids[j]) {
+                  return true;
+                }
+              }
+              break;
             }
           }
-          break;
-        }
-      }
 
-      return false;
-    }
-  },
-  route:{
-    canReuse: false
-  },
-  events: {
-    "avatar.loaded": function(e){
-      this.$set('loaded', true)
-    }
-  },
-  ready(){
-    this.getUserInfo().then(()=>{
-      this.getUserTorrent()
-      this.getUserBangumi()
-      this.aggressiveCaching()
-    })
+          return false;
+        }
+      },
+      route: {
+        canReuse: false
+      },
+      events: {
+        "avatar.loaded": function(e) {
+          this.$set('loaded', true)
+        }
+      },
+      ready() {
+        this.getUserInfo().then(() => {
+          this.getUserTorrent()
+          this.getUserBangumi()
+          this.aggressiveCaching()
+        })
+      }
   }
-}
 </script>

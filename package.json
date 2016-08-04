@@ -54,6 +54,7 @@
     "webpack": "^1.12.9",
     "webpack-dev-middleware": "^1.4.0",
     "webpack-hot-middleware": "^2.6.0",
-    "json-loader": "^0.5.4"
+    "json-loader": "^0.5.4",
+    "moment": "2.14.1"
   }
 }
