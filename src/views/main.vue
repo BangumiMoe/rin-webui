@@ -186,7 +186,7 @@
 </style>
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
-    <div is="rin-loader" v-if="busy && !nextBusy && !prevBusy" transition="rin-fade"></div>
+    <div is="rin-loader" v-show="busy && !nextBusy && !prevBusy" transition="rin-fade"></div>
     <div  id="rin-wrapper" class="rin-wrapper" v-show="!busy || nextBusy || prevBusy" transition="rin-fade" v-on:scroll='scrollHandler'>
       <!--
       <div class="page-nav clearfix">
