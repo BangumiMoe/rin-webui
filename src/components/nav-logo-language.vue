@@ -83,23 +83,25 @@
 </template>
 
 <script>
+  import tooltip from './nav-tooltip';
   export default {
+    name: 'NavLogoLanguage',
     data() {
-        return {
-          toggleFlag: false,
-        }
+      return {
+        toggleFlag: false,
+      };
+    },
+    components: {
+      tooltip,
+    },
+    methods: {
+      toggleChooser() {
+        this.toggleFlag = !this.toggleFlag;
       },
-      components: {
-        'tooltip': require('./nav-tooltip')
+      changeLang(lng) {
+        this.$dispatch('changeLang', lng);
+        this.toggleChooser();
       },
-      methods: {
-        toggleChooser(ev) {
-          this.toggleFlag = !this.toggleFlag;
-        },
-        changeLang(lng) {
-          this.$dispatch('changeLang', lng);
-          this.toggleChooser()
-        }
-      }
+    },
   };
 </script>

@@ -252,113 +252,110 @@
   </div>
 </template>
 <script>
-  /*
-     只加载。不处理加载完成的事件
-    */
+  /* 只加载。不处理加载完成的事件 */
   function cacheImage(link) {
-    let tmp = new Image()
-    tmp.src = link
+    const tmp = new Image();
+    tmp.src = link;
   }
+
   export default {
+    name: 'User',
     data() {
-        return {
-          currentPage: 1,
-          currentLimit: 25,
-          user: {},
-          loaded: false,
-          torrents: {},
-          teamIconBaseUrl: "https://bangumi-moe.phoenixstatic.com/",
+      return {
+        currentPage: 1,
+        currentLimit: 25,
+        user: {},
+        loaded: false,
+        torrents: {},
+        teamIconBaseUrl: 'https://bangumi-moe.phoenixstatic.com/',
+      };
+    },
+    components: {
+      'rin-avatar': require('../components/rin-avatar'),
+      tooltip: require('../components/nav-tooltip'),
+    },
+    filters: {
+      date: require('../filters/dateFormat.js'),
+    },
+    methods: {
+      chgPage(offset) {
+        let newPage = this.currentPage + (offset);
+        if (newPage <= 0) {
+          newPage = 1;
+        } else if (newPage > this.torrents.page_count) {
+          newPage = this.torrents.page_count;
         }
+        this.currentPage = newPage;
+        this.torrents = {};
+        this.getUserTorrent();
       },
-      components: {
-        "rin-avatar": require("../components/rin-avatar"),
-        "tooltip": require("../components/nav-tooltip")
-      },
-      filters: {
-        'date': require('../filters/dateFormat.js')
-      },
-      methods: {
-        chgPage(offset) {
-          var self = this;
-          var newPage = self.currentPage + (offset);
-          if (newPage <= 0) {
-            newPage = 1;
-          } else if (newPage > self.torrents.page_count) {
-            newPage = self.torrents.page_count;
-          }
-          self.currentPage = newPage;
-          self.torrents = {};
-          self.getUserTorrent();
-        },
-        getIcon(i) {
-          return i.icon ? 'https://bangumi-moe.phoenixstatic.com/' + i.icon : require('../assets/akarin.jpg');
-        },
-        getUserInfo() {
-          return this.$http({
-            "method": "GET",
-            "url": `https://bangumi.moe/api/v2/user/${this.$route.params.id || 'session'}`
-          }).then((response) => {
-            this.$set("user", response.data)
-          })
-        },
-        getUserTorrent() {
-          return this.$http
-            .get(`https://bangumi.moe/api/v2/torrent/user/${this.$route.params.id}?p=${this.currentPage}&limit=${this.currentLimit}`, {
-              limit: 25
-            })
-            .then((response) => {
-              this.$set("torrents", response.data)
-            })
-        },
-        getUserBangumi() {
-          return this.$http({
-            "method": "GET",
-            "url": `https://bangumi.moe/api/v2/bangumi/user/${this.$route.params.id}`
-          }).then((response) => {
-            this.$set("bangumi", response.data)
-          })
-        },
-        aggressiveCaching() {
-          this.user.teams.forEach((t) => {
-            t.icon && cacheImage(`https://bangumi-moe.phoenixstatic.com/${t.icon}`)
-          })
-        },
-        canModify(torrent) {
-          uid = this.user._id;
-          if (uid == undefined) return false;
+      getIcon(i) {
+        if (i.icon) {
+          return `https://bangumi-moe.phoenixstatic.com/${i.icon}`;
+        }
 
-          if (torrent.uploader._id == uid) {
-            return true
-          };
+        return require('../assets/akarin.jpg');
+      },
+      getUserInfo() {
+        return this.$http.get(`https://bangumi.moe/api/v2/user/${this.$route.params.id || 'session'}`).then((response) => {
+          this.$set('user', response.data);
+        });
+      },
+      getUserTorrent() {
+        return this.$http
+          .get(`https://bangumi.moe/api/v2/torrent/user/${this.$route.params.id}?p=${this.currentPage}&limit=${this.currentLimit}`, {
+            limit: 25,
+          })
+          .then((response) => {
+            this.$set('torrents', response.data);
+          });
+      },
+      getUserBangumi() {
+        return this.$http.get(`https://bangumi.moe/api/v2/bangumi/user/${this.$route.params.id}`).then((response) => {
+          this.$set('bangumi', response.data);
+        });
+      },
+      aggressiveCaching() {
+        this.user.teams.forEach((t) => {
+          if (t.icon) cacheImage(`https://bangumi-moe.phoenixstatic.com/${t.icon}`);
+        });
+      },
+      canModify(torrent) {
+        const uid = this.user._id;
+        if (uid === undefined) return false;
 
-          for (i in this.user.teams) {
-            if (this.user.teams[i]._id == torrent.team._id) {
-              for (j in this.user.teams[i].admin_ids) {
-                if (uid == this.user.teams[i].admin_ids[j]) {
-                  return true;
-                }
+        if (torrent.uploader._id === uid) {
+          return true;
+        }
+
+        for (const i of this.user.teams) {
+          if (i._id === torrent.team._id) {
+            for (const j of i.admin_ids) {
+              if (uid === j) {
+                return true;
               }
-              break;
             }
+            break;
           }
+        }
 
-          return false;
-        }
+        return false;
       },
-      route: {
-        canReuse: false
+    },
+    route: {
+      canReuse: false,
+    },
+    events: {
+      'avatar.loaded' () {
+        this.$set('loaded', true);
       },
-      events: {
-        "avatar.loaded": function(e) {
-          this.$set('loaded', true)
-        }
-      },
-      ready() {
-        this.getUserInfo().then(() => {
-          this.getUserTorrent()
-          this.getUserBangumi()
-          this.aggressiveCaching()
-        })
-      }
-  }
+    },
+    ready() {
+      this.getUserInfo().then(() => {
+        this.getUserTorrent();
+        this.getUserBangumi();
+        this.aggressiveCaching();
+      });
+    },
+  };
 </script>

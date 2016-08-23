@@ -1,5 +1,6 @@
 <style scoped lang="less">
   @import "../less/colors.less";
+  @import "../less/framework.less";
   #rin-main {
     height: 100%;
     overflow: hidden;
@@ -186,7 +187,7 @@
 </style>
 <template>
   <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
-    <div is="rin-loader" v-if="busy && !nextBusy && !prevBusy" transition="rin-fade"></div>
+    <div is="rin-loader" v-show="busy && !nextBusy && !prevBusy" transition="rin-fade"></div>
     <div  id="rin-wrapper" class="rin-wrapper" v-show="!busy || nextBusy || prevBusy" transition="rin-fade" v-on:scroll='scrollHandler'>
       <!--
       <div class="page-nav clearfix">
@@ -232,8 +233,8 @@
             </td>
             <td class="title"  style="text-align:left;">
               <a class="rin-team rin-inline-tag haspic" v-link="'/team/' + t.team._id" v-if="t.team">
-                <img  v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
-                <img  src="../assets/akarin.jpg" v-if="!t.team.icon"/>
+                <img v-if="t.team.icon" v-bind:src="teamIconBaseUrl+t.team.icon" alt="" />
+                <img src="../assets/akarin.jpg" v-if="!t.team.icon"/>
                 <span>{{t.team.tag | locale}}</span>
               </a>
               <a target="_blank">{{t.title}}</a>
@@ -278,7 +279,7 @@
       <div class='loader-down' v-if='nextBusy'>
         <div is="rin-loader" v-if='nextBusy' transition="rin-fade"></div>
       </div>
-      <div class="no-data" v-show="torrent.lastest.length == 0">
+      <div class="no-data" v-show="torrent.lastest.length === 0">
         没有更多数据了╮(╯_╰)╭
       </div>
     </div>
@@ -308,11 +309,11 @@
         modalBlur: false,
         gravatarUrl: '//bangumi.moe/avatar/',
         teamIconBaseUrl: '//bangumi.moe/',
-        searchKey: null
-      }
+        searchKey: null,
+      };
     },
     methods: {
-      scrollHandler: function(e) {
+      scrollHandler(e) {
         if (e.target.scrollHeight - e.target.clientHeight - e.target.scrollTop < 10 && !this.busy) {
           this.addDirection = true;
           this.chgPage(this.lastestPage - this.currentPage + 1);
@@ -323,200 +324,167 @@
           this.origionScroll = e.target.scrollHeight;
           this.chgPage(this.originPage - this.currentPage - 1);
         }
-
       },
-      getTorrents: function() {
-        let self = this;
-        self.busy = true;
-        this.$http.get('https://bangumi.moe/api/v2/torrent/page/' + self.currentPage, {
-          limit: 50
-        }, function(data) {
-          if (self.torrent.lastest.length === 0) {
-            self.lastestPage = self.originPage = self.currentPage
+      getTorrents() {
+        this.busy = true;
+        this.$http.get(`https://bangumi.moe/api/v2/torrent/page/${this.currentPage}`, {
+          limit: 50,
+        }).then(resp => {
+          const data = resp.json();
+          if (this.torrent.lastest.length === 0) {
+            this.lastestPage = this.originPage = this.currentPage;
           }
-          if (self.lastestPage < self.currentPage) {
-            self.lastestPage = self.currentPage
+          if (this.lastestPage < this.currentPage) {
+            this.lastestPage = this.currentPage;
           }
-          if (self.originPage > self.currentPage) {
-            self.originPage = self.currentPage
+          if (this.originPage > this.currentPage) {
+            this.originPage = this.currentPage;
           }
           if (this.addDirection) {
-            self.torrent.lastest = self.torrent.lastest.concat(data.torrents);
+            this.torrent.lastest = this.torrent.lastest.concat(data.torrents);
           } else {
-            self.torrent.lastest = data.torrents.concat(self.torrent.lastest);
-            setTimeout(function() {
-              document.getElementById("rin-wrapper").scrollTop = document.getElementById("rin-wrapper").scrollHeight - self.origionScroll;
-            }, 300)
+            this.torrent.lastest = data.torrents.concat(this.torrent.lastest);
+            setTimeout(() => {
+              document.getElementById('rin-wrapper').scrollTop = document.getElementById('rin-wrapper').scrollHeight - this.origionScroll;
+            }, 300);
           }
-          self.torrent.pageNum = data.page_count;
-          self.busy = false;
-          self.nextBusy = false;
-          self.prevBusy = false;
-          //          setTimeout(function() {
-          //            self.busy = false;
-          //          }, 2000);
+          this.torrent.pageNum = data.page_count;
+          this.busy = false;
+          this.nextBusy = false;
+          this.prevBusy = false;
         });
       },
-      doSearch: function(key) {
-        let self = this;
-        self.searchKey = key;
-        self.busy = true;
+      doSearch(key) {
+        this.searchKey = key;
+        this.busy = true;
         this.$http.get('https://bangumi.moe/api/v2/torrent/search', {
           limit: 50,
-          p: self.currentPage,
-          query: key
-        }, function(data) {
-          if (self.torrent.lastest.length === 0) {
-            self.lastestPage = self.originPage = self.currentPage
+          p: this.currentPage,
+          query: key,
+        }).then(data => {
+          if (this.torrent.lastest.length === 0) {
+            this.lastestPage = this.originPage = this.currentPage;
           }
-          if (self.lastestPage < self.currentPage) {
-            self.lastestPage = self.currentPage
+          if (this.lastestPage < this.currentPage) {
+            this.lastestPage = this.currentPage;
           }
-          if (self.originPage > self.currentPage) {
-            self.originPage = self.currentPage
+          if (this.originPage > this.currentPage) {
+            this.originPage = this.currentPage;
           }
           // if (addDirection){
-          //   self.torrent.lastest = self.torrent.lastest.concat(data.torrents) ;
+          //   this.torrent.lastest = this.torrent.lastest.concat(data.torrents) ;
           // }else{
-          self.torrent.lastest = data.torrents.concat(self.torrent.lastest);
+          this.torrent.lastest = data.torrents.concat(this.torrent.lastest);
           // }
-          self.torrent.pageNum = data.page_count;
-          self.busy = false;
+          this.torrent.pageNum = data.page_count;
+          this.busy = false;
         });
       },
-      chgPage: function(offset) {
+      chgPage(offset) {
         if (!offset) return;
-        let self = this;
-        if (self.currentPage + offset < 1) {
+        if (this.currentPage + offset < 1) {
           setTimeout(() => {
-            self.prevBusy = false;
-            self.ready2Refresh = true;
+            this.prevBusy = false;
+            this.ready2Refresh = true;
           }, 2000);
-
         }
-        if ((self.currentPage + offset >= 1) && (self.currentPage + offset <= self.torrent.pageNum)) {
-          if (self.searchKey) {
-            self.$route.router.go({
-              name: "search",
+        if ((this.currentPage + offset >= 1) && (this.currentPage + offset <= this.torrent.pageNum)) {
+          if (this.searchKey) {
+            this.$route.router.go({
+              name: 'search',
               params: {
-                number: self.currentPage += offset,
-                key: self.searchKey
-              }
+                number: this.currentPage += offset,
+                key: this.searchKey,
+              },
             });
           } else {
-
-            self.$route.router.go({
-              name: "page",
+            this.$route.router.go({
+              name: 'page',
               params: {
-                number: self.currentPage += offset
-              }
+                number: this.currentPage += offset,
+              },
             });
           }
-          //self.getTorrents();
         }
       },
-      doRefresh: function() {
-        let self = this;
-        self.$route.router.go({
-          name: "index"
+      doRefresh() {
+        this.$route.router.go({
+          name: 'index',
         });
-        self.currentPage = 1;
-        self.torrent.lastest = [];
-        self.getTorrents();
-        self.ready2Refresh = false;
+        this.currentPage = 1;
+        this.torrent.lastest = [];
+        this.getTorrents();
+        this.ready2Refresh = false;
       },
-      getScrollWidth: function() {
-        var noScroll, scroll, oDiv = document.createElement("DIV");
-        oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
-        noScroll = document.body.appendChild(oDiv).clientWidth;
-        oDiv.style.overflowY = "scroll";
-        scroll = oDiv.clientWidth;
+      getScrollWidth() {
+        const oDiv = document.createElement('DIV');
+        oDiv.style.cssText = 'position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;';
+        const noScroll = document.body.appendChild(oDiv).clientWidth;
+        oDiv.style.overflowY = 'scroll';
+        const scroll = oDiv.clientWidth;
         document.body.removeChild(oDiv);
         return noScroll - scroll;
       },
-      goTorrent: function(id, e) {
+      goTorrent(id, e) {
         if (!e.defaultPrevented) {
           this.$route.router.go({
-            name: "torrent",
+            name: 'torrent',
             params: {
-              key: id
-            }
-          })
+              key: id,
+            },
+          });
         }
-      }
+      },
     },
-    ready: function() {
-
-      let self = this;
-      /*
-      switch (self.$route.mode) {
-        case "normal":
-          self.getTorrents();
-          break;
-        case "page":
-          if ((self.$route.params.number==parseInt(self.$route.params.number))&&parseInt(self.$route.params.number)>0){
-            self.currentPage=parseInt(self.$route.params.number);
-          }
-          self.getTorrents();
-          break;
-        default:
-          self.getTorrents();
-      }
-
-      console.log("path",this.$route.path)
-      */
+    ready() {
       document.addEventListener('mousewheel', (e) => {
-        if (!self.busy && self.ready2Refresh && e.wheelDeltaY > 0) {
-          self.doRefresh();
-
+        if (!this.busy && this.ready2Refresh && e.wheelDeltaY > 0) {
+          this.doRefresh();
         }
-        if (self.ready2Refresh && e.wheelDeltaY < 0) {
-          self.ready2Refresh = false;
+        if (this.ready2Refresh && e.wheelDeltaY < 0) {
+          this.ready2Refresh = false;
         }
-      })
-
+      });
     },
     components: {
-      'rin-loader': RLoader
+      'rin-loader': RLoader,
     },
     events: {
-      "open-modal-blur": function() {
+      'open-modal-blur' () {
         this.modalBlur = true;
       },
-      "close-modal-blur": function() {
+      'close-modal-blur' () {
         this.modalBlur = false;
-      }
+      },
     },
     filters: {
-      'date': require('../filters/dateFormat.js')
+      date: require('../filters/dateFormat.js'),
     },
     route: {
-      data: function(t) {
-        let self = this;
-        switch (self.$route.mode) {
-          case "normal":
-            self.currentPage = 1;
-            self.getTorrents();
+      data() {
+        switch (this.$route.mode) {
+          case 'normal':
+            this.currentPage = 1;
+            this.getTorrents();
             break;
-          case "page":
-            if ((self.$route.params.number == parseInt(self.$route.params.number)) && parseInt(self.$route.params.number) > 0) {
-              self.currentPage = parseInt(self.$route.params.number);
+          case 'page':
+            if ((this.$route.params.number === parseInt(this.$route.params.number, 0)) && parseInt(this.$route.params.number, 0) > 0) {
+              this.currentPage = parseInt(this.$route.params.number, 0);
             }
-            self.getTorrents();
+            this.getTorrents();
             break;
-          case "search":
-            //TODO:搜索处理
-            if ((self.$route.params.number == parseInt(self.$route.params.number)) && parseInt(self.$route.params.number) > 0) {
-              self.currentPage = parseInt(self.$route.params.number);
+          case 'search':
+            // TODO:搜索处理
+            if ((this.$route.params.number === parseInt(this.$route.params.number, 0)) && parseInt(this.$route.params.number, 0) > 0) {
+              this.currentPage = parseInt(this.$route.params.number, 0);
             }
-            // console.log("Search in process");
-            self.doSearch(self.$route.params.key);
+            // console.log('Search in process');
+            this.doSearch(this.$route.params.key);
             break;
           default:
-            self.getTorrents();
+            this.getTorrents();
         }
-      }
-    }
-
+      },
+    },
   };
 </script>

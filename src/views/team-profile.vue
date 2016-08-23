@@ -11,7 +11,12 @@
 
       <div class="team-content" v-el:team_content>
         <div class="team_torrents_table">
-          <rin-torrents-table :torrents="team.torrents" :torrents_total="team.torrents_total" :hide_team_name="true"></rin-torrents-table>
+          <rin-torrents-table 
+            :torrents="team.torrents" 
+            :torrents_total="team.torrents_total" 
+            :hide_team_name="true"
+            :on_end="fetch_next_torrents"
+          ></rin-torrents-table>
         </div>
       </div>
     </div>
@@ -22,7 +27,7 @@
 <style scoped lang="less">
   @import "../less/colors.less";
   .team-profile {
-    position: relative;
+    width: 100%;
     .team-topbar {
       height: 40vh;
       display: block;
@@ -86,86 +91,91 @@
 </style>
 
 <script>
-  import RinTorrentsTable from "../components/rin-torrents-table"
+  import RinTorrentsTable from '../components/rin-torrents-table';
   export default {
+    name: 'TeamProfile',
     components: {
-      RinTorrentsTable
+      RinTorrentsTable,
     },
-    data: function() {
+    data() {
       return {
+        busy: false,
         team: {
           id: null,
           info: {},
           bangumi: [],
           torrents: [],
+          torrents_offset: 0,
           torrents_total: 0,
-        }
-      }
+        },
+      };
     },
     methods: {
-      img_changed(ev) {
-        this.$els.team_icon.className += ' loaded'
-        let self = this
-        window.setTimeout(function() {
-          self.$els.team_topbar.className += ' loaded'
-          self.$els.team_content.className += ' loaded'
-        }, 1000)
+      img_changed() {
+        this.$els.team_icon.className += ' loaded';
+        window.setTimeout(() => {
+          this.$els.team_topbar.className += ' loaded';
+          this.$els.team_content.className += ' loaded';
+        }, 1000);
       },
       fetch_user_icon(email_hash) {
-        return 'https://bangumi.moe/avatar/' + email_hash
+        return `https://bangumi.moe/avatar/${email_hash}`;
       },
       fetch_icon(icon_url) {
         if (icon_url === null) {
-          return require('../assets/akarin.jpg')
+          return require('../assets/akarin.jpg');
         }
-        return 'https://bangumi.moe/' + icon_url
+        return `https://bangumi.moe/${icon_url}`;
       },
       fetch_info(id) {
-        this.team.info = {}
-        this.$http.get('https://bangumi.moe/api/v2/team/' + id).then(
+        this.team.info = {};
+        this.$http.get(`https://bangumi.moe/api/v2/team/${id}`).then(
           resp => {
-            this.team.info = resp.data
-              // console.log(resp.data)
-          },
-          error => {
-            console.log('[team-profile.fetch_info]found http error,' + error)
-          },
-        )
+            this.team.info = resp.json();
+            // console.log(this.team.info)
+          }
+        );
       },
       fetch_bangumi(id) {
-        this.team.bangumi = {}
-        this.$http.get('https://bangumi.moe/api/v2/bangumi/team/' + id).then(
+        this.team.bangumi = {};
+        this.$http.get(`https://bangumi.moe/api/v2/bangumi/team/${id}`).then(
           resp => {
-            this.team.bangumi = resp.data
-              // console.log(resp.data)
-          },
-          error => {
-            console.log('[team-profile.fetch_bangumi]found http error,' + error)
-          },
-        )
+            this.team.bangumi = resp.json();
+          }
+        );
       },
-      fetch_torrents(id, page_num, limit) {
-        this.$http.get('https://bangumi.moe/api/v2/torrent/team/' + id, {
-          p: page_num,
-          limit: limit
-        }).then(
+      fetch_torrents(id, page_num, l) {
+        if (this.busy) return;
+        this.busy = true;
+        const limit = l || 100;
+        this.$http.get(
+          `https://bangumi.moe/api/v2/torrent/team/${id}?limit=${limit}&p=${page_num}`
+        ).then(
           resp => {
-            this.team.torrents.push(...resp.data.torrents)
-            this.team.torrents_total = resp.data.page_count * limit
+            const data = resp.json();
+            this.team.torrents.push(...data.torrents);
+            this.team.torrents_total = data.page_count * limit;
+            this.team.torrents_offset = page_num;
+            this.busy = false;
           },
-          error => {
-            console.log('[team-profile.fetch_bangumi]found http error,' + error)
-          },
-        )
-      }
+          () => {
+            this.busy = false;
+          }
+        );
+      },
+      fetch_next_torrents() {
+        if (this.busy) return;
+        if (this.team.torrents_total <= this.team.torrents.length) return;
+        this.fetch_torrents(this.team.id, this.team.torrents_offset + 1);
+      },
     },
     route: {
       data() {
-        this.team.id = this.$route.params.id
-        this.fetch_info(this.team.id)
-        this.fetch_bangumi(this.team.id)
-        this.fetch_torrents(this.team.id, 0, 100)
-      }
-    }
-  }
+        this.team.id = this.$route.params.id;
+        this.fetch_info(this.team.id);
+        this.fetch_bangumi(this.team.id);
+        this.fetch_torrents(this.team.id, 0);
+      },
+    },
+  };
 </script>

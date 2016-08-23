@@ -218,7 +218,7 @@
 								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
 								<p class="date">
 									{{'On air' | locale}}: {{d.startDate | handleDate 'yyyy/MM/dd HH:mm'}}
-									<span class="thisweek" v-if="d.showOn == thisWeek">
+									<span class="thisweek" v-if="d.showOn === thisWeek">
 										今
 									</span>
 								</p>
@@ -228,8 +228,7 @@
 										<img src="../assets/akarin.jpg" v-if="!t.icon" />
                     <img
                     v-if="t.icon"
-                    v-bind:src="serverUrl + t.icon"
-                    alt="{{t.tag.locale[this.$root.lang] ? t.tag.locale[this.$root.lang] : t.tag.name}}" />
+                    v-bind:src="serverUrl + t.icon" />
 										<span>{{ t.tag | locale }}</span>
 									</a>
 							</div>
@@ -251,159 +250,153 @@
   import RLoader from '../components/rin-loader';
 
   export default {
+    name: 'BangumiList',
     data() {
-        return {
-          locale: {
-            week: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-          },
-          datas: [],
-          isOff: [],
-          thisWeek: new Date().getDay(),
-          week: ['日', '月', '火', '水', '木', '金', '土'],
-          busy: true,
-          serverUrl: 'https://bangumi-moe.phoenixstatic.com/'
+      return {
+        locale: {
+          week: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        },
+        datas: [],
+        isOff: [],
+        thisWeek: new Date().getDay(),
+        week: ['日', '月', '火', '水', '木', '金', '土'],
+        busy: true,
+        serverUrl: 'https://bangumi-moe.phoenixstatic.com/',
+      };
+    },
+    filters: {
+      date: require('../filters/dateFormat.js'),
+      week(value) {
+        const str = /（日）|（月）|（火）|（水）|（木）|（金）|（土）/;
+        return value.replace(str, '');
+      },
+      handleDate(value, formatR) {
+        let format = formatR;
+        // 判断是否为三个月前的
+        if ((new Date().getTime() - new Date(value).getTime()) >= 3 * 30 * 24 * 60 * 60 * 1000) {
+          format = 'HH:mm';
+        }
+        return this.$options.filters.date(value, format);
+      },
+    },
+    components: {
+      'rin-loader': RLoader,
+    },
+    methods: {
+      // 全部列表切换
+      allSwitch() {
+        // 如果某个列表处于关闭状态，则全部打开。反之，全部关闭
+        if (this.isOff.indexOf(true)) {
+          for (let i = 0; i < 7; i++) {
+            this.isOff.$set(i, true);
+          }
+        } else {
+          for (let i = 0; i < 7; i++) {
+            this.isOff.$set(i, false);
+          }
         }
       },
-      filters: {
-        'date': require('../filters/dateFormat.js'),
-        'week': function(value) {
-          var str = /（日）|（月）|（火）|（水）|（木）|（金）|（土）/;
-          return value.replace(str, '');
-        },
-        'handleDate': function(value, format) {
-          // 判断是否为三个月前的
-          if ((new Date().getTime() - new Date(value).getTime()) >= 3 * 30 * 24 * 60 * 60 * 1000) {
-            format = "HH:mm";
-          }
-          return this.$options.filters.date(value, format);
+      // 单个列表切换
+      Switch(index) {
+        this.isOff.$set(index, !this.isOff[index]);
+      },
+      setWidth() {
+        const allItem = document.querySelectorAll('.rin-week-content');
+        for (const item of allItem) {
+          item.style.width = `${(item.scrollWidth > 400 ? item.scrollWidth + 20 : item.scrollWidth)}px`;
         }
       },
-      components: {
-        'rin-loader': RLoader
-      },
-      methods: {
-        //全部列表切换
-        allSwitch: function() {
-          //如果某个列表处于关闭状态，则全部打开。反之，全部关闭
-          if (this.isOff.indexOf(true)) {
-            for (var i = 0; i < 7; i++) {
-              this.isOff.$set(i, true);
-            }
-          } else {
-            for (var i = 0; i < 7; i++) {
-              this.isOff.$set(i, false);
-            }
-          }
-        },
-        //单个列表切换
-        Switch: function(index) {
-          this.isOff.$set(index, !this.isOff[index]);
-        },
-        setWidth: function() {
-          var allItem = document.querySelectorAll(".rin-week-content");
-          for (var i = 0; i < allItem.length; i++) {
-            allItem[i].style.width = (allItem[i].scrollWidth > 400 ? allItem[i].scrollWidth + 20 : allItem[i].scrollWidth) + "px";
-          }
-        },
-        getData: function() {
-          var self = this;
+      getData() {
+        this.$http.get('https://bangumi.moe/api/v2/bangumi/current').then(
+          dataR => {
+            const result = [];
+            const teams = dataR.working_teams;
+            const data = dataR.bangumis;
 
-          self.$http.get('https://bangumi.moe/api/v2/bangumi/current', function(data) {
-            var result = [];
-            var teams = data.working_teams;
-            var data = data.bangumis;
-
-            for (var i = 0; i < data.length; i++) {
-              //往番剧增加字幕组
+            for (const i in data) {
+              // 往番剧增加字幕组
               if (teams[data[i].tag_id]) {
                 data[i].team = teams[data[i].tag_id];
               }
 
-              //按星期生成数组
+              // 按星期生成数组
               if (result[data[i].showOn]) {
                 result[data[i].showOn].push(data[i]);
               } else {
                 result[data[i].showOn] = [data[i]];
               }
-
             }
 
-            self.datas = result;
-
-            self.busy = false; //关闭加载
-
-            setTimeout(function() {
-              self.setWidth();
-            }, 100)
-
-          })
-        },
-        showTip: function(e) {
-          var tip = document.getElementById("tip");
-          tip.className = "rin-datatip on";
-          tip.style.left = e.pageX - (tip.offsetWidth / 2) + "px";
-          tip.style.top = e.pageY + 20 + "px";
-        },
-        hideTip: function(e) {
-          var tip = document.getElementById("tip");
-          tip.className = "rin-datatip";
-          setTimeout(function() {
-            tip.style.left = "-999px";
-          }, 300)
-        }
+            this.datas = result;
+            this.busy = false; // 关闭加载
+            setTimeout(this.setWidth, 100);
+          });
       },
-      ready: function() {
-        this.getData();
+      showTip(e) {
+        const tip = document.getElementById('tip');
+        tip.className = 'rin-datatip on';
+        tip.style.left = `${e.pageX - (tip.offsetWidth / 2)}px`;
+        tip.style.top = `${e.pageY + 20}px`;
+      },
+      hideTip() {
+        const tip = document.getElementById('tip');
+        tip.className = 'rin-datatip';
+        setTimeout(() => {
+          tip.style.left = '-999px';
+        }, 300);
+      },
+    },
+    ready() {
+      this.getData();
 
+      // 横向滚动
+      const wrap = document.getElementById('rin-week');
+      const eventName = document.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
 
+      function mouse_wheel(ev) {
+        const wrapWidth = wrap.scrollWidth / 25;
 
-        //横向滚动
-        var wrap = document.getElementById("rin-week");
-        var eventName = document.onmousewheel !== undefined ? "mousewheel" : "DOMMouseScroll";
-
-        function mouse_wheel(e) {
-          var wrapWidth = wrap.scrollWidth / 25;
-
-          var e = window.event || e;
-          if (e.detail > 0 || e.wheelDelta < 0) {
-            wrap.scrollLeft += wrapWidth;
-          } else {
-            wrap.scrollLeft -= wrapWidth;
-          }
-        }
-
-        function mac_mouse_wheel(e) {
-          var wrapWidth = wrap.scrollWidth / 25;
-          if (e.wheelDelta <= -120) {
-            wrap.scrollLeft += wrapWidth;
-          } else if (e.wheelDelta >= 120) {
-            wrap.scrollLeft -= wrapWidth;
-          }
-        }
-        let is = navigator.userAgent.toLowerCase().match(/mac |chrome/g);
-        if (is && is.length > 1) {
-          wrap.addEventListener(eventName, mac_mouse_wheel);
+        const e = window.event || ev;
+        if (e.detail > 0 || e.wheelDelta < 0) {
+          wrap.scrollLeft += wrapWidth;
         } else {
-          wrap.addEventListener(eventName, mouse_wheel);
-        }
-
-        //键盘方向键滚动
-        document.onkeydown = function(event) {
-          var wrapWidth = wrap.scrollWidth / 80;
-          var keycode = event.which || event.keyCode;
-
-          //up:38 left:37 H:72 K:75
-          if (keycode == 38 || keycode == 37 || keycode == 72 || keycode == 75) {
-            //move right
-            wrap.scrollLeft -= wrapWidth;
-          }
-          //down:40 right:39 L:76 J:74
-          else if (keycode == 40 || keycode == 39 || keycode == 76 || keycode == 74) {
-            //move left
-            wrap.scrollLeft += wrapWidth;
-          }
-
+          wrap.scrollLeft -= wrapWidth;
         }
       }
-  }
+
+      function mac_mouse_wheel(e) {
+        const wrapWidth = wrap.scrollWidth / 25;
+        if (e.wheelDelta <= -120) {
+          wrap.scrollLeft += wrapWidth;
+        } else if (e.wheelDelta >= 120) {
+          wrap.scrollLeft -= wrapWidth;
+        }
+      }
+      const is = navigator.userAgent.toLowerCase().match(/mac |chrome/g);
+      if (is && is.length > 1) {
+        wrap.addEventListener(eventName, mac_mouse_wheel);
+      } else {
+        wrap.addEventListener(eventName, mouse_wheel);
+      }
+
+      // 键盘方向键滚动
+      document.onkeydown = event => {
+        const wrapWidth = wrap.scrollWidth / 80;
+        const keycode = event.which || event.keyCode;
+
+        // up:38 left:37 H:72 K:75
+        if (keycode === 38 || keycode === 37 || keycode === 72 || keycode === 75) {
+          // move right
+          wrap.scrollLeft -= wrapWidth;
+          return;
+        }
+
+        // down:40 right:39 L:76 J:74
+        if (keycode === 40 || keycode === 39 || keycode === 76 || keycode === 74) {
+          // move left
+          wrap.scrollLeft += wrapWidth;
+        }
+      };
+    },
+  };
 </script>

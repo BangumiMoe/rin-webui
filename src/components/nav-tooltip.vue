@@ -101,15 +101,13 @@
 
 <script>
   export default {
+    name: 'NavTooltip',
     props: {
-      'info': String,
-      'direction': {
+      info: String,
+      direction: {
         type: String,
-        default: 'right'
-      }
+        default: 'right',
+      },
     },
-    data() {
-      return {};
-    }
-  }
+  };
 </script>

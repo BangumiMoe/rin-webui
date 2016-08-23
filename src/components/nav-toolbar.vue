@@ -1,24 +1,21 @@
 <style scoped lang="less">
   @import "../less/colors.less";
   @team-avatar-size: 80px;
-
   #rin-toolbar {
     background-color: @color-primary-0;
     color: @color-primary-2;
-    z-index:1;
-
+    z-index: 1;
     .rin-button {
       margin: 8px;
       text-shadow: 0 0 5px @color-primary-3;
-      z-index:2;
+      z-index: 2;
     }
-
-    .user-toolbar, .rin-logo {
+    .user-toolbar,
+    .rin-logo {
       .rin-button {
         text-shadow: none;
         background: @color-primary-3;
         border: 4px solid @color-primary-2;
-
         i {
           z-index: 2;
           width: 40px;
@@ -26,20 +23,18 @@
           background: @color-primary-3;
           transition: all .2s;
         }
-
         &:hover {
           background: @color-primary-4;
           border: 4px solid @color-primary-1;
-
-          i { background: @color-primary-4; }
+          i {
+            background: @color-primary-4;
+          }
         }
-
         .rin-tooltip-wrap {
           z-index: 1;
         }
       }
     }
-
     .rin-logo {
       cursor: pointer;
       .img-wrap {
@@ -47,7 +42,6 @@
         height: 48px;
         margin-left: 4px;
         margin-right: 4px;
-
         img {
           border-radius: 50%;
           width: 48px;
@@ -55,25 +49,33 @@
         }
       }
     }
-
-    .rin-search, .rin-week, .rin-torrents,.rin-rss  {
+    .rin-search,
+    .rin-week,
+    .rin-torrents,
+    .rin-rss {
       position: absolute;
       margin: 4px 12px;
-
-      i { font-size: 32px; }
+      i {
+        font-size: 32px;
+      }
     }
-
-    .rin-search { bottom: 8px; }
-    .rin-week { bottom: 56px; }
-    .rin-rss { bottom: 104px; }
-    .rin-torrents { bottom: 152px; }
-    
-    
-    .team{
+    .rin-search {
+      bottom: 8px;
+    }
+    .rin-week {
+      bottom: 56px;
+    }
+    .rin-rss {
+      bottom: 104px;
+    }
+    .rin-torrents {
+      bottom: 152px;
+    }
+    .team {
       text-align: center;
       float: left;
       z-index: 10;
-      .team-icon{
+      .team-icon {
         display: block;
         margin: 0;
         width: 40px;
@@ -81,21 +83,21 @@
         border-radius: 20px;
         font-size: @team-avatar-size * 0.7;
         line-height: @team-avatar-size;
-        background-size: cover; 
+        background-size: cover;
       }
-    } 
+    }
     .teams {
       margin-top: -14px;
       margin-left: -10px;
       width: 158px;
       height: 48px;
-      .team .team-icon{
+      .team .team-icon {
         margin: 4px;
         background-color: white;
         &:last-child {
           margin-right: 0;
         }
-      } 
+      }
     }
   }
 </style>
@@ -170,133 +172,134 @@
 </template>
 
 <script>
-  import RUser from '../components/rin-user.vue'
+  import NavToolbarSearch from './nav-toolbar-search';
+  import NavToolbarInfobox from './nav-toolbar-infobox';
+  import NavTooltip from './nav-tooltip';
 
   export default {
-    data () {
+    name: 'NavToolbar',
+    data() {
       return {
         user: {},
         searchBar: {
           visible: false,
-          fixed: false
+          fixed: false,
         },
         signin_form_opened: false,
-        is_homepage: (location.pathname == "/"),
+        is_homepage: (location.pathname === '/'),
       };
     },
     methods: {
       // Definition: 搜索栏显示事件.
-      searchBarShow: function (event) {
+      searchBarShow() {
         this.searchBar.visible = true;
-        this.$broadcast("recentProgramRequest");  // 广播至 search-bar.
+        this.$broadcast('recentProgramRequest'); // 广播至 search-bar.
       },
-
       // Definition: 搜索栏隐藏事件.
-      searchBarHide: function (event) {
+      searchBarHide() {
         this.searchBar.visible = false;
       },
       // 判断el是否在selector内
-      closest: function (el, selector) {
-          var matchesFn;
+      closest(el, selector) {
+        let matchesFn;
 
-          // find vendor prefix
-          ['matches','webkitMatchesSelector','mozMatchesSelector','msMatchesSelector','oMatchesSelector'].some(function(fn) {
-              if (typeof document.body[fn] == 'function') {
-                  matchesFn = fn;
-                  return true;
-              }
-              return false;
-          })
-
-          // traverse parents
-          while (el!==null) {
-              parent = el.parentElement;
-              if (parent!==null && parent[matchesFn](selector)) {
-                  return parent;
-              }
-              el = parent;
+        // find vendor prefix
+        ['matches', 'webkitMatchesSelector', 'mozMatchesSelector', 'msMatchesSelector', 'oMatchesSelector'].some((fn) => {
+          if (typeof document.body[fn] === 'function') {
+            matchesFn = fn;
+            return true;
           }
+          return false;
+        });
 
-          return null;
-      },
-      // Definition: 搜索图标点击 Toggle 事件.
-      searchBarToggle: function (event) {
-        this.searchBar.fixed = !this.searchBar.fixed;
-
-        /**** 点击其他地方时，关闭搜索 ****/
-        if(this.searchBar.fixed){
-          let el = document.querySelectorAll(".rin-search-bar")[0];
-          let openSearchBtn = document.getElementById("rin-search"); //打开搜索的按钮
-          let openSearchIcon = openSearchBtn.children[0]; //按钮内的icon
-          let self = this;
-
-          function search(event){
-            if(el != event.target && !self.closest(event.target,".rin-search-bar") && event.target != openSearchIcon){
-              self.searchBar.fixed = false;
-
-              document.removeEventListener("click",search,false)
-            }
+        // traverse parents
+        let ele = el;
+        while (ele !== null) {
+          const parent = ele.parentElement;
+          if (parent !== null && parent[matchesFn](selector)) {
+            return parent;
           }
-          document.addEventListener("click",search,false);
+          ele = parent;
         }
 
+        return null;
+      },
+      // Definition: 搜索图标点击 Toggle 事件.
+      searchBarToggle() {
+        this.searchBar.fixed = !this.searchBar.fixed;
 
+        /* *** 点击其他地方时，关闭搜索 *** */
+        if (this.searchBar.fixed) {
+          const el = document.querySelectorAll('.rin-search-bar')[0];
+          const openSearchBtn = document.getElementById('rin-search'); // 打开搜索的按钮
+          const openSearchIcon = openSearchBtn.children[0]; // 按钮内的icon
+
+          function search(ev) {
+            if (el !== ev.target && !this.closest(ev.target, '.rin-search-bar') && ev.target !== openSearchIcon) {
+              this.searchBar.fixed = false;
+              search.bind(this);
+              document.removeEventListener('click', search, false);
+            }
+          }
+          search.bind(this);
+          document.addEventListener('click', search, false);
+        }
       },
 
       // sigin or jump to user info page
-      userSignAction (ev) {
-        if(!this.user._id) {
+      userSignAction() {
+        if (!this.user._id) {
           this.signin_form_opened = true;
           this.$dispatch('displaySigninForm');
-        }else{
-          this.$router.go("/user/" + this.user._id)
+        } else {
+          this.$router.go(`/user/${this.user._id}`);
         }
       },
 
-      userSignout (ev) {
-        if(this.user._id) {
+      userSignout() {
+        if (this.user._id) {
           this.$dispatch('UserSignOut');
         }
       },
-      
-      
-      getUserInfo(){
+
+
+      getUserInfo() {
         // console.log(this.user)
-        this.$http({
-            "method": "GET", 
-            "url": "https://bangumi.moe/api/v2/user/" + this.user._id
-            // "url": "https://bangumi.moe/api/v2/user/55c06f9881cab750784cf1e3" // DEBUG remove it 
-        }).then((response)=>{
-            this.$set("user.info", response.data)
-        })
+        this.$http.get(`https://bangumi.moe/api/v2/user/${this.user._id}`).then((response) => {
+          this.$set('user.info', response.data);
+        });
       },
-      
+
       getIcon(i) {
-          return i.icon ? 'https://bangumi-moe.phoenixstatic.com/' + i.icon : require('../assets/akarin.jpg');
+        return i.icon ? `https://bangumi-moe.phoenixstatic.com/${i.icon}` : require('../assets/akarin.jpg');
       },
 
     },
     components: {
-      'search-bar': require('./nav-toolbar-search'),
-      'info-box': require('./nav-toolbar-infobox'),
-      'tooltip': require('./nav-tooltip')
+      'search-bar': NavToolbarSearch,
+      'info-box': NavToolbarInfobox,
+      tooltip: NavTooltip,
     },
     events: {
-      UserSignInOK (user) {
+      UserSignInOK(user) {
         this.user = user;
         this.getUserInfo();
-        if(this.signin_form_opened) {
+        if (this.signin_form_opened) {
           this.signin_form_opened = false;
           this.$dispatch('hideSigninForm');
         }
       },
-      UserSignInFailed () { this.user = {}; },
-      UserSignOutOK ()    { this.user = {}; },
+      UserSignInFailed() {
+        this.user = {};
+      },
+      UserSignOutOK() {
+        this.user = {};
+      },
     },
     watch: {
-      '$route' ()  {
-        this.is_homepage = (location.pathname == "/");
-      }
-    }
+      '$route' () {
+        this.is_homepage = (location.pathname === '/');
+      },
+    },
   };
 </script>

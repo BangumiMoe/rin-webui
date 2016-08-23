@@ -1,90 +1,82 @@
 <script>
-export default {
-  data () {
-    let user = {};
-    let is_signined = false;
-    
-    for(var name of ['_id', 'emailHash', 'username']) {
-      user[name] = Cookies.get('rin-user-' + name);
-    }
-    
-    if(!user._id) {
-      user = {}
-      is_signined = false;
-    } else {
-      this.$dispatch('UserSignInOK', user);
-      is_signined = true;
-    }
+  import Cookies from 'js-cookie';
+  import SparkMD5 from 'spark-md5';
+  export default {
+    name: 'RinUser',
+    data() {
+      let user = {};
+      let is_signined = false;
 
-    return {
-      user: user,
-      is_signined: is_signined
-    }
-  },
-  methods: {
-    signin (username, password) {
-      let self = this;
-      
-      if(self.is_signined) {
-        self.$dispatch('UserSignInFailed', '本地已经登录，请注销后重试');
-        return;
+      const names = ['_id', 'emailHash', 'username'];
+      for (const name of names) {
+        user[name] = Cookies.get(`rin-user-${name}`);
       }
 
-      if(!password) {
-        self.$dispatch('UserSignInFailed', 'please input your passsword');
-        return;        
+      if (!user._id) {
+        user = {};
+        is_signined = false;
+      } else {
+        this.$dispatch('UserSignInOK', user);
+        is_signined = true;
       }
-      
-      return self.$http.post('/api/user/signin', {username: username, password: SparkMD5.hash(password)}, function(data) {
-        if(data.success) {
-          self.user = data.user;
-          
-          for(var name of ['_id', 'emailHash', 'username']) {
-            let value = self.user[name];
-            Cookies.set('rin-user-' + name, value);
-          }
-          
-          self.is_signined = true;
-          self.$dispatch('UserSignInOK', self.user);
-        } else {
-          self.user = {};
-          self.is_signined = false;
-          self.$dispatch('UserSignInFailed', data.message || 'login failed');
-        }
-      }, {
-        xhr: {
-          onerror () {
-            self.user = {};
-            self.is_signined = false;
-            self.$dispatch('UserSignInFailed', 'network or remote server error');
-          }
-        }
-      })
+
+      return {
+        user,
+        is_signined,
+      };
     },
-    signout () {
-      let self = this;
-      /* 
-      return self.$http.delete('/api/user/signout', null, function(data) {
-        if(!data.success) {
-          // TODO error handle
+    methods: {
+      signin(username, password) {
+        if (this.is_signined) {
+          this.$dispatch('UserSignInFailed', '本地已经登录，请注销后重试');
+          return;
         }
-        self.user = {};
-        self.$dispatch('user_signouted');
-      });*/
-      for(var name of ['_id', 'emailHash', 'username']) {
-        Cookies.remove('rin-user-' + name);
-      }
-      
-      self.is_signined = false;
-    }
-  },
-  events: {
-    'rinUserSignIn' (form) {
-      this.signin(form.username, form.password);
+
+        if (!password) {
+          this.$dispatch('UserSignInFailed', 'please input your passsword');
+          return;
+        }
+
+        this.$http.post('/api/user/signin', {
+          username,
+          password: SparkMD5.hash(password),
+        }).then((data) => {
+          if (data.success) {
+            this.user = data.user;
+
+            const names = ['_id', 'emailHash', 'username'];
+            for (const name of names) {
+              Cookies.set(`rin-user-${name}`, this.user[name]);
+            }
+
+            this.is_signined = true;
+            this.$dispatch('UserSignInOK', this.user);
+          } else {
+            this.user = {};
+            this.is_signined = false;
+            this.$dispatch('UserSignInFailed', data.message || 'login failed');
+          }
+        }, () => {
+          this.user = {};
+          this.is_signined = false;
+          this.$dispatch('UserSignInFailed', 'network or remote server error');
+        });
+      },
+      signout() {
+        const names = ['_id', 'emailHash', 'username'];
+        for (const name of names) {
+          Cookies.remove(`rin-user-${name}`);
+        }
+        this.is_signined = false;
+      },
     },
-    'rinUserSignOut' () {
-      this.signout();
-    }
-  }
-};
+    events: {
+      rinUserSignIn(form) {
+        this.signin(form.username, form.password);
+      },
+      rinUserSignOut() {
+        this.signout();
+      },
+    },
+  };
 </script>

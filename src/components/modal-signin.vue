@@ -1,9 +1,9 @@
-
 <style scoped lang="less">
-  input{
-    color:white;
+  input {
+    color: white;
   }
-  button{
+  
+  button {
     background-color: gray;
   }
 </style>
@@ -41,46 +41,57 @@
 </template>
 
 <script>
+  import RinModel from './rin-modal';
   export default {
-    components:{
-      'rin-modal': require('./rin-modal'),
+    components: {
+      'rin-modal': RinModel,
     },
-    data () {
-      return { username: null, password: null, message: null, loading: false, store_in_cookie:false };
+    data() {
+      return {
+        username: null,
+        password: null,
+        message: null,
+        loading: false,
+        store_in_cookie: false,
+      };
     },
-    methods:{
-      'cancel' () { return 0; },
-      'onKeyup' () { this.message = ''; }
+    methods: {
+      cancel() {
+        return 0;
+      },
+      onKeyup() {
+        this.message = '';
+      },
     },
-    events:{
+    events: {
       'modal-ok-click' () {
         if (this.loading) return;
 
-        this.$broadcast("modal-start-loading");
+        this.$broadcast('modal-start-loading');
         this.loading = true;
         this.$dispatch('UserSignIn', {
           username: this.username,
-          password: this.password
+          password: this.password,
         });
       },
       'modal-closed' () {
-        this.$broadcast("modal-stop-loading");
+        this.$broadcast('modal-stop-loading');
         this.loading = false;
       },
 
-      'UserSignInOk' (user) {
-        if(user.username == this.username) {
+      UserSignInOk(user) {
+        if (user.username === this.username) {
           this.$broadcast('close-modal');
         }
 
         this.loading = false;
-        this.$broadcast("modal-stop-loading");
+        this.$broadcast('modal-stop-loading');
       },
-      'UserSignInFailed' (msg) {
-        this.$broadcast("modal-stop-loading");
+      UserSignInFailed(msg) {
+        this.$broadcast('modal-stop-loading');
         this.loading = false;
         this.message = msg;
-      }
-    }
+      },
+    },
   };
 </script>

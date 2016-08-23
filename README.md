@@ -1,26 +1,27 @@
 # rin-webui
 
-[![Build Status][travis-image]][travis-url]
+> new frontend design for rin-pr
 
-萌番组前端界面
+## Build Setup
 
-## 技术栈
+``` bash
+# install dependencies
+npm install
 
-`vue.js` `jQuery` `less` `webpack + vue-loader`
+# serve with hot reload at localhost:8080
+npm run dev
 
-## 设计稿
+# build for production with minification
+npm run build
 
-[/doc/bangumi-moe-design-draft1.1.pdf](/doc/bangumi-moe-design-draft1.1.pdf)
+# run unit tests
+npm run unit
 
-## Tips
+# run e2e tests
+npm run e2e
 
-* Do `git pull --rebase` before `git push`
+# run all tests
+npm test
+```
 
-* Write down instructions about your esteemed works.
-
-## 开发
-
-[文档](https://github.com/BangumiMoe/rin-webui/wiki/DEV)
-
-[travis-url]: https://travis-ci.org/BangumiMoe/rin-webui
-[travis-image]: http://img.shields.io/travis/BangumiMoe/rin-webui.svg
+For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
