@@ -99,7 +99,6 @@
       }
     }
     .body {
-      margin-top: @table-header-height;
       .row {
         .column {
           &:nth-child(3) {
