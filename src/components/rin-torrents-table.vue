@@ -26,17 +26,19 @@
             <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{ ((t.comments >1) ? 'Comments' :'Comment' )| locale }}</span>
           </div>
         </span>
-        <span class="column"><a class="rin-magnet" title="磁力下載" href="{{t.magnet}}"><i class="material-icons">&#xE2C4;</i></a></span>
         <span class="column">
-          {{t.size}}
+          <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}"><i class="material-icons">&#xE2C4;</i></a>
+        </span>
+        <span class="column">
+          <span class="float-left">{{t.size}}</span>
           <a class="rin-seed-online" href="javascript:void(0)" title="种子">{{t.seeders}}</a> /
           <a class="rin-seed-downloading" href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
           <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
         </span>
         <span class="column">
           <a v-link="'/user/' + t.uploader._id" class='rin-inline-tag haspic'>
-              <img v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" />
               <span>{{t.uploader.username}}</span>
+              <img v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" />
           </a>
         </span>
       </div>
@@ -52,6 +54,7 @@
   @table-header-font-size: 13px;
   @table-header-height: 33px;
   @table-row-font-size: 12px;
+  @table-row-even-bg: rgba(220, 220, 220, 0.99);
   .rin-table {
     overflow: scroll;
     height: 100%;
@@ -68,10 +71,10 @@
           width: 128px;
         }
         &:nth-child(2) {
-          width: 64px;
+          width: 96px;
         }
         &:nth-child(3) {
-          flex: 1 auto;
+          flex: 1;
         }
         &:nth-child(4) {
           min-width: 52px;
@@ -82,6 +85,9 @@
         &:last-child {
           width: 128px;
         }
+      }
+      &:nth-child(even) {
+        background-color: @table-row-even-bg;
       }
     }
     .header {
@@ -102,7 +108,13 @@
       .row {
         .column {
           &:nth-child(3) {
+            display: inline-block;
+            overflow: hidden;
             text-align: left;
+          }
+          &:last-child {
+            width: 128px;
+            text-align: right;
           }
         }
       }
@@ -113,7 +125,7 @@
 <script>
   export default {
     name: 'RinTorrentsTable',
-    props: ['torrents', 'torrents_total', 'hide_team_name', 'on_end', 'on_top'],
+    props: ['torrents', 'torrents_total', 'hide_team_name', 'on_end', 'on_top', 'need_more', 'busy'],
     filters: {
       date: require('../filters/dateFormat.js'),
     },
@@ -142,6 +154,10 @@
         if (t.scrollTop === 0) {
           if (typeof this.on_top === 'function') {
             this.on_top(ev);
+          }
+        } else if ((t.scrollTop + t.offsetHeight) >= t.scrollHeight * 0.80) {
+          if (typeof this.need_more === 'function') {
+            this.need_more(ev);
           }
         } else if ((t.scrollTop + t.offsetHeight) >= t.scrollHeight) {
           if (typeof this.on_end === 'function') {

@@ -15,7 +15,7 @@
             :torrents="team.torrents" 
             :torrents_total="team.torrents_total" 
             :hide_team_name="true"
-            :on_end="fetch_next_torrents"
+            :need_more="fetch_next_torrents"
           ></rin-torrents-table>
         </div>
       </div>
@@ -148,6 +148,7 @@
         if (this.busy) return;
         this.busy = true;
         const limit = l || 100;
+        // console.log(`[TeamProfile.fetch_torrents]id ${id} offset ${page_num} limit ${limit}`);
         this.$http.get(
           `https://bangumi.moe/api/v2/torrent/team/${id}?limit=${limit}&p=${page_num}`
         ).then(
@@ -174,7 +175,7 @@
         this.team.id = this.$route.params.id;
         this.fetch_info(this.team.id);
         this.fetch_bangumi(this.team.id);
-        this.fetch_torrents(this.team.id, 0);
+        this.fetch_torrents(this.team.id, 1);
       },
     },
   };
