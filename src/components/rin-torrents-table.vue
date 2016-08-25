@@ -30,15 +30,15 @@
           <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}"><i class="material-icons">&#xE2C4;</i></a>
         </span>
         <span class="column">
-          <span class="float-left">{{t.size}}</span>
+          <span class="rin-left">{{t.size}}</span>
           <a class="rin-seed-online" href="javascript:void(0)" title="种子">{{t.seeders}}</a> /
           <a class="rin-seed-downloading" href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
           <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
         </span>
         <span class="column">
-          <a v-link="'/user/' + t.uploader._id" class='rin-inline-tag haspic'>
+          <a v-link="'/user/' + t.uploader._id" class="rin-left rin-inline-tag haspic">
+              <img v-bind:src="gravatarUrl+t.uploader.emailHash" />
               <span>{{t.uploader.username}}</span>
-              <img v-bind:src="gravatarUrl+t.uploader.emailHash" alt="" />
           </a>
         </span>
       </div>
