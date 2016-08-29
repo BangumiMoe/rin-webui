@@ -235,7 +235,7 @@
           const openSearchIcon = openSearchBtn.children[0]; // 按钮内的icon
 
           function search(ev) {
-            if (el !== ev.target && !this.closest(ev.target, '.rin-search-bar') && ev.target !== openSearchIcon) {
+            if (el !== ev.target && !ev.target.closest('.rin-search-bar') && ev.target !== openSearchIcon) {
               this.searchBar.fixed = false;
               search.bind(this);
               document.removeEventListener('click', search, false);
