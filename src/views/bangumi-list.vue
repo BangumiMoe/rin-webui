@@ -246,6 +246,7 @@
 
 	</div>
 </template>
+
 <script>
   import RLoader from '../components/rin-loader';
 
@@ -261,7 +262,7 @@
         thisWeek: new Date().getDay(),
         week: ['日', '月', '火', '水', '木', '金', '土'],
         busy: true,
-        serverUrl: 'https://bangumi-moe.phoenixstatic.com/',
+        serverUrl: 'https://bangumi.moe/',
       };
     },
     filters: {
@@ -308,10 +309,12 @@
       },
       getData() {
         this.$http.get('https://bangumi.moe/api/v2/bangumi/current').then(
-          dataR => {
+          resp => {
+            const d = resp.json();
+
             const result = [];
-            const teams = dataR.working_teams;
-            const data = dataR.bangumis;
+            const teams = d.working_teams;
+            const data = d.bangumis;
 
             for (const i in data) {
               // 往番剧增加字幕组
@@ -347,6 +350,8 @@
       },
     },
     ready() {
+      console.log('[BangumiList]loaded');
+
       this.getData();
 
       // 横向滚动
