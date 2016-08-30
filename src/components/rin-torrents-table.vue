@@ -67,7 +67,7 @@
           }
           &:last-child {
             width: 128px;
-            text-align: right;
+            text-align: left;
           }
         }
       }
@@ -113,7 +113,7 @@
           <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
         </span>
         <span class="column">
-          <a v-link="'/user/' + t.uploader._id" class="rin-left rin-inline-tag haspic">
+          <a class="rin-inline-tag haspic" v-link="'/user/' + t.uploader._id">
               <img v-bind:src="gravatarUrl+t.uploader.emailHash" />
               <span>{{t.uploader.username}}</span>
           </a>
