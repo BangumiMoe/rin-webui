@@ -1,14 +1,14 @@
 @import 'colors.less';
-
-html, body {
+html,
+body {
   padding: 0;
   margin: 0;
   height: 100%;
   overflow: hidden;
 }
 
-body{
-  font-family: 'Helvetica Neue','Microsoft Yahei',Helvetica,Arial,sans-serif;
+body {
+  font-family: 'Helvetica Neue', 'Microsoft Yahei', Helvetica, Arial, sans-serif;
   font-size: 14px;
   word-wrap: break-word;
   color: #222;
@@ -18,49 +18,66 @@ body{
 a {
   text-decoration: none;
   user-select: none;
-
-  i { user-select: none }
+  i {
+    user-select: none
+  }
 }
 
 .rin-row {
   height: 100%;
-
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
-
   flex-direction: row wrap;
   align-items: stretch;
-
   .rin-col {
     position: relative;
     width: 100%;
-
     .rin-wrapper {
       position: relative;
     }
   }
-
-  .rin-col-1 { width: 8.33% }
-  .rin-col-2 { width: 16.66% }
-  .rin-col-3 { width: 25% }
-  .rin-col-4 { width: 33.33% }
-  .rin-col-5 { width: 41.66% }
-  .rin-col-6 { width: 50% }
-  .rin-col-7 { width: 58.33% }
-  .rin-col-8 { width: 66.66% }
-  .rin-col-9 { width: 75% }
-  .rin-col-10 { width: 83.33% }
-  .rin-col-11 { width: 91.66% }
+  .rin-col-1 {
+    width: 8.33%
+  }
+  .rin-col-2 {
+    width: 16.66%
+  }
+  .rin-col-3 {
+    width: 25%
+  }
+  .rin-col-4 {
+    width: 33.33%
+  }
+  .rin-col-5 {
+    width: 41.66%
+  }
+  .rin-col-6 {
+    width: 50%
+  }
+  .rin-col-7 {
+    width: 58.33%
+  }
+  .rin-col-8 {
+    width: 66.66%
+  }
+  .rin-col-9 {
+    width: 75%
+  }
+  .rin-col-10 {
+    width: 83.33%
+  }
+  .rin-col-11 {
+    width: 91.66%
+  }
 }
 
 .rin-list {
   list-style: none;
   margin: 0;
   padding: 0;
-
   li {
     display: block;
     padding: 0;
@@ -72,8 +89,14 @@ a {
   text-align: center;
 }
 
-.rin-fade-transition { transition: opacity .6s ease; }
-.rin-fade-enter, .rin-fade-leave { opacity: 0; }
+.rin-fade-transition {
+  transition: opacity .6s ease;
+}
+
+.rin-fade-enter,
+.rin-fade-leave {
+  opacity: 0;
+}
 
 form {
   .rin-message {
@@ -82,103 +105,93 @@ form {
     line-height: 1.8em;
     padding: 0.6em 1.2em;
   }
-
   .rin-message.rin-error {
     // color: @color-secondary-2-1;
     // background-color: @color-secondary-2-4;
   }
-
   div {
     margin-bottom: 0.3em;
   }
-
   .rin-input {
-    label, input {
-      display:block;
+    label,
+    input {
+      display: block;
     }
-
     input {
       width: 99%;
-
       // FIXME md style
       border: 2px solid white;
       background-color: transparent;
     }
   }
-
   .rin-checkbox {
     font-size: 0.6em;
-
-    input,label {
+    input,
+    label {
       display: inline-block;
     }
   }
 }
-.rin-tag{
-  font-size:12px;
 
-  >a{
-    display:inline-block;
-    height:20px;
-    line-height:20px;
+.rin-tag {
+  font-size: 12px;
+  >a {
+    display: inline-block;
+    height: 20px;
+    line-height: 20px;
     padding: 0 5px;
     margin: 0 4px;
-    margin-top:8px;
+    margin-top: 8px;
     background: #eee;
     color: #6d6d6d;
-    overflow:hidden;
+    overflow: hidden;
     transition: all .2s;
-    cursor:pointer;
-
-    span{
-      color:#6d6d6d;
+    cursor: pointer;
+    span {
+      color: #6d6d6d;
       height: 20px;
       line-height: 22px;
     }
-
-    img{
-      width:20px;
-      height:20px;
+    img {
+      width: 20px;
+      height: 20px;
       vertical-align: top;
     }
-
-    &.haspic{
+    &.haspic {
       padding-left: 0;
     }
-
-    &:hover{
-      color:#fff;
+    &:hover {
+      color: #fff;
       // background:@color-secondary-2-2;
     }
   }
 }
 
+
+/*inline tag with image: ;*/
+
 .rin-inline-tag {
   display: inline-block;
   height: 20px;
   padding-right: 5px;
-  padding-left:5px;
+  padding-left: 5px;
   margin-right: 5px;
   transition: all .2s;
   line-height: 20px;
-
-  img{
-    width:20px;
-    height:20px;
+  img {
+    width: 20px;
+    height: 20px;
     vertical-align: top;
   }
-
   span {
     height: 20px;
     line-height: 21px;
   }
-
-  &.haspic{
+  &.haspic {
     padding-left: 0;
   }
-
-  &:hover{
-    background-color:#fff !important;
+  &:hover {
+    background-color: rgba(120, 120, 120, 0.33) !important;
   }
 }
 
@@ -188,7 +201,6 @@ form {
   color: @color-primary-2;
   background-color: transparent;
   border: none;
-
   position: relative;
   display: flex;
   align-items: cetner;
@@ -196,7 +208,6 @@ form {
   cursor: pointer;
   outline: none;
   transition: all .2s;
-
   i {
     font-size: 2em;
     color: white;
@@ -204,24 +215,24 @@ form {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition:inherit;
+    transition: inherit;
   }
-
   &.round {
     border-radius: 50%;
   }
-
   &.rin-button-small {
     width: 20px;
     height: 20px;
-    i { height: 20px; }
+    i {
+      height: 20px;
+    }
   }
-
   &:hover {
     color: @color-primary-1;
-    i {color: @color-primary-1;}
+    i {
+      color: @color-primary-1;
+    }
   }
-
   /* &:hover {
     color: @color-secondary-2-1;
     i { color: @color-secondary-2-1; }
@@ -232,6 +243,7 @@ form {
   float: left;
   padding-left: 1.2em;
 }
+
 .rin-right {
   float: right;
   padding-right: 1.2em;
@@ -241,52 +253,48 @@ form {
   display: none;
 }
 
-.rin-vertical{
+.rin-vertical {
   /*文字竖排*/
   writing-mode: vertical-lr;
   unicode-bidi: bidi-override;
   letter-spacing: 3px;
-  text-align:center;
-
+  text-align: center;
   /*垂直居中*/
-  position:absolute;
-  top:50%;
-  left:50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
 }
 
 table.rin-table {
   width: 100%;
-  font-size:0.9em;
-
+  font-size: 0.9em;
   thead {
     color: @color-primary-1;
     background-color: @color-primary-2;
-    th {font-weight: 400}
+    th {
+      font-weight: 400
+    }
   }
-
   tbody {
-    padding-top:33px;
-
+    padding-top: 33px;
     tr {
       cursor: pointer;
       transition: all .2s;
-
       td {
         padding: 12px 0;
       }
-
-      i { color: @color-primary-3 }
-
+      i {
+        color: @color-primary-3
+      }
       &:nth-child(odd) {
         background-color: @color-primary-1;
       }
-      &:hover{
+      &:hover {
         background-color: @color-primary-2;
       }
     }
-
-    th{
+    th {
       text-align: center;
       padding: 8px 0;
     }
