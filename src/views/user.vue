@@ -22,6 +22,7 @@
     .background {
       height: 40vh;
       width: 100%;
+      background-color: @color-primary-2;
     }
     .content {
       padding: 80px 100px 0 100px;
@@ -100,8 +101,7 @@
     <rin-avatar v-bind:hash="user.emailHash"></rin-avatar>
     <div class="teams" v-show="loaded" transition="rin-fade">
       <a title="{{i.name}}" class="team" v-link="'/team/'+i._id" v-for="i in user.teams">
-        <span class="team-icon" :style="{'background-image': 'url(' + getIcon(i) +')'}">
-          </span>
+        <span class="team-icon" :style="{'background-image': 'url(' + getIcon(i) +')'}"></span>
       </a>
     </div>
   </div>
