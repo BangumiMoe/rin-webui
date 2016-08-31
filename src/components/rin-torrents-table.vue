@@ -10,6 +10,7 @@
   .rin-table {
     overflow: scroll;
     height: 100%;
+    position: relative;
     .row {
       width: 100%;
       display: flex;
@@ -35,7 +36,7 @@
         &:nth-child(5) {
           width: 200px;
         }
-        &:last-child {
+        &:nth-child(6) {
           width: 128px;
         }
       }
@@ -44,17 +45,23 @@
       }
     }
     .header {
-      position: fixed;
+      position: absolute;
+      top: 0;
+      left: 0;
       display: block;
       color: @table-header-fg;
       background-color: @table-header-bg;
       height: @table-header-height;
       width: 100%;
+      opacity: 0.95;
       .row {
         position: absolute;
         font-size: @table-header-font-size;
         line-height: @table-header-font-size * 2.6;
         height: @table-header-height;
+        .column {
+          text-align: center;
+        }
       }
     }
     .body {
@@ -65,7 +72,7 @@
             overflow: hidden;
             text-align: left;
           }
-          &:last-child {
+          &:nth-child(6) {
             width: 128px;
             text-align: left;
           }
@@ -84,7 +91,7 @@
         <span class="column">{{'Title'|locale}}({{torrents.length}}/{{torrents_total}})</span>
         <span class="column">{{'magnet'|locale}}</span>
         <span class="column">{{'Seed stat'|locale}}</span>
-        <span class="column">{{'Uploader'|locale}}</span>
+        <span class="column" v-if="!hide_uploader">{{'Uploader'|locale}}</span>
       </div>
     </div>
 
@@ -112,7 +119,7 @@
           <a class="rin-seed-downloading" href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
           <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
         </span>
-        <span class="column">
+        <span class="column" v-if="!hide_uploader">
           <a class="rin-inline-tag haspic" v-link="'/user/' + t.uploader._id">
               <img v-bind:src="gravatarUrl+t.uploader.emailHash" />
               <span>{{t.uploader.username}}</span>
@@ -126,7 +133,7 @@
 <script>
   export default {
     name: 'RinTorrentsTable',
-    props: ['torrents', 'torrents_total', 'hide_team_name', 'on_end', 'on_top', 'need_more', 'busy'],
+    props: ['torrents', 'torrents_total', 'hide_team_name', 'hide_uploader', 'on_end', 'on_top', 'need_more', 'busy'],
     filters: {
       date: require('../filters/dateFormat.js'),
     },
@@ -142,15 +149,10 @@
           window.open(`/torrent/${torrent._id}`, '_blank');
         }
       },
-      update_ui() {
-        const table = this.$els.table;
-
-        // update width
-        const width = table.clientWidth;
-        this.$els.header.style.width = `${width}px`;
-      },
       scroll_event(ev) {
         const t = this.$els.table;
+        this.$els.header.style.top = `${t.scrollTop}px`;
+
         // console.log((t.scrollTop + t.offsetHeight) >= (t.scrollHeight));
         if (t.scrollTop === 0) {
           if (typeof this.on_top === 'function') {
@@ -173,12 +175,6 @@
       const height = table.parentElement.clientHeight;
       table.style.height = `${height}px`;
       table.style.height = null;
-
-      this.update_ui();
-      window.addEventListener('resize', this.update_ui);
-    },
-    beforeDestroy() {
-      window.removeEventListener('resize', this.update_ui);
     },
   };
 </script>

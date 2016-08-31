@@ -671,26 +671,20 @@
 </style>
 
 <template>
-  <div class="tri-circles-container"  v-bind:class="{'stop': finished}">
-    <div class="tri-circles-bg" transition="rin-fade" v-show="!finished">
-      <div class="tri-circles-bg-circle top"></div>
-      <div class="tri-circles-bg-circle left"></div>
-      <div class="tri-circles-bg-circle right"></div>
-    </div>
-    <div class="tri-circles-content" v-bind:style="{ backgroundImage: display }">
-    </div>
+<div class="tri-circles-container" v-bind:class="{'stop': finished}">
+  <div class="tri-circles-bg" transition="rin-fade" v-show="!finished">
+    <div class="tri-circles-bg-circle top"></div>
+    <div class="tri-circles-bg-circle left"></div>
+    <div class="tri-circles-bg-circle right"></div>
   </div>
+  <div class="tri-circles-content" v-bind:style="{ backgroundImage: display }">
+  </div>
+</div>
 </template>
 
 <script>
   export default {
-    props: {
-      hash: {
-        type: String,
-        required: true,
-        twoWay: true,
-      },
-    },
+    props: ['hash'],
     data() {
       return {
         loaded: false,
