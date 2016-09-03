@@ -1,4 +1,4 @@
-<style scoped lang="less">
+<style lang="less">
   @import "../less/colors.less";
   @import "../less/framework.less";
   #rin-main {
@@ -14,22 +14,16 @@
     .rin-wrapper {
       height: 100%;
       overflow-x: hidden;
-      overflow-y: auto;
+      overflow-y: hidden;
     }
-  }
-  
-  .no-data {
-    text-align: center;
-    color: #999;
-    margin: 2em 0;
   }
 </style>
 
 <template>
 <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
-  <rin-loader v-show="busy && !nextBusy && !prevBusy" transition="rin-fade"></rin-loader>
+  <rin-loader v-show="busy" :progress="progress" transition="rin-fade"></rin-loader>
 
-  <div id="rin-wrapper" class="rin-wrapper" transition="rin-fade" v-show="!busy || init">
+  <div id="rin-wrapper" class="rin-wrapper" transition="rin-fade" v-show="!busy">
     <rin-torrents-table :torrents="torrents.data" :torrents_total="torrents.total" :need_more="fetch_next_torrents"></rin-torrents-table>
   </div>
 </div>
@@ -45,6 +39,7 @@
       return {
         init: true,
         busy: true,
+        progress: 15,
         torrents: {
           data: [],
           total: 1,
@@ -74,7 +69,11 @@
             this.torrents.total = data.page_count * limit;
             this.torrents.data.push(...data.torrents);
             this.torrents.offset++;
-            this.busy = false;
+            this.progress = 100;
+            window.setTimeout(() => {
+              this.busy = false;
+              this.progress = 50;
+            }, 1900);
           });
       },
       // doSearch(key) {
