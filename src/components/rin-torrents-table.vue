@@ -1,12 +1,11 @@
 <style scoped lang="less">
   @import "../less/colors.less";
   @import '../less/framework.less';
-  @table-header-bg: @color-primary-0;
-  @table-header-fg: rgba(230, 230, 230, 0.99);
+  @table-header-bg: @color-primary-4;
+  @table-header-fg: white;
   @table-header-font-size: 13px;
   @table-header-height: 33px;
   @table-row-font-size: 12px;
-  @table-row-even-bg: rgba(220, 220, 220, 0.99);
   .rin-table {
     overflow: scroll;
     height: 100%;
@@ -40,8 +39,11 @@
           width: 128px;
         }
       }
+      &:nth-child(odd) {
+        background-color: @table-bg-odd;
+      }
       &:nth-child(even) {
-        background-color: @table-row-even-bg;
+        background-color: @table-bg-even;
       }
     }
     .header {
@@ -50,7 +52,6 @@
       left: 0;
       display: block;
       color: @table-header-fg;
-      background-color: @table-header-bg;
       height: @table-header-height;
       width: 100%;
       opacity: 0.95;
@@ -61,10 +62,12 @@
         height: @table-header-height;
         .column {
           text-align: center;
+          background-color: @table-header-bg;
         }
       }
     }
     .body {
+      padding-top: @table-header-height;
       .row {
         .column {
           &:nth-child(3) {
@@ -76,6 +79,10 @@
             width: 128px;
             text-align: left;
           }
+        }
+        &:hover {
+          color: white;
+          background-color: @color-primary-0;
         }
       }
     }
