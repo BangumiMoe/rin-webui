@@ -128,7 +128,7 @@
         </div>
       </tooltip>
     </a>
-    <a class="rin-button round">
+    <a class="rin-button round" v-link="'/torrent/upload'">
       <i class="material-icons">&#xE89D;</i>
       <tooltip :info="'Publish' | locale"></tooltip>
     </a>

@@ -24,7 +24,7 @@
     right: 0;
     text-align: center;
     color: #fff;
-    background-color: @color-th-bg;
+    background-color: @color-primary-3;
     z-index: 1;
     overflow: hidden;
     width: 100%;
@@ -83,7 +83,7 @@
     z-index: 2;
     flex-direction: column-reverse;
     width: 64px;
-    border-bottom: 1px solid #DE8F9F;
+    border-bottom: 1px solid @color-primary-2;
     &.action {
       animation-duration: 1s;
       animation-fill-mode: both;
@@ -198,10 +198,10 @@
       font-size: 24px;
     }
     &:hover {
-      color: #c0ded6;
-      background-color: #7894AB;
+      color: #fff;
+      background-color: @color-primary-4;
       i {
-        color: #c0ded6;
+        color: #fff;
       }
     }
   }

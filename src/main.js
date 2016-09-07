@@ -34,6 +34,10 @@ router.map({
     component: require('./views/torrent'),
     mode: 'hello',
   },
+  '/torrent/upload': {
+    name: 'upload',
+    component: require('./views/upload'),
+  },
   '/user/:id': {
     name: 'user',
     component: require('./views/user'),
