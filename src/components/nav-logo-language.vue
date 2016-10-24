@@ -76,7 +76,8 @@
     <a class="rin-button round rin-button-small"
       href="javascript:void(0)"
       @click="toggleChooser">
-      <i class="material-icons">&#xE894;</i>
+      <!--<i class="material-icons">&#xE894;</i>-->
+      <i class="fa fa-language"></i>
       <tooltip :info="$t('Choose language')"></tooltip>
     </a>
   </div>

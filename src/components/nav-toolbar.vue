@@ -129,31 +129,34 @@
       </tooltip>
     </a>
     <router-link class="rin-button round" to="/torrent/upload">
-      <i class="material-icons">&#xE89D;</i>
+      <!--<i class="material-icons">&#xE89D;</i>-->
+      <i class="fa fa-plus"></i>
       <tooltip :info="$t('Publish')"></tooltip>
     </router-link>
     <a class="rin-button round">
-      <i class="material-icons">&#xE03B;</i>
+      <i class="fa fa-rss"></i>
       <tooltip :info="$t('Customize RSS')"></tooltip>
     </a>
     <a class="rin-button round" @click="userSignout">
-      <i class="material-icons">&#xE0E4;</i>
+      <i class="fa fa-sign-out"></i>
       <tooltip :info="$t('Logout')"></tooltip>
     </a>
   </div>
 
   <router-link class="rin-button rin-torrents" v-show="!is_homepage" :to="{ path: '/', exact: true }">
-    <i class="material-icons">&#xE5C4;</i>
+    <i class="fa fa-arrow-left"></i>
     <tooltip :info="$t('Back to Index')"></tooltip>
   </router-link>
 
   <router-link class="rin-button rin-week" to="/bangumi/list">
-    <i class="material-icons">&#xE8EF;</i>
+    <!--<i class="material-icons">&#xE8EF;</i>-->
+    <i class="fa fa-list"></i>
     <tooltip :info="$t('Bangumi List')"></tooltip>
   </router-link>
 
   <a class="rin-button rin-rss" href="https://bangumi.moe/rss/latest" target="_blank">
-    <i class="material-icons" style="transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>
+    <!--<i class="material-icons" style="transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>-->
+    <i class="fa fa-rss"></i>
     <tooltip :info="$t('RSS')"></tooltip>
   </a>
 
@@ -161,7 +164,8 @@
     @mouseenter="searchBarShow"
     @mouseleave="searchBarHide"
     @click="searchBarToggle">
-    <i class="material-icons">&#xE8B6;</i>
+    <!--<i class="material-icons">&#xE8B6;</i>-->
+    <i class="fa fa-search"></i>
     <tooltip :info="$t('Search')"></tooltip>
   </span>
 
