@@ -73,7 +73,7 @@
 </style>
 
 <template>
-  <div class="rin-infobox-wrap rin-infobox-arrow-{{arrow}}">
+  <div class="rin-infobox-wrap" v-bind:class="`rin-infobox-arrow-${arrow}`">
     <div class="rin-infobox-inner">
       <div class="rin-infobox">
         <slot></slot>
@@ -85,6 +85,7 @@
 
 <script>
   export default {
+    name: 'NavToolbarInfoBox',
     props: ['user', 'arrow'],
   };
 </script>

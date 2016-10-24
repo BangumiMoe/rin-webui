@@ -199,25 +199,25 @@
     	<div is="rin-loader" :progress="progress" v-show="busy" transition="rin-fade"></div>
 
 			<div class="rin-column" v-on:click="allSwitch">
-				<span class="rin-vertical">{{'Bangumi List' | locale}}</span>
+				<span class="rin-vertical">{{$t('Bangumi List')}}</span>
 			</div>
 
-			<div class="rin-week-item rin-row" v-for="item in datas">
-				<div class="rin-week-title title-bgc{{$index}}" v-on:click="Switch($index)">
-					<span class="rin-vertical">{{locale.week[$index] | locale | week}}</span>
-					<span class="week-mask">{{week[$index]}}</span>
+			<div class="rin-week-item rin-row" v-for="(item, index) in datas">
+				<div class="rin-week-title" :class="`title-bgc${index}`" v-on:click="Switch(index)">
+					<span class="rin-vertical">{{$t(locale.week[index]) | week}}</span>
+					<span class="week-mask">{{week[index]}}</span>
 				</div>
-				<div class="rin-week-content rin-row" v-bind:class="{'off':isOff[$index]}">
+				<div class="rin-week-content rin-row" v-bind:class="{'off':isOff[index]}">
 
 						<div class="item" v-for="d in item">
 							<div class="preview">
-								<img v-bind:src="serverUrl + d.icon" alt="{{d.name}}">
+								<img v-bind:src="serverUrl + d.icon" :alt="d.name">
 							</div>
 							<div class="content">
-								<p class="title rin-text-overflow"><a v-link="'/search/`' + d.tag_id + '`'" title="{{d.tag | locale}}">{{d.tag | locale}}</a></p>
-								<p class="date rin-text-overflow" title="{{d.credit}}">{{d.credit}}</p>
+								<p class="title rin-text-overflow"><a v-link="'/search/`' + d.tag_id + '`'" :title="$t(d.tag)">{{$t(d.tag)}}</a></p>
+								<p class="date rin-text-overflow" :title="d.credit">{{d.credit}}</p>
 								<p class="date">
-									{{'On air' | locale}}: {{d.startDate | handleDate 'yyyy/MM/dd HH:mm'}}
+									{{$t('On air')}}: {{d.startDate | handleDate 'yyyy/MM/dd HH:mm'}}
 									<span class="thisweek" v-if="d.showOn === thisWeek">
 										今
 									</span>
@@ -229,10 +229,10 @@
                     <img
                     v-if="t.icon"
                     v-bind:src="serverUrl + t.icon" />
-										<span>{{ t.tag | locale }}</span>
+										<span>{{ $t(t.tag) }}</span>
 									</a>
 							</div>
-							<a class="acgdb" href="http://acgdb.com/{{d.acgdb_id?d.acgdb_id:''}}" target="_black" v-on:mouseover="showTip" v-on:mouseout="hideTip">
+							<a class="acgdb" :href="`http://acgdb.com/${d.acgdb_id?d.acgdb_id:''}`" target="_black" v-on:mouseover="showTip" v-on:mouseout="hideTip">
 								···
 							</a>
 						</div>
@@ -240,7 +240,7 @@
 				</div>
 			</div>
 			<div class="rin-datatip" id="tip">
-				{{'Read more on ACGDB' | locale}}
+				{{$t('Read more on ACGDB')}}
 			</div>
 		</div>
 

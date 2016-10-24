@@ -263,13 +263,16 @@
 
           <!-- 当日 Day 标题. -->
           <div class="list-item-title" role="heading">
-            <span class="rin-vertical">{{day | handleDay | locale}}</span>
+            <span class="rin-vertical">{{$t(day | handleDay)}}</span>
           </div>
  
           <!-- 当日结果列表. -->
           <div class="list-item-ctnr rin-row rin-tag" role="list">
 
-              <a href="javascript:void(0);" v-for="item in results" v-on:click="addUserTag(item.tag,$event)" data-tag="{{item.tag | locale}}" role="listitem">{{item.tag | locale}}</a>
+              <a href="javascript:void(0);" role="listitem"
+                v-bind:data-tag="$t(item.tag)"
+                v-for="item in results" v-on:click="addUserTag(item.tag,$event)"
+              >{{$t(item.tag)}}</a>
 
           </div>
 
@@ -281,11 +284,11 @@
       <div class="recommend-tags rin-tag" role="list" v-show="nodeControl.recommendTags.show">
         <a 
           role="listitem" 
+          v-bind:data-tag="$t(tag)"
           v-for="tag in dataObject.recommendTags"
-          data-tag="{{tag | locale}}"
           v-on:click="addRecommendTag(tag, $event)"
           href="javascript:void(0);"
-          >{{tag | locale}}</a>
+          >{{$t(tag)}}</a>
       </div>
 
       <!-- 搜索进度条 -->
@@ -307,12 +310,12 @@
             v-for="tag in userTagList"
             track-by="$index"
             href="javascript:void(0);"
-            data-value="{{tag}}"
+            :data-value="tag"
             v-on:click="removeUserTag($index,$event)"
             class="recommendTags"
           >
-          {{tag | locale}}
-          <i class="material-icons recommendTags" data-value="{{tag}}">&#xE5CD;</i></a>
+          {{$t(tag)}}
+          <i class="material-icons recommendTags" :data-value="tag">&#xE5CD;</i></a>
         </div>
         <div
           contenteditable="true" 

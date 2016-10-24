@@ -11,6 +11,9 @@ module.exports = {
   ],
   // add your custom rules here
   'rules': {
+    'no-console': 0,
+    'no-plusplus': 0,
+    'no-undef': 0, // support window or document var
     'no-inner-declarations': 0, // only pro team need it
     'global-require': 0,
     'camelcase': 0, // you like is_own or IsOwn or _IsOwn_Own, yes, write it!

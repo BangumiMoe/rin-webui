@@ -20,7 +20,7 @@
 </style>
 
 <template>
-<div id="rin-main" class="rin-col" style="width: calc(100% - 128px);" v-bind:class="{'modal-blur':modalBlur}">
+<div id="rin-main" class="rin-col" style="width: calc(100% - 128px);">
   <rin-loader v-show="busy" :progress="progress" transition="rin-fade"></rin-loader>
 
   <div id="rin-wrapper" class="rin-wrapper" transition="rin-fade" v-show="!busy">
@@ -65,7 +65,7 @@
 
         this.$http.get(`https://bangumi.moe/api/v2/torrent/page/${offset}?limit=${limit}`).then(
           resp => {
-            const data = resp.json();
+            const data = resp.data;
             this.torrents.total = data.page_count * limit;
             this.torrents.data.push(...data.torrents);
             this.torrents.offset++;
@@ -107,7 +107,7 @@
       RinLoader,
       RinTorrentsTable,
     },
-    ready() {
+    mounted() {
       this.getTorrents(0);
     },
     events: {

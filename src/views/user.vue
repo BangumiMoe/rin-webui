@@ -92,7 +92,7 @@
 <div class="rin-wrapper">
   <div class="rin-avatar">
     <div class="auditing_teams" v-show="loaded" transition="rin-fade">
-      <a title="{{i.name}}" class="team" v-link="'/team/'+i._id" v-for="i in user.auditing_teams">
+      <a :title="i.name" class="team" v-link="'/team/'+i._id" v-for="i in user.auditing_teams">
         <span class="team-icon">
             {{i.name.slice(0, 1)}}
           </span>
@@ -100,7 +100,7 @@
     </div>
     <rin-avatar v-bind:hash="user.emailHash"></rin-avatar>
     <div class="teams" v-show="loaded" transition="rin-fade">
-      <a title="{{i.name}}" class="team" v-link="'/team/'+i._id" v-for="i in user.teams">
+      <a :title="i.name" class="team" v-link="'/team/'+i._id" v-for="i in user.teams">
         <span class="team-icon" :style="{'background-image': 'url(' + getIcon(i) +')'}"></span>
       </a>
     </div>
@@ -110,15 +110,15 @@
   <div class="content" v-show="loaded" transition="rin-fade">
     <h1 class="name">{{user.username}}</h1>
     
-    <h2>{{"Last Teams" | locale}}</h2>
+    <h2>{{$t("Last Teams")}}</h2>
     <div class="rin-tag">
       <a class="haspic" v-link="'/tag/' + i.tag._id" v-for="i in bangumi">
         <img v-bind:src="'//bangumi.moe/' + i.icon" v-if="i.icon" class="icon" alt="" />
-        <span>{{ i.tag | locale }}</span>
+        <span>{{ $t(i.tag) }}</span>
       </a>
     </div>
 
-    <h2>{{"Last Torrents" | locale}}</h2>
+    <h2>{{$t("Last Torrents")}}</h2>
 
     <div class="table-wrapper">
       <rin-torrents-table :torrents="torrents.data" :torrents_total="torrents.total" :hide_uploader="true"></rin-torrents-table>

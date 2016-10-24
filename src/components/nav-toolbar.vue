@@ -109,7 +109,7 @@
     <div class="rin-button round img-wrap" @click="userSignAction($event)">
       <img src="../assets/akarin.jpg" v-if="!user._id" />
       <img :src="'https://bangumi.moe/avatar/'+ user.emailHash" v-if="user._id" />
-      <tooltip :info="'Login' | locale" v-if="!user._id"></tooltip>
+      <tooltip :info="$t('Login')" v-if="!user._id"></tooltip>
     </div>
 
     <info-box :user="user" arrow="right" v-if="user._id"></info-box>
@@ -128,33 +128,33 @@
         </div>
       </tooltip>
     </a>
-    <a class="rin-button round" v-link="'/torrent/upload'">
+    <router-link class="rin-button round" to="/torrent/upload">
       <i class="material-icons">&#xE89D;</i>
-      <tooltip :info="'Publish' | locale"></tooltip>
-    </a>
+      <tooltip :info="$t('Publish')"></tooltip>
+    </router-link>
     <a class="rin-button round">
       <i class="material-icons">&#xE03B;</i>
-      <tooltip :info="'Customize RSS' | locale"></tooltip>
+      <tooltip :info="$t('Customize RSS')"></tooltip>
     </a>
     <a class="rin-button round" @click="userSignout">
       <i class="material-icons">&#xE0E4;</i>
-      <tooltip :info="'Logout' | locale"></tooltip>
+      <tooltip :info="$t('Logout')"></tooltip>
     </a>
   </div>
 
-  <a class="rin-button rin-torrents" v-show="!is_homepage" v-link="{ path: '/', exact: true }">
+  <router-link class="rin-button rin-torrents" v-show="!is_homepage" :to="{ path: '/', exact: true }">
     <i class="material-icons">&#xE5C4;</i>
-    <tooltip :info="'Back to Index' | locale"></tooltip>
-  </a>
+    <tooltip :info="$t('Back to Index')"></tooltip>
+  </router-link>
 
-  <a class="rin-button rin-week" v-link="'/bangumi/list'">
+  <router-link class="rin-button rin-week" to="/bangumi/list">
     <i class="material-icons">&#xE8EF;</i>
-    <tooltip :info="'Bangumi List' | locale"></tooltip>
-  </a>
+    <tooltip :info="$t('Bangumi List')"></tooltip>
+  </router-link>
 
   <a class="rin-button rin-rss" href="https://bangumi.moe/rss/latest" target="_blank">
     <i class="material-icons" style="transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>
-    <tooltip :info="'RSS' | locale"></tooltip>
+    <tooltip :info="$t('RSS')"></tooltip>
   </a>
 
   <span class="rin-button rin-search" id="rin-search"
@@ -162,7 +162,7 @@
     @mouseleave="searchBarHide"
     @click="searchBarToggle">
     <i class="material-icons">&#xE8B6;</i>
-    <tooltip :info="'Search' | locale"></tooltip>
+    <tooltip :info="$t('Search')"></tooltip>
   </span>
 
   <!-- Search Added By LancerComet at 23:07, 2015.12.08. -->
@@ -193,7 +193,7 @@
       // Definition: 搜索栏显示事件.
       searchBarShow() {
         this.searchBar.visible = true;
-        this.$broadcast('recentProgramRequest'); // 广播至 search-bar.
+        this.$emit('recentProgramRequest'); // 广播至 search-bar.
       },
       // Definition: 搜索栏隐藏事件.
       searchBarHide() {

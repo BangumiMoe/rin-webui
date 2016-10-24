@@ -17,32 +17,6 @@
   import Vue from 'vue';
   import Cookies from 'js-cookie';
 
-  Vue.config.lang = 'zh-tw';
-  Vue.locales = {};
-
-  Vue.filter('locale', (value) => {
-    if (!value) {
-      return value;
-    }
-    // method 1
-    if (value.locale) {
-      let text = value.locale[Vue.config.lang];
-      // if(!text) text = value.locale[this.$root.lang_default];
-      if (!text) text = value.name; // 再找不到的话就取默认值，16/01/24  @zzetao
-      return text;
-    }
-    if ((typeof value) === 'string') {
-      const locale = Vue.locales[Vue.config.lang];
-      if (locale) {
-        let text = locale[value];
-        if (!text) text = value;
-        return text;
-      }
-    }
-
-    return value;
-  });
-
   export default {
     name: 'RinWebApp',
     data() {
@@ -64,28 +38,28 @@
       updateLocales(lng) {
         // TODO busy controller
         try {
-          Vue.locales[lng] = require(`./i18n/${lng}.json`);
+          Vue.locale(lng, require(`./i18n/${lng}.json`));
           Vue.config.lang = lng;
 
           // site title update
           document.title = this.locales[lng]['番組、萌え'];
           Cookies.set('locale', lng);
 
-          this.$broadcast('LangChanged', lng);
+          this.$emit('LangChanged', lng);
         } catch (err) {
-          this.$broadcast('LangChangedFail', lng);
+          this.$emit('LangChangedFail', lng);
         }
       },
     },
     events: {
       'open-modal' (opt) {
-        this.$broadcast('open-modal', opt);
+        this.$emit('open-modal', opt);
       },
       'open-modal-blur' () {
-        this.$broadcast('open-modal-blur');
+        this.$emit('open-modal-blur');
       },
       'close-modal-blur' () {
-        this.$broadcast('close-modal-blur');
+        this.$emit('close-modal-blur');
         if (this.displaySigninForm) {
           this.displaySigninForm = false;
         }
@@ -103,28 +77,28 @@
       },
 
       UserSignIn(form) {
-        this.$broadcast('rinUserSignIn', form);
+        this.$emit('rinUserSignIn', form);
       },
       UserSignInOK(user) {
-        this.$broadcast('UserSignInOK', user);
+        this.$emit('UserSignInOK', user);
         if (this.displaySigninForm) {
           this.displaySigninForm = false;
-          this.$broadcast('close-modal');
+          this.$emit('close-modal');
         }
       },
       UserSignInFailed(...args) {
-        this.$broadcast('UserSignInFailed', ...args);
+        this.$emit('UserSignInFailed', ...args);
       },
       UserSignOut() {
-        this.$broadcast('rinUserSignOut');
-        this.$broadcast('UserSignOutOK');
+        this.$emit('rinUserSignOut');
+        this.$emit('UserSignOutOK');
       },
 
       changeLang(lng) {
         this.updateLocales(lng);
       },
     },
-    ready() {
+    created() {
       const lang = Cookies.get('locale');
       if (lang) {
         Vue.config.lang = lang;

@@ -77,13 +77,14 @@
       href="javascript:void(0)"
       @click="toggleChooser">
       <i class="material-icons">&#xE894;</i>
-      <tooltip :info="'Choose language' | locale"></tooltip>
+      <tooltip :info="$t('Choose language')"></tooltip>
     </a>
   </div>
 </template>
 
 <script>
-  import tooltip from './nav-tooltip';
+  import tooltip from './nav-tooltip.vue';
+  
   export default {
     name: 'NavLogoLanguage',
     data() {

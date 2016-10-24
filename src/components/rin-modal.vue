@@ -208,9 +208,7 @@
           <div class="modal-content-inner">
             <slot>
             <h1>{{modalContent.title}}</h1>
-            <p>
-              {{{modalContent.content}}}
-            </p>
+            <p v-html="modalContent.content"></p>
           </slot>
           </div>
       </div>
@@ -254,6 +252,7 @@
   }
 
   export default {
+    name: 'RinModal',
     props: ['modal-id'],
     data() {
       return {

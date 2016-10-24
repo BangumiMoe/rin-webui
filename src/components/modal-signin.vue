@@ -10,29 +10,31 @@
 
 <template>
 <rin-modal modal-id="modal-signin" v-on:keyup="onKeyup">
-  <h1>{{"Welcome to Bangumi.moe" | locale}}</h1>
+  <h1>{{$t("Welcome to Bangumi.moe")}}</h1>
   <form>
-    <div class="rin-message rin-error" v-if="message">{{ message | locale}}</div>
+    <div class="rin-message rin-error" v-if="message">{{ $t(message)}}</div>
 
     <div class="rin-row">
       <div class="rin-col">
         <span class="rin-input">
-          <label for="signin_username">{{"Username" | locale}}</label>
-          <input id="signin_username" type="text" v-model="username" placeholder="{{'nickname or email' | locale}}">
+          <label for="signin_username">{{$t("Username")}}</label>
+          <input id="signin_username" type="text" v-model="username"
+            :placeholder="$t('nickname or email')">
         </span>
       </div>
 
       <div class="rin-col" style="margin-left:0.3em;">
         <span class="rin-input">
-          <label for="signin_password">{{"Password" | locale}}</label>
-          <input id="signin_password" type="password" v-model="password" placeholder="{{'please input your passsword' | locale}}">
+          <label for="signin_password">{{$t("Password")}}</label>
+          <input id="signin_password" type="password" v-model="password" 
+            :placeholder="$t('please input your passsword')">
         </span>
       </div>
     </div>
 
     <div class="rin-checkbox">
-      <input id="signin_cookie" type="checkbox" checked="checked" v-model="store_in_cookie">
-      <label for="signin_cookie">{{"Save account info locally" | locale}}</label>
+      <input id="signin_cookie" type="checkbox" v-model="store_in_cookie">
+      <label for="signin_cookie">{{$t("Save account info locally")}}</label>
     </div>
 
   </form>
@@ -43,6 +45,7 @@
 <script>
   import RinModel from './rin-modal';
   export default {
+    name: 'ModalSignIn',
     components: {
       'rin-modal': RinModel,
     },
@@ -52,7 +55,7 @@
         password: null,
         message: null,
         loading: false,
-        store_in_cookie: false,
+        store_in_cookie: true,
       };
     },
     methods: {
@@ -67,7 +70,7 @@
       'modal-ok-click' () {
         if (this.loading) return;
 
-        this.$broadcast('modal-start-loading');
+        this.$emit('modal-start-loading');
         this.loading = true;
         this.$dispatch('UserSignIn', {
           username: this.username,
@@ -75,20 +78,20 @@
         });
       },
       'modal-closed' () {
-        this.$broadcast('modal-stop-loading');
+        this.$emit('modal-stop-loading');
         this.loading = false;
       },
 
       UserSignInOk(user) {
         if (user.username === this.username) {
-          this.$broadcast('close-modal');
+          this.$emit('close-modal');
         }
 
         this.loading = false;
-        this.$broadcast('modal-stop-loading');
+        this.$emit('modal-stop-loading');
       },
       UserSignInFailed(msg) {
-        this.$broadcast('modal-stop-loading');
+        this.$emit('modal-stop-loading');
         this.loading = false;
         this.message = msg;
       },

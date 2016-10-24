@@ -38,16 +38,16 @@
     methods:{
       "ML":function(){
         if (!this.loading){
-          this.$broadcast("modal-start-loading");
+          this.$emit("modal-start-loading");
           this.loading=true;
         }else{
-          this.$broadcast("modal-stop-loading");
+          this.$emit("modal-stop-loading");
           this.loading=false;
         }
 
       },
       "CM":function(){
-        this.$broadcast("close-modal");
+        this.$emit("close-modal");
       }
     },
     events:{

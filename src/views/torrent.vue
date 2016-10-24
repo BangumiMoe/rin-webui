@@ -209,7 +209,7 @@
 <template>
   <div id="rin-main" style="width: calc(100% - 128px);" v-on:scroll="fixHeader">
     <div is="rin-loader" v-bind:progress="70" v-show="busy" transition="rin-fade"></div>
-		<div class="rin-head" v-show="!busy" transition="rin-fade" style="margin-right:{{getScrollWidth()+128}}px;" v-bind:class="{ 'head-fixed' : headerFixed}">
+		<div class="rin-head" v-show="!busy" transition="rin-fade" :style="`margin-right: ${getScrollWidth()+128}px;`" v-bind:class="{ 'head-fixed' : headerFixed}">
 			<h3>
         <a class="rin-button rin-left" href="javascript:void(0)" @click="backHomepage">
           <i class="material-icons">&#xE5C4;</i>
@@ -226,48 +226,44 @@
 						<rin-user-label :id="data.uploader._id" :username="data.uploader.username" :path="data.uploader.emailHash"></rin-user-label>
 					</span>
 
-					{{'submitted' | locale}} {{data.publish_time | date 'yyyy/MM/dd HH:mm'}}
+					{{$t('submitted')}} {{data.publish_time | date 'yyyy/MM/dd HH:mm'}}
 				</p>
 				<div class="rin-tag">
 					<a v-for="t in data.tags" v-link="'/tag/'+t._id" v-bind:class="{ 'haspic' : (t.type == 'bangumi' || t.type == 'team') }">
-						<img v-bind:src="resource_host+t.bangumi.icon" alt="{{t | locale}}" v-if="t.type == 'bangumi'">
-						<img v-bind:src="resource_host+t.team.icon" alt="{{t | locale}}" v-if="(t.type == 'team' && t.team.icon)">
+						<img v-bind:src="resource_host+t.bangumi.icon" :alt="$(t)" v-if="t.type == 'bangumi'">
+						<img v-bind:src="resource_host+t.team.icon" :alt="$t(t)" v-if="(t.type == 'team' && t.team.icon)">
 						<img src="../assets/akarin.jpg" v-if="(t.type == 'team' && (!t.team || !t.team.icon))"/>
-						<span>{{t | locale}}</span>
+						<span>{{$t(t)}}</span>
 					</a>
 				</div>
 
-				<div class="rin-details-intro">
-					{{{data.introduction}}}
-				</div>
-				<div class="rin-team-signature">
-					{{{data.team.signature}}}
-				</div>
+				<div class="rin-details-intro" v-html="data.introduction"></div>
+				<div class="rin-team-signature" v-html="data.team.signature"></div>
 				<div>
 
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
-		<a class="rin-button" v-bind:href="data.downloadTorrent || ''">
-			<i class="material-icons">&#xE2C4;</i>
-			<tooltip :info="'torrent' | locale"></tooltip>
-		</a>
-		<a class="rin-button" v-bind:href="data.magnet">
-			<i class="material-icons">&#xE8AB;</i>
-			<tooltip :info="'magnet' | locale"></tooltip>
-		</a>
-		<a class="rin-button" href="javascript:void(0);"
-					v-on:click="toggleComment"
-					v-on:mouseenter="showComment"
-					v-on:mouseleave="hideComment">
-			<i class="material-icons">&#xE0B9;</i>
-		</a>
-	</div>
-	<div class="rin-bar-comment" v-bind:class="{'active':isShow,'action':commentStatus}">
-		评论内容
+    <div class="rin-sidebar rin-row" v-bind:class="{'action':!busy}">
+      <a class="rin-button" v-bind:href="data.downloadTorrent || ''">
+        <i class="material-icons">&#xE2C4;</i>
+        <tooltip :info="$t('torrent')"></tooltip>
+      </a>
+      <a class="rin-button" v-bind:href="data.magnet">
+        <i class="material-icons">&#xE8AB;</i>
+        <tooltip :info="$t('magnet')"></tooltip>
+      </a>
+      <a class="rin-button" href="javascript:void(0);"
+            v-on:click="toggleComment"
+            v-on:mouseenter="showComment"
+            v-on:mouseleave="hideComment">
+        <i class="material-icons">&#xE0B9;</i>
+      </a>
+    </div>
+    <div class="rin-bar-comment" v-bind:class="{'active':isShow,'action':commentStatus}">
+      评论内容
+    </div>
 	</div>
 </template>
 

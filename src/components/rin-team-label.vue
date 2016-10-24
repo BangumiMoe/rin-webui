@@ -1,13 +1,8 @@
 <template>
-  <!--<a class="team" v-link="'/team/' + data.team._id" v-if="data.team.name">
-    <img v-if="data.team.icon" v-bind:src="'//bangumi-moe.phoenixstatic.com/'+data.team.icon">
-    <img src="../assets/akarin.jpg" v-if="!data.team.icon"/>
-    <b class="name">{{data.team.name}}</b>
-  </a>-->
-  <a v-link="{name: 'team-profile', id: id}">
+  <router-view :to="{name: 'team-profile', id: id}">
     <img :src="icon_path">
     <b class="name" v-html="teamname"></b>
-  </a>
+  </router-view>
 </template>
 
 <style scoped lang="less">

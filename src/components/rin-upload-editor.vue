@@ -40,12 +40,12 @@
 	</div>
 
 	<div class="torrent-description rin-form-group">
-		<label class="rin-form-label">{{ "btsync key" | locale }}: </label>
+		<label class="rin-form-label">{{$t("btsync key")}}: </label>
 		<input type="text" class="rin-form-control" placeholder="btsync key">
 	</div>
 
 	<div class="torrent-publish">
-		<button class="rin-button2 rin-button2-primary">{{ "Publish" | locale }}</button>
+		<button class="rin-button2 rin-button2-primary">{{$t("Publish")}}</button>
 	</div>
 </div>
 </template>

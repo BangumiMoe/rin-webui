@@ -89,7 +89,7 @@
 </style>
 
 <template>
-  <div class="rin-tooltip-wrap rin-tooltip-{{direction}}">
+  <div class="rin-tooltip-wrap" :class="`rin-tooltip-${direction}`">
     <div class="rin-tooltip">
       <p>
         {{ info }}
@@ -103,7 +103,10 @@
   export default {
     name: 'NavTooltip',
     props: {
-      info: String,
+      info: {
+        type: String,
+        default: '',
+      },
       direction: {
         type: String,
         default: 'right',

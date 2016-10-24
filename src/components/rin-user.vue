@@ -1,3 +1,6 @@
+<template>
+</template>
+
 <script>
   import Cookies from 'js-cookie';
   import SparkMD5 from 'spark-md5';

@@ -90,47 +90,53 @@
 </style>
 
 <template>
-<div class="rin-table" v-el:table @scroll="scroll_event($event)">
-    <div class="header" v-el:header>
+<div class="rin-table" ref="table" @scroll="scroll_event($event)">
+    <div class="header" ref="header">
       <div class="row">
-        <span class="column">{{'Uploaded time'|locale}}</span>
-        <span class="column">{{'Category'|locale}}</span>
-        <span class="column">{{'Title'|locale}}({{torrents.length}}/{{torrents_total}})</span>
-        <span class="column">{{'magnet'|locale}}</span>
-        <span class="column">{{'Seed stat'|locale}}</span>
-        <span class="column" v-if="!hide_uploader">{{'Uploader'|locale}}</span>
+        <span class="column">{{$t('Uploaded time')}}</span>
+        <span class="column">{{$t('Category')}}</span>
+        <span class="column">{{$t('Title')}}({{torrents.length}}/{{torrents_total}})</span>
+        <span class="column">{{$t('magnet')}}</span>
+        <span class="column">{{$t('Seed stat')}}</span>
+        <span class="column" v-if="!hide_uploader">{{$t('Uploader')}}</span>
       </div>
     </div>
 
     <div class="body">
-      <div class="row" v-for="(index, t) in torrents">
-        <span class="column">{{t.publish_time | date 'lately'}}</span>
+      <div class="row" v-for="t in torrents">
+        <span class="column">{{t.publish_time | date('lately')}}</span>
+        
         <span class="column"><strong>{{t.category_tag|locale}}</strong></span>
+
         <span class="column">
-          <div class="container" v-link="'/torrent/' + t._id" @mouseup.stop="title_right_click($event, t)" v-if="t">
-            <a class="rin-team rin-inline-tag haspic" v-link="'/team/' + t.team._id" v-if="t.team" v-show="!hide_team_name">
+          <router-link tag="div" class="container" :to="`/torrent/${t._id}`" @mouseup.stop="title_right_click($event, t)" v-if="t">
+            <router-link class="rin-team rin-inline-tag haspic" :to="`/team/${t.team._id}`" v-if="t.team" v-show="!hide_team_name">
               <img v-if="t.team.icon" v-bind:src="teamIconUrl + t.team.icon" alt="" />
               <img src="../assets/akarin.jpg" v-if="!t.team.icon" />
-              <span>{{t.team.tag | locale}}</span>
-            </a>
+              <span>{{t.team.tag|locale}}</span>
+            </router-link>
+
             <a class="rin-team-title" target="_blank" v-if="t">{{t.title}}</a>
-            <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{ ((t.comments >1) ? 'Comments' :'Comment' )| locale }}</span>
-          </div>
+            <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{$t(((t.comments >1) ? 'Comments' :'Comment' ))}}</span>
+          </router-link>
         </span>
+
         <span class="column">
-          <a class="rin-magnet" title="磁力下載" href="{{t.magnet}}"><i class="material-icons">&#xE2C4;</i></a>
+          <a class="rin-magnet" title="磁力下載" :href="t.magnet"><i class="material-icons">&#xE2C4;</i></a>
         </span>
+
         <span class="column">
           <span class="rin-left">{{t.size}}</span>
           <a class="rin-seed-online" href="javascript:void(0)" title="种子">{{t.seeders}}</a> /
           <a class="rin-seed-downloading" href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
           <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
         </span>
+
         <span class="column" v-if="!hide_uploader">
-          <a class="rin-inline-tag haspic" v-link="'/user/' + t.uploader._id">
-              <img v-bind:src="gravatarUrl+t.uploader.emailHash" />
-              <span>{{t.uploader.username}}</span>
-          </a>
+          <router-link class="rin-inline-tag haspic" :to="`/user/${t.uploader._id}`">
+            <img v-bind:src="gravatarUrl+t.uploader.emailHash" />
+            <span>{{t.uploader.username}}</span>
+          </router-link>
         </span>
       </div>
     </div>
@@ -138,17 +144,21 @@
 </template>
 
 <script>
+  import Vue from 'vue';
   export default {
     name: 'RinTorrentsTable',
     props: ['torrents', 'torrents_total', 'hide_team_name', 'hide_uploader', 'on_end', 'on_top', 'need_more', 'busy'],
-    filters: {
-      date: require('../filters/dateFormat.js'),
-    },
     data() {
       return {
         gravatarUrl: '//bangumi.moe/avatar/',
         teamIconUrl: '//bangumi.moe/',
       };
+    },
+    filters: {
+      date: require('../filters/dateFormat.js'),
+      locale(val) {
+        return val.locale[Vue.config.lang];
+      },
     },
     methods: {
       title_right_click(ev, torrent) {
@@ -157,8 +167,8 @@
         }
       },
       scroll_event(ev) {
-        const t = this.$els.table;
-        this.$els.header.style.top = `${t.scrollTop}px`;
+        const t = this.$refs.table;
+        this.$refs.header.style.top = `${t.scrollTop}px`;
 
         // console.log((t.scrollTop + t.offsetHeight) >= (t.scrollHeight));
         if (t.scrollTop === 0) {
@@ -176,9 +186,9 @@
         }
       },
     },
-    ready() {
+    mounted() {
       // udpate height once
-      const table = this.$els.table;
+      const table = this.$refs.table;
       const height = table.parentElement.clientHeight;
       table.style.height = `${height}px`;
       table.style.height = null;

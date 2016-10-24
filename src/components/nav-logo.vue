@@ -31,7 +31,9 @@
 <div id="rin-logo" class="rin-main-bar rin-col" >
 
   <span class="logo" >
-    <a v-link="{name:'index'}"><img src="../assets/logo-20150506.png" /></a>
+    <router-link :to="{name:'index'}">
+      <img src="../assets/logo-20150506.png" />
+    </router-link>
   </span>
 
   <nav-logo-language></nav-logo-language>
@@ -46,6 +48,7 @@
 <script>
   import NavLogoLanguage from './nav-logo-language';
   export default {
+    name: 'NavLogo',
     components: {
       'nav-logo-language': NavLogoLanguage,
     },
@@ -58,7 +61,7 @@
       //   });
       // },
       chooseLanguage(ev) {
-        this.$broadcast('chooseLanguage', ev);
+        this.$emit('chooseLanguage', ev);
       },
     },
   };

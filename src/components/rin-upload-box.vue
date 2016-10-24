@@ -2,7 +2,7 @@
 <div class="upload">  
   
   <div class="uploader">
-    <p class="publish">{{ 'Publish Identity' | locale }}</p>
+    <p class="publish">{{ $t('Publish Identity') }}</p>
     <div class="avatar">
       <img src="../assets/akarin.jpg" alt="avatar">
     </div>
@@ -18,14 +18,14 @@
       id="torrentFile"
       @change="onFileChange"
     >
-  	<div class="icons {{ iconName }}">
+  	<div class="icons" :class="iconName">
       <Loading v-if="isShowLoading"></Loading>
       <i class="material-icons icon-upload" v-if="!isShowLoading">{{ iconName }}</i> 
     </div>
     <p class="text">
-      {{ 'Please select your team first.' | locale }}
+      {{ $t('Please select your team first.') }}
       <br>
-      <span class="plain">{{ 'Then drop a torrent file or select a file here.' | locale }}</span>
+      <span class="plain">{{ $t('Then drop a torrent file or select a file here.') }}</span>
     </p>
     <p class="text">
       {{ statusText }}
@@ -40,6 +40,7 @@ import Loading from './rin-loading';
 import Editor from './rin-upload-editor';
 
 export default {
+  name: 'RinUploadBox',
   components: {
     Loading,
     Editor,
