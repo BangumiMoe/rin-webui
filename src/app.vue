@@ -15,7 +15,6 @@
 
 <script>
   import Vue from 'vue';
-  import Cookies from 'js-cookie';
 
   export default {
     name: 'RinWebApp',
@@ -43,65 +42,62 @@
 
           // site title update
           document.title = this.locales[lng]['番組、萌え'];
-          Cookies.set('locale', lng);
-
-          this.$emit('LangChanged', lng);
         } catch (err) {
-          this.$emit('LangChangedFail', lng);
+          console.log(`[main.updateLocales]fail with error ${err}`);
         }
       },
     },
-    events: {
-      'open-modal' (opt) {
-        this.$emit('open-modal', opt);
-      },
-      'open-modal-blur' () {
-        this.$emit('open-modal-blur');
-      },
-      'close-modal-blur' () {
-        this.$emit('close-modal-blur');
-        if (this.displaySigninForm) {
-          this.displaySigninForm = false;
-        }
-      },
+    // events: {
+    //   'open-modal' (opt) {
+    //     this.$emit('open-modal', opt);
+    //   },
+    //   'open-modal-blur' () {
+    //     this.$emit('open-modal-blur');
+    //   },
+    //   'close-modal-blur' () {
+    //     this.$emit('close-modal-blur');
+    //     if (this.displaySigninForm) {
+    //       this.displaySigninForm = false;
+    //     }
+    //   },
 
-      // display sign in form modal
-      displaySigninForm() {
-        if (this.displaySigninForm) {
-          return;
-        }
-        this.displaySigninForm = true;
-        this.$dispatch('open-modal', {
-          modalId: 'modal-signin',
-        });
-      },
+    //   // display sign in form modal
+    //   displaySigninForm() {
+    //     if (this.displaySigninForm) {
+    //       return;
+    //     }
+    //     this.displaySigninForm = true;
+    //     this.$dispatch('open-modal', {
+    //       modalId: 'modal-signin',
+    //     });
+    //   },
 
-      UserSignIn(form) {
-        this.$emit('rinUserSignIn', form);
-      },
-      UserSignInOK(user) {
-        this.$emit('UserSignInOK', user);
-        if (this.displaySigninForm) {
-          this.displaySigninForm = false;
-          this.$emit('close-modal');
-        }
-      },
-      UserSignInFailed(...args) {
-        this.$emit('UserSignInFailed', ...args);
-      },
-      UserSignOut() {
-        this.$emit('rinUserSignOut');
-        this.$emit('UserSignOutOK');
-      },
-
-      changeLang(lng) {
-        this.updateLocales(lng);
-      },
-    },
+    //   UserSignIn(form) {
+    //     this.$emit('rinUserSignIn', form);
+    //   },
+    //   UserSignInOK(user) {
+    //     this.$emit('UserSignInOK', user);
+    //     if (this.displaySigninForm) {
+    //       this.displaySigninForm = false;
+    //       this.$emit('close-modal');
+    //     }
+    //   },
+    //   UserSignInFailed(...args) {
+    //     this.$emit('UserSignInFailed', ...args);
+    //   },
+    //   UserSignOut() {
+    //     this.$emit('rinUserSignOut');
+    //     this.$emit('UserSignOutOK');
+    //   },
+    // },
     created() {
-      const lang = Cookies.get('locale');
-      if (lang) {
-        Vue.config.lang = lang;
+      const lang = localStorage.getItem('rin-locale');
+      if (lang === null) {
+        // Vue.config.lang = 'en';
+        localStorage.setItem('rin-locale', 'en');
+        this.updateLocales('en');
+      } else {
+        this.updateLocales(lang);
       }
 
       // if (!Vue.config.lang) {
@@ -121,7 +117,8 @@
       //     Vue.config.lang = 'zh_tw';
       //   }
       // }
-      this.updateLocales(this.lang);
+
+      this.$root.$on('LanguageSelected', this.updateLocales);
     },
     mounted() {
       document.title = this.$t('番組、萌え');

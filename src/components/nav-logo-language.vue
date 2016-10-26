@@ -39,10 +39,10 @@
     .chooser {
       font-family: fantasy;
       z-index: 100;
-      &.choice-enter {
+      &.choice-enter, &.choice-enter-active {
         animation: fadeToUp 1s 1;
       }
-      &.choice-leave {
+      &.choice-leave, &.choice-leave-active {
         animation: fadeToBom 1s 1;
       }
       .rin-button {
@@ -68,15 +68,16 @@
 
 <template>
   <div id="rin-language">
-    <div class="chooser" v-if="toggleFlag" transition="choice">
-        <button class="rin-button" @click="changeLang('zh_cn')">简</button>
-        <button class="rin-button" @click="changeLang('zh_tw')">繁</button>
-        <button class="rin-button" @click="changeLang('en')">EN</button>
+    <transition name="choice">
+    <div class="chooser" v-show="toggleFlag">
+        <button class="rin-button" @click="change_lang('zh_cn')">简</button>
+        <button class="rin-button" @click="change_lang('zh_tw')">繁</button>
+        <button class="rin-button" @click="change_lang('en')">en</button>
     </div>
+    </transition>
+
     <a class="rin-button round rin-button-small"
-      href="javascript:void(0)"
-      @click="toggleChooser">
-      <!--<i class="material-icons">&#xE894;</i>-->
+      @click.stop="toggle_chooser">
       <i class="fa fa-language"></i>
       <tooltip :info="$t('Choose language')"></tooltip>
     </a>
@@ -95,12 +96,12 @@
       tooltip: require('./nav-tooltip.vue'),
     },
     methods: {
-      toggleChooser() {
+      toggle_chooser() {
         this.toggleFlag = !this.toggleFlag;
       },
-      changeLang(lng) {
-        this.$dispatch('changeLang', lng);
-        this.toggleChooser();
+      change_lang(lng) {
+        this.$root.$emit('LanguageSelected', lng);
+        this.toggle_chooser();
       },
     },
   };
