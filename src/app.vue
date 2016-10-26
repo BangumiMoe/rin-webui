@@ -18,14 +18,11 @@
 
   export default {
     name: 'RinWebApp',
-    data() {
-      return {
-        displaySigninForm: false,
-        locales: {},
-        lang: 'en',
-        lang_default: 'en',
-      };
-    },
+    // data() {
+    //   return {
+    //     displaySigninForm: false,
+    //   };
+    // },
     components: {
       'nav-toolbar': require('./components/nav-toolbar'),
       'nav-logo': require('./components/nav-logo'),
@@ -35,13 +32,11 @@
     },
     methods: {
       updateLocales(lng) {
-        // TODO busy controller
         try {
-          Vue.locale(lng, require(`./i18n/${lng}.json`));
+          localStorage.setItem('rin-locale', lng);
           Vue.config.lang = lng;
-
           // site title update
-          document.title = this.locales[lng]['番組、萌え'];
+          document.title = this.$t('番組、萌え');
         } catch (err) {
           console.log(`[main.updateLocales]fail with error ${err}`);
         }
@@ -91,33 +86,26 @@
     //   },
     // },
     created() {
-      const lang = localStorage.getItem('rin-locale');
+      let lang = localStorage.getItem('rin-locale');
       if (lang === null) {
-        // Vue.config.lang = 'en';
-        localStorage.setItem('rin-locale', 'en');
-        this.updateLocales('en');
-      } else {
-        this.updateLocales(lang);
+        const languageList = ['zh_tw', 'zh_cn', 'en'];
+        // 获取浏览器语言
+        let getLanguage = (navigator.language || navigator.browserLanguage).toLowerCase();
+        if (getLanguage) {
+          getLanguage = getLanguage.replace(/^en(-.+)/, 'en').replace('-', '_');
+          if (languageList.indexOf(getLanguage) >= 0) {
+            lang = getLanguage;
+          } else {
+            lang = 'zh_tw';
+          }
+        } else {
+          // 获取不到浏览器语言，给予默认值
+          lang = 'zh_tw';
+        }
       }
 
-      // if (!Vue.config.lang) {
-      //   const languageList = ['zh_tw', 'zh_cn', 'en'];
-      //   // 获取浏览器语言
-      //   let getLanguage = (navigator.language || navigator.browserLanguage).toLowerCase();
-
-      //   if (getLanguage) {
-      //     getLanguage = getLanguage.replace(/^en(-.+)/, 'en').replace('-', '_');
-      //     if (languageList.indexOf(getLanguage) >= 0) {
-      //       Vue.config.lang = getLanguage;
-      //     } else {
-      //       Vue.config.lang = 'zh_tw';
-      //     }
-      //   } else {
-      //     // 获取不到浏览器语言，给予默认值
-      //     Vue.config.lang = 'zh_tw';
-      //   }
-      // }
-
+      console.log(`[main.created]locale use ${lang}`);
+      this.updateLocales(lang);
       this.$root.$on('LanguageSelected', this.updateLocales);
     },
     mounted() {

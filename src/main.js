@@ -13,6 +13,10 @@ Vue.use(VueI18n);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 
+Vue.locale('zh_cn', require('./i18n/zh_cn.json'));
+Vue.locale('zh_tw', require('./i18n/zh_tw.json'));
+Vue.locale('en', require('./i18n/en.json'));
+
 // i18n
 Vue.config.lang = 'zh-tw';
 
