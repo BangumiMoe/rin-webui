@@ -123,5 +123,8 @@
       // }
       this.updateLocales(this.lang);
     },
+    mounted() {
+      document.title = this.$t('番組、萌え');
+    },
   };
 </script>

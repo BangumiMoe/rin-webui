@@ -84,8 +84,6 @@
 </template>
 
 <script>
-  import tooltip from './nav-tooltip.vue';
-  
   export default {
     name: 'NavLogoLanguage',
     data() {
@@ -94,7 +92,7 @@
       };
     },
     components: {
-      tooltip,
+      tooltip: require('./nav-tooltip.vue'),
     },
     methods: {
       toggleChooser() {
