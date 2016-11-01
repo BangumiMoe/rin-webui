@@ -36,7 +36,7 @@ const router = new VueRouter({
       mode: 'page',
     },
     {
-      path: '/search/:key/:number',
+      path: '/search/:key',
       name: 'search',
       component: require('./views/main'),
       mode: 'search',

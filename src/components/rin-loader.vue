@@ -1,4 +1,4 @@
-<style lang="less">
+<style scoped lang="less">
   @keyframes waves-l2r {
     0% {
       background-position: 0 0
@@ -74,7 +74,7 @@
         overflow: hidden;
         img {
           max-width: 350px;
-          display: inline;
+          display: block;
           overflow: hidden;
         }
       }

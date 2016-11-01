@@ -195,213 +195,223 @@
 <template>
   <div id="rin-main" class="rin-row" style="width: calc(100% - 128px);">
 
-		<div class="rin-week rin-row" id="rin-week">
-    	<div is="rin-loader" :progress="progress" v-show="busy" transition="rin-fade"></div>
+    <div class="rin-week rin-row" id="rin-week">
+      <div is="rin-loader" :progress="progress" v-show="busy" transition="rin-fade"></div>
 
-			<div class="rin-column" v-on:click="allSwitch">
-				<span class="rin-vertical">{{$t('Bangumi List')}}</span>
-			</div>
+      <div class="rin-column" v-on:click.stop="allSwitch">
+        <span class="rin-vertical">{{$t('Bangumi List')}}</span>
+      </div>
 
-			<div class="rin-week-item rin-row" v-for="(item, index) in datas">
-				<div class="rin-week-title" :class="`title-bgc${index}`" v-on:click="Switch(index)">
-					<span class="rin-vertical">{{$t(locale.week[index]) | week}}</span>
-					<span class="week-mask">{{week[index]}}</span>
-				</div>
-				<div class="rin-week-content rin-row" v-bind:class="{'off':isOff[index]}">
+      <div class="rin-week-item rin-row" v-for="(item, index) in datas">
+        <div class="rin-week-title" :class="`title-bgc${index}`" @:click.stop="Switch(index)">
+          <span class="rin-vertical">{{$t(locale.week[index]) | week}}</span>
+          <span class="week-mask">{{week[index]}}</span>
+        </div>
+        <div class="rin-week-content rin-row" :class="{'off':isOff[index]}">
 
-						<div class="item" v-for="d in item">
-							<div class="preview">
-								<img v-bind:src="serverUrl + d.icon" :alt="d.name">
-							</div>
-							<div class="content">
-								<p class="title rin-text-overflow"><a v-link="'/search/`' + d.tag_id + '`'" :title="$t(d.tag)">{{$t(d.tag)}}</a></p>
-								<p class="date rin-text-overflow" :title="d.credit">{{d.credit}}</p>
-								<p class="date">
-									{{$t('On air')}}: {{d.startDate | handleDate 'yyyy/MM/dd HH:mm'}}
-									<span class="thisweek" v-if="d.showOn === thisWeek">
-										今
-									</span>
-								</p>
-							</div>
-							<div class="rin-tag">
-									<a v-for="t in d.team" class="haspic" v-link="'/search/' + '`' + d.tag_id + '` `' + t.tag_id + '`'">
-										<img src="../assets/akarin.jpg" v-if="!t.icon" />
-                    <img
-                    v-if="t.icon"
-                    v-bind:src="serverUrl + t.icon" />
-										<span>{{ $t(t.tag) }}</span>
-									</a>
-							</div>
-							<a class="acgdb" :href="`http://acgdb.com/${d.acgdb_id?d.acgdb_id:''}`" target="_black" v-on:mouseover="showTip" v-on:mouseout="hideTip">
-								···
-							</a>
-						</div>
+          <div class="item" v-for="d in item">
+            <div class="preview">
+              <img v-bind:src="serverUrl + d.icon" :alt="d.name">
+            </div>
+            <div class="content">
+              <p class="title rin-text-overflow">
+                <router-link :to="{name: 'search', params: {key: d.tag_id}}">{{d.tag.name}}</router-link>
+                <!--<a v-link="'/search/`' + d.tag_id + '`'" :title="$t(d.tag)"></a>-->
+              </p>
+              <p class="date rin-text-overflow" :title="d.credit">{{d.credit}}</p>
+              <p class="date">
+                {{$t('On air')}}: {{d.startDate | handleDate('LL')}}
+                <span class="thisweek" v-if="d.showOn === thisWeek">
+                  今
+                </span>
+              </p>
+            </div>
+            <div class="rin-tag">
+              <router-link class="haspic" v-for="t in d.team" :to="{name: 'search', params: {key: d.tag_id}}">
+                <img src="../assets/akarin.jpg" v-if="!t.icon" />
+                <img
+                v-if="t.icon"
+                v-bind:src="serverUrl + t.icon" />
+                <span>{{t.tag.name}}</span>
+              </router-link>
+            </div>
+            <a class="acgdb" :href="`http://acgdb.com/${d.acgdb_id?d.acgdb_id:''}`" target="_black" v-on:mouseover="showTip" v-on:mouseout="hideTip">
+              ···
+            </a>
+          </div>
 
-				</div>
-			</div>
-			<div class="rin-datatip" id="tip">
-				{{$t('Read more on ACGDB')}}
-			</div>
-		</div>
+        </div>
+      </div>
+      <div class="rin-datatip" id="tip">
+        {{$t('Read more on ACGDB')}}
+      </div>
+    </div>
 
-	</div>
+  </div>
 </template>
 
 <script>
-  import RLoader from '../components/rin-loader';
+import RLoader from '../components/rin-loader';
+import moment from 'moment';
 
-  export default {
-    name: 'BangumiList',
-    data() {
-      return {
-        locale: {
-          week: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        },
-        datas: [],
-        isOff: [],
-        thisWeek: new Date().getDay(),
-        week: ['日', '月', '火', '水', '木', '金', '土'],
-        busy: true,
-        serverUrl: 'https://bangumi.moe/',
-      };
+export default {
+  name: 'BangumiList',
+  data() {
+    return {
+      progress: 0,
+      locale: {
+        week: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      },
+      datas: [],
+      isOff: [true, true, true, true, true, true, true, true],
+      thisWeek: new Date().getDay(),
+      week: ['日', '月', '火', '水', '木', '金', '土'],
+      busy: true,
+      serverUrl: 'https://bangumi.moe/',
+    };
+  },
+  filters: {
+    date: require('../filters/dateFormat.js'),
+    week(value) {
+      const str = /（日）|（月）|（火）|（水）|（木）|（金）|（土）/;
+      return value.replace(str, '');
     },
-    filters: {
-      date: require('../filters/dateFormat.js'),
-      week(value) {
-        const str = /（日）|（月）|（火）|（水）|（木）|（金）|（土）/;
-        return value.replace(str, '');
-      },
-      handleDate(value, formatR) {
-        let format = formatR;
-        // 判断是否为三个月前的
-        if ((new Date().getTime() - new Date(value).getTime()) >= 3 * 30 * 24 * 60 * 60 * 1000) {
-          format = 'HH:mm';
-        }
-        return this.$options.filters.date(value, format);
-      },
+    handleDate(value, formatR) {
+      let format = formatR;
+      // 判断是否为三个月前的
+      if ((new Date().getTime() - new Date(value).getTime()) >= 3 * 30 * 24 * 60 * 60 * 1000) {
+        format = 'HH:mm';
+      }
+      return moment(value).format(format);
     },
-    components: {
-      'rin-loader': RLoader,
+  },
+  components: {
+    'rin-loader': RLoader,
+  },
+  methods: {
+    // 全部列表切换
+    allSwitch() {
+      // 如果某个列表处于关闭状态，则全部打开。反之，全部关闭
+      if (this.isOff.indexOf(true)) {
+        for (let i = 0; i < 7; i++) {
+          // this.isOff.$set(i, true);
+          this.isOff[i] = true;
+        }
+      } else {
+        for (let i = 0; i < 7; i++) {
+          // this.isOff.$set(i, false);
+          this.isOff[i] = false;
+        }
+      }
     },
-    methods: {
-      // 全部列表切换
-      allSwitch() {
-        // 如果某个列表处于关闭状态，则全部打开。反之，全部关闭
-        if (this.isOff.indexOf(true)) {
-          for (let i = 0; i < 7; i++) {
-            this.isOff.$set(i, true);
-          }
-        } else {
-          for (let i = 0; i < 7; i++) {
-            this.isOff.$set(i, false);
-          }
-        }
-      },
-      // 单个列表切换
-      Switch(index) {
-        this.isOff.$set(index, !this.isOff[index]);
-      },
-      setWidth() {
-        const allItem = document.querySelectorAll('.rin-week-content');
-        for (const item of allItem) {
-          item.style.width = `${(item.scrollWidth > 400 ? item.scrollWidth + 20 : item.scrollWidth)}px`;
-        }
-      },
-      getData() {
-        this.$http.get('https://bangumi.moe/api/v2/bangumi/current').then(
-          resp => {
-            const d = resp.json();
+    // 单个列表切换
+    Switch(index) {
+      // this.isOff.$set(index, !this.isOff[index]);
+      this.isOff[index] = !this.isOff[index];
+    },
+    setWidth() {
+      const allItem = document.querySelectorAll('.rin-week-content');
+      for (const item of allItem) {
+        item.style.width = `${(item.scrollWidth > 400 ? item.scrollWidth + 20 : item.scrollWidth)}px`;
+      }
+    },
+    getData() {
+      this.$http.get('https://bangumi.moe/api/v2/bangumi/current').then(
+        resp => {
+          this.progress = 100;
+          const d = resp.data;
 
-            const result = [];
-            const teams = d.working_teams;
-            const data = d.bangumis;
+          const result = [];
+          const teams = d.working_teams;
+          const data = d.bangumis;
 
-            for (const i in data) {
-              // 往番剧增加字幕组
-              if (teams[data[i].tag_id]) {
-                data[i].team = teams[data[i].tag_id];
-              }
-
-              // 按星期生成数组
-              if (result[data[i].showOn]) {
-                result[data[i].showOn].push(data[i]);
-              } else {
-                result[data[i].showOn] = [data[i]];
-              }
+          for (const i in data) {
+            // 往番剧增加字幕组
+            if (teams[data[i].tag_id]) {
+              data[i].team = teams[data[i].tag_id];
             }
 
-            this.datas = result;
-            this.busy = false; // 关闭加载
-            setTimeout(this.setWidth, 100);
-          });
-      },
-      showTip(e) {
-        const tip = document.getElementById('tip');
-        tip.className = 'rin-datatip on';
-        tip.style.left = `${e.pageX - (tip.offsetWidth / 2)}px`;
-        tip.style.top = `${e.pageY + 20}px`;
-      },
-      hideTip() {
-        const tip = document.getElementById('tip');
-        tip.className = 'rin-datatip';
-        setTimeout(() => {
-          tip.style.left = '-999px';
-        }, 300);
-      },
+            // 按星期生成数组
+            if (result[data[i].showOn]) {
+              result[data[i].showOn].push(data[i]);
+            } else {
+              result[data[i].showOn] = [data[i]];
+            }
+          }
+
+          this.datas = result;
+          this.busy = false; // 关闭加载
+          setTimeout(this.setWidth, 100);
+        });
     },
-    ready() {
-      console.log('[BangumiList]loaded');
+    showTip(e) {
+      const tip = document.getElementById('tip');
+      tip.className = 'rin-datatip on';
+      tip.style.left = `${e.pageX - (tip.offsetWidth / 2)}px`;
+      tip.style.top = `${e.pageY + 20}px`;
+    },
+    hideTip() {
+      const tip = document.getElementById('tip');
+      tip.className = 'rin-datatip';
+      setTimeout(() => {
+        tip.style.left = '-999px';
+      }, 300);
+    },
+  },
+  mounted() {
+    console.log('[BangumiList]loaded');
 
-      this.getData();
+    this.getData();
+    this.allSwitch();
 
-      // 横向滚动
-      const wrap = document.getElementById('rin-week');
-      const eventName = document.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
+    // 横向滚动
+    const wrap = document.getElementById('rin-week');
+    const eventName = document.onmousewheel !== undefined ? 'mousewheel' : 'DOMMouseScroll';
 
-      function mouse_wheel(ev) {
-        const wrapWidth = wrap.scrollWidth / 25;
+    function mouse_wheel(ev) {
+      const wrapWidth = wrap.scrollWidth / 25;
 
-        const e = window.event || ev;
-        if (e.detail > 0 || e.wheelDelta < 0) {
-          wrap.scrollLeft += wrapWidth;
-        } else {
-          wrap.scrollLeft -= wrapWidth;
-        }
-      }
-
-      function mac_mouse_wheel(e) {
-        const wrapWidth = wrap.scrollWidth / 25;
-        if (e.wheelDelta <= -120) {
-          wrap.scrollLeft += wrapWidth;
-        } else if (e.wheelDelta >= 120) {
-          wrap.scrollLeft -= wrapWidth;
-        }
-      }
-      const is = navigator.userAgent.toLowerCase().match(/mac |chrome/g);
-      if (is && is.length > 1) {
-        wrap.addEventListener(eventName, mac_mouse_wheel);
+      const e = window.event || ev;
+      if (e.detail > 0 || e.wheelDelta < 0) {
+        wrap.scrollLeft += wrapWidth;
       } else {
-        wrap.addEventListener(eventName, mouse_wheel);
+        wrap.scrollLeft -= wrapWidth;
+      }
+    }
+
+    function mac_mouse_wheel(e) {
+      const wrapWidth = wrap.scrollWidth / 25;
+      if (e.wheelDelta <= -120) {
+        wrap.scrollLeft += wrapWidth;
+      } else if (e.wheelDelta >= 120) {
+        wrap.scrollLeft -= wrapWidth;
+      }
+    }
+    const is = navigator.userAgent.toLowerCase().match(/mac |chrome/g);
+    if (is && is.length > 1) {
+      wrap.addEventListener(eventName, mac_mouse_wheel);
+    } else {
+      wrap.addEventListener(eventName, mouse_wheel);
+    }
+
+    // 键盘方向键滚动
+    document.onkeydown = event => {
+      const wrapWidth = wrap.scrollWidth / 80;
+      const keycode = event.which || event.keyCode;
+
+      // up:38 left:37 H:72 K:75
+      if (keycode === 38 || keycode === 37 || keycode === 72 || keycode === 75) {
+        // move right
+        wrap.scrollLeft -= wrapWidth;
+        return;
       }
 
-      // 键盘方向键滚动
-      document.onkeydown = event => {
-        const wrapWidth = wrap.scrollWidth / 80;
-        const keycode = event.which || event.keyCode;
-
-        // up:38 left:37 H:72 K:75
-        if (keycode === 38 || keycode === 37 || keycode === 72 || keycode === 75) {
-          // move right
-          wrap.scrollLeft -= wrapWidth;
-          return;
-        }
-
-        // down:40 right:39 L:76 J:74
-        if (keycode === 40 || keycode === 39 || keycode === 76 || keycode === 74) {
-          // move left
-          wrap.scrollLeft += wrapWidth;
-        }
-      };
-    },
-  };
+      // down:40 right:39 L:76 J:74
+      if (keycode === 40 || keycode === 39 || keycode === 76 || keycode === 74) {
+        // move left
+        wrap.scrollLeft += wrapWidth;
+      }
+    };
+  },
+};
 </script>
