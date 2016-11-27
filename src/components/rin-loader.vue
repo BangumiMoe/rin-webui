@@ -54,12 +54,15 @@
     display: block;
     background: white;
     opacity: 0.8;
-    position: absolute;
+    /*position: absolute;*/
+    position: relative;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 10;
+    height: 100%;
+    width: 100%;
     .wrapper {
       position: absolute;
       top: 50%;

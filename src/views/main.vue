@@ -1,16 +1,10 @@
-<style lang="less">
+<style scoped lang="less">
   @import "../less/colors.less";
   @import "../less/framework.less";
+
   #rin-main {
     height: 100%;
     overflow: hidden;
-    div {}
-    ;
-    .rin-loader {
-      &.init {
-        opacity: 0.67;
-      }
-    }
     .rin-wrapper {
       height: 100%;
       overflow-x: hidden;
@@ -21,16 +15,16 @@
 
 <template>
 <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);">
-  <rin-loader v-show="busy" :progress="progress" transition="rin-fade"></rin-loader>
-
-  <div id="rin-wrapper" class="rin-wrapper" transition="rin-fade" v-show="!busy">
-    <rin-torrents-table :torrents="torrents.data" :torrents_total="torrents.total" :need_more="fetch_next_torrents"></rin-torrents-table>
+  <div id="rin-wrapper" class="rin-wrapper" transition="rin-fade">
+    <rin-torrents-table 
+      :torrents="torrents.data" :torrents_total="torrents.total"
+      :busy="busy" 
+      :need_more="fetch_next_torrents"></rin-torrents-table>
   </div>
 </div>
 </template>
 
 <script>
-  import RinLoader from '../components/rin-loader';
   import RinTorrentsTable from '../components/rin-torrents-table';
 
   export default {
@@ -104,20 +98,11 @@
       // },
     },
     components: {
-      RinLoader,
       RinTorrentsTable,
     },
     mounted() {
       this.getTorrents(0);
-    },
-    events: {
-      // TODO workon modal background blur
-      // 'open-modal-blur' () {
-      //   this.modalBlur = true;
-      // },
-      // 'close-modal-blur' () {
-      //   this.modalBlur = false;
-      // },
+      console.log('[Main]loaded');
     },
     // route: {
     //   data() {
