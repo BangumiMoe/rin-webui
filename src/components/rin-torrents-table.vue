@@ -102,7 +102,9 @@
     <div class="row">
       <span class="column">{{$t('Uploaded time')}}</span>
       <span class="column">{{$t('Category')}}</span>
-      <span class="column">{{$t('Title')}}({{torrents.length}}/{{torrents_total}})</span>
+      <span class="column">{{$t('Title')}}
+        <span v-if="torrents_total">({{torrents.length}}/{{torrents_total}})</span>
+      </span>
       <span class="column">{{$t('magnet')}}</span>
       <span class="column">{{$t('Seed stat')}}</span>
       <span class="column" v-if="!hide_uploader">{{$t('Uploader')}}</span>

@@ -671,32 +671,31 @@
 </style>
 
 <template>
-<div class="tri-circles-container" v-bind:class="{'stop': finished}">
+<div class="tri-circles-container" :class="{'stop': finished}">
   <div class="tri-circles-bg" transition="rin-fade" v-show="!finished">
     <div class="tri-circles-bg-circle top"></div>
     <div class="tri-circles-bg-circle left"></div>
     <div class="tri-circles-bg-circle right"></div>
   </div>
-  <div class="tri-circles-content" v-bind:style="{ backgroundImage: display }">
+  <div class="tri-circles-content" :style="{ backgroundImage: display }">
   </div>
 </div>
 </template>
 
 <script>
   export default {
+    name: 'RinAvatar',
     props: ['hash'],
     data() {
       return {
         loaded: false,
-        // todo, check if is already loaded
-        avatarUrl: '//bangumi.moe/avatar/',
         finished: false,
         display: null,
       };
     },
     computed: {
       content() {
-        return `${this.avatarUrl}${this.hash}?s=200`;
+        return `//bangumi.moe/avatar/${this.hash}?s=200`;
       },
     },
     watch: {
@@ -708,13 +707,13 @@
           this.display = null;
           img.src = this.content;
           img.onload = () => {
-            this.$set('loaded', true);
-            this.$set('display', `url(${this.content})`);
+            this.loaded = true;
+            this.display = `url(${this.content})`;
 
             // 等两秒钟，放一会动画
             setTimeout(() => {
-              this.$set('finished', true);
-              this.$dispatch('avatar.loaded');
+              this.finished = true;
+              this.$parent.$emit('avatar.loaded');
             }, 2000);
           };
         }
