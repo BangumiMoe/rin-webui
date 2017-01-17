@@ -39,7 +39,7 @@
   <nav-logo-language></nav-logo-language>
 
   <span class="copyright">
-    © 2015 Bangumi.moe. All rights reserved.
+    ©2015~2017 Bangumi.moe. All rights reserved.
   </span>
 
 </div>
