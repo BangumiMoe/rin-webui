@@ -1,156 +1,132 @@
 <style scoped lang="less">
-  @import "../less/colors.less";
-  @import '../less/framework.less';
-  @table-header-bg: @color-primary-4;
-  @table-header-fg: white;
-  @table-header-font-size: 13px;
-  @table-header-height: 33px;
-  @table-row-font-size: 12px;
-  .rin-table {
-    overflow: scroll;
-    height: 100%;
-    position: relative;
-    .row {
-      width: 100%;
-      display: flex;
-      justify-content: space-around;
-      font-size: @table-row-font-size;
-      height: @table-row-font-size * 2.6;
-      line-height: @table-row-font-size * 2.6;
-      min-height: @table-row-font-size * 2.6;
+@import "../less/colors.less";
+@import '../less/framework.less';
 
-      .column {
-        &:nth-child(1) {
-          width: 128px;
-          padding-left: 0.3rem;
-        }
-        &:nth-child(2) {
-          width: 96px;
-        }
-        &:nth-child(3) {
-          flex: 1;
-        }
-        &:nth-child(4) {
-          min-width: 52px;
-        }
-        &:nth-child(5) {
-          width: 200px;
-        }
-        &:nth-child(6) {
-          width: 128px;
-        }
-      }
-      &:nth-child(odd) {
-        background-color: @table-bg-odd;
-      }
-      &:nth-child(even) {
-        background-color: @table-bg-even;
-      }
-    }
-    .header {
-      position: absolute;
-      top: 0;
-      left: 0;
+@table_body_height: 300px;
+@column_one_width: 7rem;
+@column_two_width: 5rem;
+@column_three_width: 128rem;
+@column_five_width: 10rem;
+
+// @alternate_row_background_color: @color-primary-3;
+
+.rin-table-wrapper {
+  height: 100%;
+  display: block;
+  position: relative;
+}
+
+#loader {
+  height: 256px;
+}
+
+.rin-table {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  table-layout: fixed;
+  border-collapse: collapse;
+
+  td:nth-child(1), th:nth-child(1) {
+    min-width: @column_one_width;
+    text-align: center;
+  }
+  td:nth-child(2), th:nth-child(2) {
+    min-width: @column_two_width;
+    text-align: center;
+  }
+  td:nth-child(3), th:nth-child(3) {
+    width: @column_three_width;
+  }
+  td:nth-child(4), th:nth-child(4) {
+    min-width: @column_five_width;
+    text-align: right;
+  }
+  td:nth-child(5), th:nth-child(5) {
+    min-width: @column_five_width;
+    text-align: center;
+  }
+  th:nth-child(5) {
+    min-width: @column_five_width + 2rem; // add scroll bar width
+  }
+  td:nth-child(6), th:nth-child(6) {
+    min-width: @column_five_width;
+    text-align: left;
+  }
+  th:nth-child(6) {
+    margin-left: -2rem;
+    min-width: @column_five_width + 1rem; // add scroll bar width
+  }
+
+  thead {
+    background-color: @color-primary-2;
+    padding: 0;
+    border: 0;
+    tr {
       display: block;
-      color: @table-header-fg;
-      height: @table-header-height;
-      width: 100%;
-      opacity: 0.95;
-      .row {
-        position: absolute;
-        font-size: @table-header-font-size;
-        line-height: @table-header-font-size * 2.6;
-        height: @table-header-height;
-        .column {
-          text-align: center;
-          background-color: @table-header-bg;
-        }
-      }
-    }
-    .body {
-      padding-top: @table-header-height;
-
-      .row {
-        .column {
-          &:nth-child(3) {
-            display: inline-block;
-            overflow: hidden;
-            text-align: left;
-          }
-          &:nth-child(6) {
-            width: 128px;
-            text-align: left;
-          }
-        }
-        &:hover {
-          color: white;
-          background-color: @color-primary-0;
-        }
-      }
-    }
-
-    #loader {
-      height: 256px;
+      position: relative;
     }
   }
+  tbody {
+    display: block;
+    overflow: auto;
+    width: 100%;
+    height: @table_body_height;
+  }
+}
 </style>
 
 <template>
-<div class="rin-table" ref="table" @scroll="scroll_event($event)">
+<div class="rin-table-wrapper" ref="table_wrapper">
 
-  <div class="header" ref="header">
-    <div class="row">
-      <span class="column">{{$t('Uploaded time')}}</span>
-      <span class="column">{{$t('Category')}}</span>
-      <span class="column">{{$t('Title')}}
-        <span v-if="torrents_total">({{torrents.length}}/{{torrents_total}})</span>
-      </span>
-      <span class="column">{{$t('magnet')}}</span>
-      <span class="column">{{$t('Seed stat')}}</span>
-      <span class="column" v-if="!hide_uploader">{{$t('Uploader')}}</span>
-    </div>
-  </div>
+  <table class="rin-table" ref="table">
+    <thead ref="header">
+      <tr>
+        <th>{{$t('Uploaded time')}}</th>
+        <th>{{$t('Category')}}</th>
+        <th>{{$t('Title')}}
+          <span v-if="torrents_total">({{torrents.length}}/{{torrents_total}})</span>
+        </th>
+        <th>{{$t('Size')}}</th>
+        <th>{{$t('Torrent Info')}}</th>
+        <th v-if="!hide_uploader">{{$t('Uploader')}}</th>
+      </tr>
+    </thead>
 
-  <div class="body">
-    <div class="row" v-for="t in torrents">
-      <span class="column">{{t.publish_time | date('lately')}}</span>
-      
-      <span class="column"><strong>{{t.category_tag|locale}}</strong></span>
+    <tbody ref="body" @resize="resize_event($event)" @scroll="scroll_event($event)">
+      <tr v-for="t in torrents">
+        <td>{{t.publish_time | date('lately')}}</td>
+        <td><strong>{{t.category_tag|locale}}</strong></td>
+        <td>
+          <router-link tag="div" class="container" :to="`/torrent/${t._id}`" @mouseup.stop="title_right_click($event, t)" v-if="t">
+            <a class="rin-magnet" title="磁力下載" :href="t.magnet"><i class="fa fa-magnet"></i></a>
 
-      <span class="column">
-        <router-link tag="div" class="container" :to="`/torrent/${t._id}`" @mouseup.stop="title_right_click($event, t)" v-if="t">
-          <router-link class="rin-team rin-inline-tag haspic" :to="`/team/${t.team._id}`" v-if="t.team" v-show="!hide_team_name">
-            <img v-if="t.team.icon" v-bind:src="teamIconUrl + t.team.icon" alt="" />
-            <img src="../assets/akarin.jpg" v-if="!t.team.icon" />
-            <span>{{t.team.tag|locale}}</span>
+            <router-link class="rin-team rin-inline-tag haspic" :to="`/team/${t.team._id}`" v-if="t.team" v-show="!hide_team_name">
+              <img v-if="t.team.icon" v-bind:src="teamIconUrl + t.team.icon" alt="" />
+              <img src="../assets/akarin.jpg" v-if="!t.team.icon" />
+              <span>{{t.team.tag|locale}}</span>
+            </router-link>
+
+            <a class="rin-team-title" target="_blank" v-if="t">{{t.title}}</a>
+            <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{$t(((t.comments >1) ? 'Comments' :'Comment' ))}}</span>
           </router-link>
+        </td>
+        <td>{{t.size}}</td>
+        <td>
+          <a class="rin-seed-online" href="javascript:void(0)" title="种子">{{t.seeders}}</a> /
+          <a class="rin-seed-downloading" href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
+          <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
+        </td>
+        <td v-if="!hide_uploader">
+          <router-link class="rin-inline-tag haspic" :to="`/user/${t.uploader._id}`">
+            <img v-bind:src="gravatarUrl+t.uploader.emailHash" />
+            <span>{{t.uploader.username}}</span>
+          </router-link>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-          <a class="rin-team-title" target="_blank" v-if="t">{{t.title}}</a>
-          <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{$t(((t.comments >1) ? 'Comments' :'Comment' ))}}</span>
-        </router-link>
-      </span>
-
-      <span class="column">
-        <a class="rin-magnet" title="磁力下載" :href="t.magnet"><i class="material-icons">&#xE2C4;</i></a>
-      </span>
-
-      <span class="column">
-        <span class="rin-left">{{t.size}}</span>
-        <a class="rin-seed-online" href="javascript:void(0)" title="种子">{{t.seeders}}</a> /
-        <a class="rin-seed-downloading" href="javascript:void(0)" title="下载中">{{t.leechers}}</a> /
-        <a class="rin-seed-downloaded" href="javascript:void(0)" title="完成">{{t.finished}}</a>
-      </span>
-
-      <span class="column" v-if="!hide_uploader">
-        <router-link class="rin-inline-tag haspic" :to="`/user/${t.uploader._id}`">
-          <img v-bind:src="gravatarUrl+t.uploader.emailHash" />
-          <span>{{t.uploader.username}}</span>
-        </router-link>
-      </span>
-
-    </div>
-  </div>
-  
   <transition
     enter-active-class="animated fadeIn"
     leave-active-class="animated fadeOut"
@@ -198,10 +174,15 @@
           window.open(`/torrent/${torrent._id}`, '_blank');
         }
       },
+      resize_event() {
+        const wrapper = this.$refs.table_wrapper;
+        const header = this.$refs.header;
+        const body = this.$refs.body;
+        body.style.height = `${wrapper.offsetHeight - header.offsetHeight}px`;
+      },
       scroll_event(ev) {
-        const t = this.$refs.table;
-        this.$refs.header.style.top = `${t.scrollTop}px`;
-
+        const t = this.$refs.body;
+        // this.$refs.header.style.top = `${t.scrollTop}px`;
         // console.log((t.scrollTop + t.offsetHeight) >= (t.scrollHeight));
         if (t.scrollTop === 0) {
           if (typeof this.on_top === 'function') {
@@ -218,12 +199,30 @@
         }
       },
     },
+    created() {
+      let id = null;
+      const self = this;
+      window.addEventListener('resize', () => {
+        if (id != null) {
+          clearTimeout(id);
+          id = null;
+          return;
+        }
+        id = setTimeout(() => {
+          self.resize_event();
+          id = null;
+        }, 100);
+      });
+    },
     mounted() {
+      setTimeout(() => {
+        this.resize_event();
+      }, 100);
       // udpate height once
-      const table = this.$refs.table;
-      const height = table.parentElement.clientHeight;
-      table.style.height = `${height}px`;
-      table.style.height = null;
+      // const table = this.$refs.table;
+      // const height = table.parentElement.clientHeight;
+      // table.style.height = `${height}px`;
+      // table.style.height = null;
     },
   };
 </script>
