@@ -11,7 +11,7 @@
       display: inline-block;
       width: 6rem;
       height: 6rem;
-      border: 0.3rem solid @color-primary-2;
+      border: 0.3rem solid @color-primary-0;
       border-radius: 50%;
       overflow: hidden;
       background-size: contain;
@@ -20,13 +20,34 @@
 
     .user-info {
       height: 10.6rem;
-      background-color: @color-primary-0;
-      border-bottom: 0.3rem solid @color-primary-2;
+      background-color: @color-primary-2;
 
       /* TODO small display use it */
       .user-basic-info {
-        // height: 10.6rem;
-        // width: ~"calc(100vw - 10.6rem - 128px)";
+        height: 100%;
+        padding: 1rem;
+        // color: @color-primary-1;
+        background-color: @color-primary-0;
+
+        .username {
+          font-size: 1.2rem;
+          color: white;
+          padding-bottom: 0.3rem;
+        }
+
+        .teams {
+          .rin-team {
+            color: @color-primary-3;
+            background-color: @color-primary-1;
+            &:hover {
+              color: @color-primary-1;
+              background-color: @color-primary-3;
+            }
+          }
+        }
+        .tags {
+          padding-top: 0.6rem;
+        }
       }
     }
 
@@ -44,36 +65,53 @@
 <template>
 <div class="rin-wrapper">
 
-  <div class="user-info">
-    <span class="user-face" :style="{
+  <div class="user-info row expanded">
+    <span class="user-face large-1 medium-2 small-3 columns" :style="{
       'background-image': `url(//bangumi.moe/avatar/${user.emailHash}?s=200)`
     }">
     </span>
 
-    <span class="user-basic-info">
-      <h3>{{user.username}}</h3>
+    <span class="user-basic-info large-11 medium-10 small-9 columns">
+      <div class="username">{{user.username}}</div>
       <div>
         <!-- Teams -->
-        <!--<div class="teams" v-show="loaded" transition="rin-fade">
-          <router-link :title="team.name"
-            :to="{name: 'team-profile', params: {id: team._id}}"
-            v-for="team in user.teams">
-            <span class="team-icon" :style="{'background-image': 'url(' + getIcon(team) +')'}"></span>
+        <div class="teams" v-if="loaded" transition="rin-fade">
+          <router-link class="rin-team rin-inline-tag haspic"
+            v-for="team in user.teams"
+            :to="{name: 'team-profile', params: {id: team._id}}">
+            <img v-if="team.icon" :src="`//bangumi.moe/${team.icon}`" />
+            <img src="../assets/akarin.jpg" v-else />
+            <span>{{team.tag|locale}}</span>
           </router-link>
         </div>
-        <router-link :title="team.name"
-          :to="{name: 'team-profile', params: {id: team._id}}"
-          v-for="team in user.auditing_teams">
-          <span class="team-icon">
-            {{team.name.slice(0, 1)}}
-          </span>
-        </router-link>-->
+
+        
+        <div class="teams" v-if="loaded" transition="rin-fade">
+          <router-link class="rin-team rin-inline-tag haspic"
+            v-for="team in user.auditing_teams"
+            :to="{name: 'team-profile', params: {id: team._id}}">
+            <img v-if="team.icon" :src="`//bangumi.moe/${team.icon}`" />
+            <img src="../assets/akarin.jpg" v-else />
+            <span>{{team.tag|locale}}</span>
+          </router-link>
+        </div>
+
+        <div class="tags" v-if="loaded" transition="rin-fade">
+          <div class="rin-tag">
+            <router-link to="/tag/id" class="haspic" v-for="i in user.bangumi">
+              <img class="icon" :src="`//bangumi.moe/${i.icon}`" v-if="i.icon" />
+              <span v-text="getBangumiTagLocale(i)"></span>
+            </router-link>
+          </div>
+        </div>
       </div>
     </span>
   </div>
 
   <div class="user-torrents">
-    <rin-torrents-table :torrents="user.torrents.data" :hide_uploader="true"></rin-torrents-table>
+    <rin-torrents-table
+      :torrents="user.torrents.data" :hide_uploader="true"
+      :need_more="fetch_next_torrents"></rin-torrents-table>
   </div>
 
   <!--<div class="rin-avatar">
@@ -119,6 +157,7 @@
     tmp.src = link;
   }
 
+  import Vue from 'vue';
   import moment from 'moment';
   import RinTorrentsTable from '../components/rin-torrents-table';
   import RinAvatar from '../components/rin-avatar';
@@ -129,8 +168,40 @@
       RinTorrentsTable,
       RinAvatar,
     },
+    data() {
+      return {
+        busy: false,
+        loaded: false,
+        user: {
+          id: '',
+          _id: '',
+          active: false,
+          group: '',
+          emailHash: '',
+          auditing_teams: [],
+          regDate: 0,
+          team_ids: null,
+          teams: [],
+          username: 'loading',
+          torrents: {
+            data: [],
+            page_num: 1,
+            page_count: 0,
+            page_limit: 30, // FIXME check server this params default value
+          },
+          bangumi: [],
+        },
+        resources: {
+          user_info: this.$resource('//bangumi.moe/api/v2/user{/id}'),
+          user_torrent: this.$resource('//bangumi.moe/api/v2/torrent/user{/id}'),
+          user_bangumi: this.$resource('//bangumi.moe/api/v2/bangumi/user{/id}'),
+        },
+      };
+    },
     filters: {
-      date: require('../filters/dateFormat.js'),
+      locale(val) {
+        return val.locale[Vue.config.lang];
+      },
     },
     methods: {
       getBangumiTagLocale(bangumi) {
@@ -144,60 +215,6 @@
         return require('../assets/akarin.jpg');
       },
       getUserInfo() {
-        /* other user info json response(not session) */
-        /* {
-          "_id":"581b4379ee98e9ca20730e99",
-          "username":"LoliHouse",
-          "emailHash":"e1fb451bfc1b738fb97091a367a2a617",
-          "active":true,
-          "regDate":1478181753743,
-          "team_ids":null,
-          "group":"member",
-          "teams":[
-              {
-                "_id":"581b44bfee98e9ca20730e9a",
-                "name":"LoliHouse",
-                "tag_id":"581be821ee98e9ca20730eae",
-                "signature":"",
-                "icon":"data/images/2016/11/39wf4vv2py84i2624t7.jpg",
-                "admin_id":"581b4379ee98e9ca20730e99",
-                "admin_ids":[
-                    "581b4379ee98e9ca20730e99"
-                ],
-                "editor_ids":[
-                    "57fddd8fee98e9ca207307af"
-                ],
-                "member_ids":[
-                    "581b4379ee98e9ca20730e99",
-                    "570945dc2165b9ba0c48456e",
-                    "57fddd8fee98e9ca207307af"
-                ],
-                "auditing_ids":[
-
-                ],
-                "regDate":"2016-11-03T14:07:59.512Z",
-                "approved":true,
-                "tag":{
-                    "_id":"581be821ee98e9ca20730eae",
-                    "name":"LoliHouse",
-                    "type":"team",
-                    "synonyms":[
-                      "LoliHouse"
-                    ],
-                    "locale":{
-
-                    },
-                    "syn_lowercase":[
-                      "lolihouse"
-                    ],
-                    "activity":992
-                }
-              }
-          ],
-          "auditing_teams":[
-
-          ]
-        }*/
         return this.resources.user_info.query({
           id: this.user.id,
         }).then((resp) => {
@@ -212,8 +229,9 @@
               this.user.team_ids = info.team_ids;
               this.user.teams.push(...info.teams);
               this.user.username = info.username;
+              this.loaded = true;
 
-              console.log(`[User.getUserInfo]user ${this.user.username} info loaded`);
+              // console.log(`[User.getUserInfo]user ${this.user.username} info loaded`);
               // load other extra info
               this.getUserTorrent(this.user.torrents.page_num);
               this.getUserBangumi();
@@ -223,9 +241,12 @@
         });
       },
       getUserTorrent(page_num) {
-        return this.resources.user_torrent.query({
+        if (this.busy) {
+          return;
+        }
+        this.busy = true;
+        this.resources.user_torrent.query({
           id: this.user.id,
-        }, {
           p: page_num,
           limit: this.user.torrents.page_limit,
         }).then((resp) => {
@@ -233,6 +254,7 @@
             data => {
               this.user.torrents.page_count = data.page_count;
               this.user.torrents.data.push(...data.torrents);
+              this.busy = false;
               console.log(`[User.getuserTorrent]user ${this.user.username} torrent page ${page_num} loaded`);
             }
           );
@@ -285,50 +307,25 @@
         this.user.regDate = 0;
         this.user.team_ids = null;
         this.user.teams.splice();
-        this.user.username = '';
-        this.user.torrents.page_num = 0;
+        this.user.username = 'loading';
+        this.user.torrents.page_num = 1;
         this.user.torrents.page_count = 0;
         this.user.torrents.data.splice();
         this.user.bangumi.splice();
       },
-    },
-    data() {
-      return {
-        busy: false,
-        loaded: false,
-        user: {
-          id: '',
-          _id: '',
-          active: false,
-          group: '',
-          emailHash: '',
-          auditing_teams: [],
-          regDate: 0,
-          team_ids: null,
-          teams: [],
-          username: '',
-          torrents: {
-            data: [],
-            page_num: 0,
-            page_count: 0,
-            page_limit: 30, // FIXME check server this params default value
-          },
-          bangumi: [],
-        },
-        resources: {
-          user_info: this.$resource('//bangumi.moe/api/v2/user{/id}'),
-          user_torrent: this.$resource('//bangumi.moe/api/v2/torrent/user{/id}'),
-          user_bangumi: this.$resource('//bangumi.moe/api/v2/bangumi/user{/id}'),
-        },
-      };
-    },
-    created() {
-      this.$on('avatar.loaded', () => {
-        this.loaded = true;
-      });
+      fetch_next_torrents() {
+        if (this.busy) {
+          return;
+        }
+
+        if (this.user.torrents.page_num + 1 >= this.user.torrents.page_count) {
+          return;
+        }
+        this.user.torrents.page_num += 1;
+        this.getUserTorrent(this.user.torrents.page_num);
+      },
     },
     mounted () {
-      this.busy = true;
       this.loaded = false;
       this.user.id = this.$route.params.id || 'session';
 
