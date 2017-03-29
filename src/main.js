@@ -20,11 +20,9 @@ Vue.locale('en', require('./i18n/en.json'));
 // i18n
 Vue.config.lang = 'zh-tw';
 
-const App = new Vue({
+new Vue({
   router,
   store,
   el: '#app',
   render: h => h(app),
-});
-
-App.$mount('#app');
+}).$mount('#app');

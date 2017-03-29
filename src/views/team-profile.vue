@@ -2,14 +2,14 @@
 <div id="rin-main" style="width: calc(100% - 128px);">
   <div class="rin-row">
     <div class="rin-col team-profile rin-center">
-      <div class="team-topbar" v-el:team_topbar>
-        <span class="face-icon" v-el:team_icon>
+      <div class="team-topbar" ref="team_topbar">
+        <span class="face-icon" ref="team_icon">
             <img :src="fetch_icon(team.info.icon)" @load="img_changed">
         </span>
         <h1 class="team-name" v-text="team.info.name"></h1>
       </div>
 
-      <div class="team-content" v-el:team_content>
+      <div class="team-content" ref="team_content">
         <div class="team_torrents_table">
           <rin-torrents-table 
             :torrents="team.torrents" 
@@ -112,17 +112,17 @@
     },
     methods: {
       img_changed() {
-        this.$els.team_icon.className += ' loaded';
+        this.$refs.team_icon.className += ' loaded';
         window.setTimeout(() => {
-          this.$els.team_topbar.className += ' loaded';
-          this.$els.team_content.className += ' loaded';
+          this.$refs.team_topbar.className += ' loaded';
+          this.$refs.team_content.className += ' loaded';
         }, 1000);
       },
       fetch_user_icon(email_hash) {
         return `https://bangumi.moe/avatar/${email_hash}`;
       },
       fetch_icon(icon_url) {
-        if (icon_url === null) {
+        if (!icon_url) {
           return require('../assets/akarin.jpg');
         }
         return `https://bangumi.moe/${icon_url}`;
@@ -131,7 +131,7 @@
         this.team.info = {};
         this.$http.get(`https://bangumi.moe/api/v2/team/${id}`).then(
           resp => {
-            this.team.info = resp.json();
+            this.team.info = resp.data;
             // console.log(this.team.info)
           }
         );
@@ -140,7 +140,7 @@
         this.team.bangumi = {};
         this.$http.get(`https://bangumi.moe/api/v2/bangumi/team/${id}`).then(
           resp => {
-            this.team.bangumi = resp.json();
+            this.team.bangumi = resp.data;
           }
         );
       },
@@ -153,7 +153,7 @@
           `https://bangumi.moe/api/v2/torrent/team/${id}?limit=${limit}&p=${page_num}`
         ).then(
           resp => {
-            const data = resp.json();
+            const data = resp.data;
             this.team.torrents.push(...data.torrents);
             this.team.torrents_total = data.page_count * limit;
             this.team.torrents_offset = page_num;
@@ -170,13 +170,13 @@
         this.fetch_torrents(this.team.id, this.team.torrents_offset + 1);
       },
     },
-    route: {
-      data() {
-        this.team.id = this.$route.params.id;
-        this.fetch_info(this.team.id);
-        this.fetch_bangumi(this.team.id);
-        this.fetch_torrents(this.team.id, 1);
-      },
+    mounted() {
+      this.busy = false;
+      this.team.id = this.$route.params.id;
+      this.fetch_info(this.team.id);
+      this.fetch_bangumi(this.team.id);
+      this.fetch_torrents(this.team.id, 1);
+      console.log('[TeamProfile]mounted');
     },
   };
 </script>
