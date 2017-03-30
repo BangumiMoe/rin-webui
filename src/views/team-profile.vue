@@ -35,7 +35,7 @@
       text-align: left;
       transition: all 1s;
       &.loaded {
-        height: 100px;
+        height: 128px;
         .team-name {
           opacity: 1;
         }

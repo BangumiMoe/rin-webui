@@ -226,24 +226,24 @@ export default {
     },
   },
   created() {
-    let id = null;
-    const self = this;
-    window.addEventListener('resize', () => {
-      if (id != null) {
-        clearTimeout(id);
-        id = null;
-        return;
-      }
-      id = setTimeout(() => {
-        self.resize_event();
-        id = null;
-      }, 100);
-    });
+    // let id = null;
+    // const self = this;
+    // window.addEventListener('resize', () => {
+    //   if (id != null) {
+    //     clearTimeout(id);
+    //     id = null;
+    //     return;
+    //   }
+    //   id = setTimeout(() => {
+    //     self.resize_event();
+    //     id = null;
+    //   }, 100);
+    // });
   },
   mounted() {
-    setTimeout(() => {
+    setInterval(() => {
       this.resize_event();
-    }, 100);
+    }, 2000);
   },
 };
 </script>
