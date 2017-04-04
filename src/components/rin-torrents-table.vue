@@ -204,7 +204,7 @@ export default {
       const body = this.$refs.body;
       // ignore not found any body
       if (!body) {
-        this.resize_event();
+        // this.resize_event();
         return;
       }
 
