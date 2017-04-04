@@ -125,6 +125,7 @@
             }
           }
           .rin-tag {
+            padding: 4px 0 0 0;
             margin-bottom: -2px;
           }
           .acgdb {
