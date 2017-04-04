@@ -68,7 +68,7 @@
   <div id="rin-main"
        style="width: calc(100% - 128px);">
     <div class="rin-row">
-      <div class="rin-col team-profile rin-center">
+      <div class="rin-col team-profile">
         <div class="team-topbar"
              ref="team_topbar">
           <span class="face-icon"
