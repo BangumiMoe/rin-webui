@@ -11,6 +11,7 @@ module.exports = {
   ],
   // add your custom rules here
   'rules': {
+    'eqeqeq': 0,
     'no-console': 0,
     'no-plusplus': 0,
     'no-undef': 0, // support window or document var
