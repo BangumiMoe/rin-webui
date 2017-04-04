@@ -27,6 +27,10 @@ a:hover {
   text-shadow: 1px 1px rgba(99, 99, 99, 0.6);
 }
 
+.rin-team-title {
+  color: black;
+}
+
 .rin-table {
   width: 100%;
   padding: 0;
@@ -111,8 +115,6 @@ a:hover {
         <td><strong>{{t.category_tag|locale}}</strong></td>
         <td>
           <router-link tag="div" class="container" :to="`/torrent/${t._id}`" @mouseup.stop="title_right_click($event, t)" v-if="t">
-            
-
             <router-link class="rin-team rin-inline-tag haspic" :to="`/team/${t.team._id}`" v-if="t.team" v-show="!hide_team_name">
               <img v-if="t.team.icon" v-bind:src="teamIconUrl + t.team.icon" alt="" />
               <img src="../assets/akarin.jpg" v-if="!t.team.icon" />
@@ -182,6 +184,10 @@ export default {
       return date.format('MM/DD HH:ss');
     },
     locale(val) {
+      if (Object.keys(val.locale).length === 0) {
+        return val.name;
+      }
+
       return val.locale[Vue.config.lang];
     },
   },
