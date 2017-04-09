@@ -111,6 +111,11 @@ export default {
         torrents_offset: 0,
         torrents_total: 0,
       },
+      resources: {
+        info: this.$resource(`https://bangumi.moe/api/v2/team{/id}`),
+        bangumi: this.$resource(`https://bangumi.moe/api/v2/bangumi/team{/id}`),
+        torrents: this.$resource(`https://bangumi.moe/api/v2/torrent/team{/id}`),
+      },
     };
   },
   methods: {
@@ -121,29 +126,28 @@ export default {
         this.$refs.team_content.className += ' loaded';
       }, 1000);
     },
-    fetch_user_icon(email_hash) {
-      return `https://bangumi.moe/avatar/${email_hash}`;
-    },
     fetch_icon(icon_url) {
       if (!icon_url) {
         return require('../assets/akarin.jpg');
       }
+
       return `https://bangumi.moe/${icon_url}`;
     },
     fetch_info(id) {
       this.team.info = {};
-      this.$http.get(`https://bangumi.moe/api/v2/team/${id}`).then(
+      this.resources.info.get({id}).then(
         resp => {
           this.team.info = resp.data;
-          // console.log(this.team.info)
+          console.log(`[${this.name}]team info loaded`);
         }
       );
     },
     fetch_bangumi(id) {
       this.team.bangumi = {};
-      this.$http.get(`https://bangumi.moe/api/v2/bangumi/team/${id}`).then(
+      this.resources.bangumi.get({id}).then(
         resp => {
           this.team.bangumi = resp.data;
+          console.log(`[${this.name}]team bangumi loaded`);
         }
       );
     },
@@ -152,9 +156,13 @@ export default {
       this.busy = true;
       const limit = l || 100;
       // console.log(`[TeamProfile.fetch_torrents]id ${id} offset ${page_num} limit ${limit}`);
-      this.$http.get(
-        `https://bangumi.moe/api/v2/torrent/team/${id}?limit=${limit}&p=${page_num}`
-      ).then(
+      // this.$http.get(
+      //   `https://bangumi.moe/api/v2/torrent/team/${id}?limit=${limit}&p=${page_num}`
+
+      this.resources.torrents.get({id, params: {
+        limit,
+        p: page_num,
+      }}).then(
         resp => {
           const data = resp.data;
           this.team.torrents.push(...data.torrents);
@@ -164,8 +172,7 @@ export default {
         },
         () => {
           this.busy = false;
-        }
-        );
+        });
     },
     fetch_next_torrents() {
       if (this.busy) return;
