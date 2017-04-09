@@ -66,12 +66,12 @@
 <div class="rin-wrapper">
 
   <div class="user-info row expanded">
-    <span class="user-face large-1 medium-2 small-3 columns" :style="{
+    <span class="user-face medium-2 small-3 columns" :style="{
       'background-image': `url(//bangumi.moe/avatar/${user.emailHash}?s=200)`
     }">
     </span>
 
-    <span class="user-basic-info large-11 medium-10 small-9 columns">
+    <span class="user-basic-info medium-10 small-9 columns">
       <div class="username">{{user.username}}</div>
       <div>
         <!-- Teams -->
