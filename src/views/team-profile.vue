@@ -72,9 +72,7 @@
         <div class="team-topbar"
              ref="team_topbar">
           <span class="face-icon"
-                ref="team_icon">
-              <img :src="fetch_icon(team.info.icon)" @load="img_changed">
-          </span>
+                ref="team_icon"><img :src="fetch_icon(team.info.icon)" @load="img_changed"></span>
           <h1 class="team-name"
               v-text="team.info.name"></h1>
         </div>
@@ -112,9 +110,9 @@ export default {
         torrents_total: 0,
       },
       resources: {
-        info: this.$resource(`https://bangumi.moe/api/v2/team{/id}`),
-        bangumi: this.$resource(`https://bangumi.moe/api/v2/bangumi/team{/id}`),
-        torrents: this.$resource(`https://bangumi.moe/api/v2/torrent/team{/id}`),
+        info: this.$resource('https://bangumi.moe/api/v2/team{/id}'),
+        bangumi: this.$resource('https://bangumi.moe/api/v2/bangumi/team{/id}'),
+        torrents: this.$resource('https://bangumi.moe/api/v2/torrent/team{/id}'),
       },
     };
   },
@@ -135,7 +133,7 @@ export default {
     },
     fetch_info(id) {
       this.team.info = {};
-      this.resources.info.get({id}).then(
+      this.resources.info.get({ id }).then(
         resp => {
           this.team.info = resp.data;
           console.log(`[${this.name}]team info loaded`);
@@ -144,7 +142,7 @@ export default {
     },
     fetch_bangumi(id) {
       this.team.bangumi = {};
-      this.resources.bangumi.get({id}).then(
+      this.resources.bangumi.get({ id }).then(
         resp => {
           this.team.bangumi = resp.data;
           console.log(`[${this.name}]team bangumi loaded`);
@@ -159,10 +157,12 @@ export default {
       // this.$http.get(
       //   `https://bangumi.moe/api/v2/torrent/team/${id}?limit=${limit}&p=${page_num}`
 
-      this.resources.torrents.get({id, params: {
-        limit,
-        p: page_num,
-      }}).then(
+      this.resources.torrents.get({
+        id, params: {
+          limit,
+          p: page_num,
+        },
+      }).then(
         resp => {
           const data = resp.data;
           this.team.torrents.push(...data.torrents);
