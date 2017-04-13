@@ -1,6 +1,8 @@
 @import 'colors.less';
 @import '../../node_modules/font-awesome/less/font-awesome.less';
 
+@import url(//fonts.googleapis.com/earlyaccess/notosanssc.css);
+
 html,
 body {
   padding: 0;
@@ -10,7 +12,7 @@ body {
 }
 
 body {
-  font-family: 'Helvetica Neue', 'Microsoft Yahei', Helvetica, Arial, sans-serif;
+  font-family: 'Noto Sans SC', 'Helvetica Neue', 'Microsoft Yahei', Helvetica, Arial, sans-serif;
   font-size: 14px;
   word-wrap: break-word;
   color: #222;
@@ -177,71 +179,64 @@ form {
 .rin-inline-tag {
   display: inline-block;
   height: 20px;
-  padding-right: 5px;
-  padding-left: 5px;
-  margin-right: 5px;
-  transition: all .2s;
   line-height: 20px;
-  img {
-    width: 20px;
-    height: 20px;
+  transition: all .2s;
+  img, span {
+    width: 18px;
+    height: 18px;
     vertical-align: top;
   }
   span {
-    height: 20px;
-    line-height: 21px;
-  }
-  &.haspic {
-    padding-left: 0;
+    padding: 0 .2rem;
   }
   &:hover {
-    background-color: rgba(120, 120, 120, 0.33) !important;
+    background-color: rgba(120, 120, 120, 0.33);
   }
 }
 
-.rin-button {
-  width: 40px;
-  height: 40px;
-  color: @color-primary-2;
-  background-color: transparent;
-  border: none;
-  position: relative;
-  display: flex;
-  align-items: cetner;
-  justify-content: center;
-  cursor: pointer;
-  outline: none;
-  transition: all .2s;
-  i {
-    font-size: 2em;
-    color: white;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: inherit;
-  }
-  &.round {
-    border-radius: 50%;
-  }
-  &.rin-button-small {
-    width: 20px;
-    height: 20px;
-    i {
-      height: 20px;
-    }
-  }
-  &:hover {
-    color: @color-primary-1;
-    i {
-      color: @color-primary-1;
-    }
-  }
-  /* &:hover {
-    color: @color-secondary-2-1;
-    i { color: @color-secondary-2-1; }
-  } */
-}
+// .rin-button {
+//   width: 40px;
+//   height: 40px;
+//   color: @color-primary-2;
+//   background-color: transparent;
+//   border: none;
+//   position: relative;
+//   display: flex;
+//   align-items: cetner;
+//   justify-content: center;
+//   cursor: pointer;
+//   outline: none;
+//   transition: all .2s;
+//   i {
+//     font-size: 2em;
+//     color: white;
+//     height: 40px;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     transition: inherit;
+//   }
+//   &.round {
+//     border-radius: 50%;
+//   }
+//   &.rin-button-small {
+//     width: 20px;
+//     height: 20px;
+//     i {
+//       height: 20px;
+//     }
+//   }
+//   &:hover {
+//     color: @color-primary-1;
+//     i {
+//       color: @color-primary-1;
+//     }
+//   }
+//   /* &:hover {
+//     color: @color-secondary-2-1;
+//     i { color: @color-secondary-2-1; }
+//   } */
+// }
 
 .rin-left {
   float: left;
