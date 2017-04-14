@@ -160,14 +160,13 @@
             <span>{{t.title}}</span>
             <!--</router-link>-->
 
-            <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{$t(((t.comments >1) ? 'Comments' :'Comment' ))}}</span>
-
             <a class="rin-download" title="Torrent link" :href="t.magnet"><i class="fa fa-download"></i></a>
             <a class="rin-magnet" title="Magnet link" :href="t.magnet"><i class="fa fa-magnet"></i></a>
           </td>
           <td>
             <div class="torrent-size">
-              {{t.size}}
+              <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{$t(((t.comments >1) ? 'Comments' :'Comment' ))}}</span> 
+              <span>{{t.size}}</span>
             </div>
             <div class="torrent-status">
               <a class="rin-seed-online" href="javascript:void(0)" title="种子">{{t.seeders|fixed(5)}}</a> /
