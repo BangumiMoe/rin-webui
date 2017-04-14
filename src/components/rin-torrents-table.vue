@@ -160,7 +160,7 @@
             <span>{{t.title}}</span>
             <!--</router-link>-->
 
-            <a class="rin-download" title="Torrent link" :href="t.magnet"><i class="fa fa-download"></i></a>
+            <a class="rin-download" title="Torrent link" :href="t|download_url"><i class="fa fa-download"></i></a>
             <a class="rin-magnet" title="Magnet link" :href="t.magnet"><i class="fa fa-magnet"></i></a>
           </td>
           <td>
@@ -228,6 +228,9 @@
       },
       fixed(val, num) {
         return String(`00000${val}`).slice(-1 * num);
+      },
+      download_url(torrent) {
+        return `/download/torrent/${torrent.id}/${torrent.infoHash}.torrent`;
       },
     },
     methods: {
