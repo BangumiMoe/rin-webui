@@ -2,100 +2,39 @@
   @import "../less/colors.less";
   @team-avatar-size: 80px;
   #rin-toolbar {
+    display: block;
+    width: 64px;
+    padding-top: 1rem;
     background-color: @color-primary-0;
     color: @color-primary-2;
     z-index: 1;
     .rin-button {
-      margin: 8px;
-      text-shadow: 0 0 5px @color-primary-3;
-      z-index: 2;
-    }
-    .user-toolbar,
-    .rin-logo {
-      .rin-button {
-        text-shadow: none;
-        background: @color-primary-3;
-        border: 4px solid @color-primary-2;
-        i {
-          z-index: 2;
-          width: 40px;
-          border-radius: 20px;
-          background: @color-primary-3;
-          transition: all .2s;
-        }
-        &:hover {
-          background: @color-primary-4;
-          border: 4px solid @color-primary-1;
-          i {
-            background: @color-primary-4;
-          }
-        }
-        .rin-tooltip-wrap {
-          z-index: 1;
-        }
+      height: 52px;
+      width: 52px;
+      margin: 6px;
+      padding: 12px;
+      font-size: 28px;
+      line-height: 52px;
+      color: @color-primary-1;
+      &:hover {
+        color: @color-primary-4;
       }
     }
-    .rin-logo {
-      cursor: pointer;
-      .img-wrap {
-        width: 48px;
-        height: 48px;
-        margin-left: 4px;
-        margin-right: 4px;
-        img {
-          border-radius: 50%;
-          width: 48px;
-          z-index: 2;
-        }
-      }
-    }
-    .rin-search,
-    .rin-week,
-    .rin-torrents,
-    .rin-rss {
-      position: absolute;
-      margin: 4px 12px;
-      i {
-        font-size: 32px;
-      }
-    }
-    .rin-search {
-      bottom: 8px;
-    }
-    .rin-week {
-      bottom: 56px;
-    }
-    .rin-rss {
-      bottom: 104px;
-    }
-    .rin-torrents {
-      bottom: 152px;
-    }
-    .team {
-      text-align: center;
-      float: left;
-      z-index: 10;
-      .team-icon {
-        display: block;
-        margin: 0;
-        width: 40px;
-        height: 40px;
-        border-radius: 20px;
-        font-size: @team-avatar-size * 0.7;
-        line-height: @team-avatar-size;
+    .rin-user-face {
+      span {
+        position: relation;
+        display: inline-block;
+        width: 52px;
+        height: 52px;
+        margin: -12px;
+        border: 4px solid @color-primary-1;
+        border-radius: 50%;
+        background-image: url(../assets/akarin.jpg);
         background-size: cover;
       }
-    }
-    .teams {
-      margin-top: -14px;
-      margin-left: -10px;
-      width: 158px;
-      height: 48px;
-      .team .team-icon {
-        margin: 4px;
-        background-color: white;
-        &:last-child {
-          margin-right: 0;
+      &:hover {
+        span {
+          border-color: @color-primary-3;
         }
       }
     }
@@ -103,18 +42,17 @@
 </style>
 
 <template>
-<div id="rin-toolbar" class="rin-main-bar rin-col">
+  <div id="rin-toolbar" class="rin-col">
 
-  <div class="rin-logo">
-    <div class="rin-button round img-wrap" @click="userSignAction($event)">
-      <img src="../assets/akarin.jpg" v-if="!user._id" />
-      <img :src="'https://bangumi.moe/avatar/'+ user.emailHash" v-if="user._id" />
-      <tooltip :info="$t('Login')" v-if="!user._id"></tooltip>
-    </div>
+    <a class="rin-button rin-user-face" @click.stop="userSignAction($event)">
+      <span>
+      <img :src="user|icon_url" v-if="user._id" />
+    </span>
 
-    <info-box :user="user" arrow="right" v-if="user._id"></info-box>
-  </div>
+      <tooltip :info="$t('Login')"></tooltip>
+    </a>
 
+    <!--
   <div class="user-toolbar" v-if="user._id">
     <a class="rin-button round" v-if="user.info && user.info.teams.length > 0">
       <span class="team">
@@ -129,7 +67,6 @@
       </tooltip>
     </a>
     <router-link class="rin-button round" to="/torrent/upload">
-      <!--<i class="material-icons">&#xE89D;</i>-->
       <i class="fa fa-plus"></i>
       <tooltip :info="$t('Publish')"></tooltip>
     </router-link>
@@ -141,38 +78,35 @@
       <i class="fa fa-sign-out"></i>
       <tooltip :info="$t('Logout')"></tooltip>
     </a>
+  </div>-->
+
+    <router-link class="rin-button rin-torrents" v-show="!is_homepage" :to="{ path: '/', exact: true }">
+      <i class="fa fa-arrow-left"></i>
+      <tooltip :info="$t('Back to Index')"></tooltip>
+    </router-link>
+
+    <router-link class="rin-button rin-week" to="/bangumi/list">
+      <!--<i class="material-icons">&#xE8EF;</i>-->
+      <i class="fa fa-list"></i>
+      <tooltip :info="$t('Bangumi List')"></tooltip>
+    </router-link>
+
+    <a class="rin-button rin-rss" href="https://bangumi.moe/rss/latest" target="_blank">
+      <!--<i class="material-icons" style="transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>-->
+      <i class="fa fa-rss"></i>
+      <tooltip :info="$t('RSS')"></tooltip>
+    </a>
+
+    <a class="rin-button rin-search" id="rin-search" @mouseenter="searchBarShow" @mouseleave="searchBarHide" @click="searchBarToggle">
+      <!--<i class="material-icons">&#xE8B6;</i>-->
+      <i class="fa fa-search"></i>
+      <tooltip :info="$t('Search')"></tooltip>
+    </a>
+
+    <!-- Search Added By LancerComet at 23:07, 2015.12.08. -->
+    <!--<search-bar v-bind:class="{'show': searchBar.visible, 'fixed': searchBar.fixed, 'hide': !searchBar.visible && !searchBar.fixed}"></search-bar>-->
+
   </div>
-
-  <router-link class="rin-button rin-torrents" v-show="!is_homepage" :to="{ path: '/', exact: true }">
-    <i class="fa fa-arrow-left"></i>
-    <tooltip :info="$t('Back to Index')"></tooltip>
-  </router-link>
-
-  <router-link class="rin-button rin-week" to="/bangumi/list">
-    <!--<i class="material-icons">&#xE8EF;</i>-->
-    <i class="fa fa-list"></i>
-    <tooltip :info="$t('Bangumi List')"></tooltip>
-  </router-link>
-
-  <a class="rin-button rin-rss" href="https://bangumi.moe/rss/latest" target="_blank">
-    <!--<i class="material-icons" style="transform: rotate(45deg);padding-top: 1px;padding-left: 1px;">&#xE63E;</i>-->
-    <i class="fa fa-rss"></i>
-    <tooltip :info="$t('RSS')"></tooltip>
-  </a>
-
-  <span class="rin-button rin-search" id="rin-search"
-    @mouseenter="searchBarShow"
-    @mouseleave="searchBarHide"
-    @click="searchBarToggle">
-    <!--<i class="material-icons">&#xE8B6;</i>-->
-    <i class="fa fa-search"></i>
-    <tooltip :info="$t('Search')"></tooltip>
-  </span>
-
-  <!-- Search Added By LancerComet at 23:07, 2015.12.08. -->
-  <search-bar v-bind:class="{'show': searchBar.visible, 'fixed': searchBar.fixed, 'hide': !searchBar.visible && !searchBar.fixed}"></search-bar>
-
-</div>
 </template>
 
 <script>
@@ -192,6 +126,11 @@
         signin_form_opened: false,
         is_homepage: (location.pathname === '/'),
       };
+    },
+    filter: {
+      icon_url(user) {
+        return `https://static.bangumi.moe/avatar/${user.emailHash}`;
+      },
     },
     methods: {
       // Definition: 搜索栏显示事件.
@@ -254,7 +193,7 @@
       userSignAction() {
         if (!this.user._id) {
           this.signin_form_opened = true;
-          this.$dispatch('displaySigninForm');
+          // this.$dispatch('displaySigninForm');
         } else {
           this.$router.go(`/user/${this.user._id}`);
         }
@@ -290,7 +229,7 @@
         this.getUserInfo();
         if (this.signin_form_opened) {
           this.signin_form_opened = false;
-          this.$dispatch('hideSigninForm');
+          // this.$dispatch('hideSigninForm');
         }
       },
       UserSignInFailed() {
@@ -301,9 +240,10 @@
       },
     },
     watch: {
-      '$route' () {
+      '$route'() {
         this.is_homepage = (location.pathname === '/');
       },
     },
   };
+
 </script>

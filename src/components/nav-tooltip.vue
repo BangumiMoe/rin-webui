@@ -1,52 +1,42 @@
-<style lang="less">
+<style scoped lang="less">
   @import "../less/colors.less";
-  .rin-button-mixin(@size, @border: 4px) {
+  .rin-button-mixin(@size, @border: 4px, @margin: 0, @padding: 0) {
     @diameter: (@size + 2 * @border);
     @p_m_tb: (@diameter - 20px) / 2;
     @p_m_lr0: (@diameter - 40px) / 2;
-    @p_m_lr1: 10px + @p_m_lr0;
-    .rin-tooltip {
-      border-radius: @diameter / 2;
-      p {
-        margin: @p_m_tb @p_m_lr0;
+    @p_m_lr1: @p_m_lr0;
+    .rin-tooltip-wrap {
+      margin-top: -1 * @diameter;
+      .rin-tooltip {
+        height: @size;
+        border-radius: @diameter / 2;
+        margin: @margin;
+        padding: @padding;
+        p {
+          padding: 0;
+          margin: 0;
+          line-height: (@size - 2 * @border);
+          font-size: @size / 2;
+        }
+      }
+      &.rin-tooltip-right {
+        right: -1 * @p_m_lr1 / 2;
+        .rin-tooltip {
+          padding-right: @diameter;
+          p {
+            margin-left: @p_m_lr1;
+            padding-left: @p_m_lr1;
+          }
+        }
+      }
+      &.rin-tooltip-left {
+        left: -1 * @p_m_lr1;
+        maring-right: -1rem;
+        p {
+          margin-right: @p_m_lr1;
+        }
       }
     }
-    .rin-tooltip-right .rin-tooltip {
-      padding-right: @diameter;
-      p {
-        margin-left: @p_m_lr1;
-      }
-    }
-    .rin-tooltip-left .rin-tooltip {
-      padding-left: @diameter;
-      p {
-        margin-right: @p_m_lr1;
-      }
-    }
-  }
-  
-  .rin-tooltip-wrap {
-    position: absolute;
-    top: -4px;
-    width: 0;
-    height: calc(~"100% + 8px");
-    z-index: -1;
-  }
-  
-  .rin-tooltip-wrap.rin-tooltip-right {
-    right: -4px;
-  }
-  
-  .rin-tooltip-right .rin-tooltip {
-    float: right;
-  }
-  
-  .rin-tooltip-wrap.rin-tooltip-left {
-    left: -4px;
-  }
-  
-  .rin-tooltip-left .rin-tooltip {
-    float: left;
   }
   
   .rin-button:hover .rin-tooltip {
@@ -55,32 +45,46 @@
     opacity: 1;
   }
   
-  .rin-tooltip {
-    z-index: 2;
-    padding: 0;
-    width: auto;
-    height: 100%;
-    max-width: 0;
-    background-color: @color-primary-2;
-    transition: all .2s ease-in-out;
-    color: @color-primary-1;
-    position: relative;
-    opacity: 0;
-    overflow: hidden;
-    p {
-      white-space: nowrap;
-      color: @color-primary-4;
-      height: 20px;
-      line-height: 20px;
-      text-shadow: none;
+  .rin-tooltip-wrap {
+    position: absolute;
+    z-index: -1;
+    &.rin-tooltip-right {
+      rin-tooltip {
+        float: right;
+      }
+    }
+    &.rin-tooltip-left {
+      .rin-tooltip {
+        float: left;
+      }
+    }
+    .rin-tooltip {
+      position: relative;
+      display: inline-block;
+      padding: 0;
+      margin: 0;
+      width: auto;
+      max-width: 0;
+      color: white;
+      background-color: @color-primary-2;
+      border: 4px solid @color-primary-0;
+      opacity: 0;
+      overflow: hidden;
+      transition: all .3s ease-in-out;
+      p {
+        white-space: nowrap;
+      }
     }
   }
   
-  .rin-button-mixin(40px);
-  /* for rin-logo */
+  .rin-button-mixin(52px, 4px, 6px);
   
-  .rin-logo {
-    .rin-button-mixin(48px);
+  #rin-toolbar {
+    .rin-button-mixin(58px, 4px, 10px);
+  
+    .rin-user-face {
+      .rin-button-mixin(58px, 4px, 6px);
+    }
   }
   
   .rin-button-small {
@@ -113,4 +117,5 @@
       },
     },
   };
+
 </script>
