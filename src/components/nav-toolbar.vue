@@ -44,11 +44,27 @@
 <template>
   <div id="rin-toolbar" class="rin-col">
 
-    <a class="rin-button rin-user-face" @click.stop="userSignAction($event)">
-      <span>
-      <img :src="user|icon_url" v-if="user._id" />
-    </span>
+    <rin-modal :visiable="form.show" @modalClosed="formClosed">
+      <h1 slot="title">登录</h1>
+      <form slot="content" @submit.prevent="userSignIn">
+        <label>
+          用户名/邮箱
+          <input type="text" v-model="form.username" required>
+        </label>
 
+        <label>
+          密码
+          <input type="text" v-model="form.password" required>
+        </label>
+
+        <button class="button" @click="login">登录</button>
+      </form>
+    </rin-modal>
+
+    <a class="rin-button rin-user-face" @click.stop="formOpen">
+      <span>
+        <img :src="user|icon_url" v-if="user._id" />
+      </span>
       <tooltip :info="$t('Login')"></tooltip>
     </a>
 
@@ -114,6 +130,8 @@
   import NavToolbarInfobox from './nav-toolbar-infobox';
   import NavTooltip from './nav-tooltip';
 
+  import RinModal from './rin-modal';
+
   export default {
     name: 'NavToolbar',
     data() {
@@ -125,6 +143,11 @@
         },
         signin_form_opened: false,
         is_homepage: (location.pathname === '/'),
+        form: {
+          username: '',
+          password: '',
+          show: false,
+        },
       };
     },
     filter: {
@@ -138,10 +161,12 @@
         this.searchBar.visible = true;
         this.$emit('recentProgramRequest'); // 广播至 search-bar.
       },
+
       // Definition: 搜索栏隐藏事件.
       searchBarHide() {
         this.searchBar.visible = false;
       },
+
       // 判断el是否在selector内
       closest(el, selector) {
         let matchesFn;
@@ -189,14 +214,7 @@
         }
       },
 
-      // sigin or jump to user info page
-      userSignAction() {
-        if (!this.user._id) {
-          this.signin_form_opened = true;
-          // this.$dispatch('displaySigninForm');
-        } else {
-          this.$router.go(`/user/${this.user._id}`);
-        }
+      userSignIn() {
       },
 
       userSignout() {
@@ -204,7 +222,6 @@
           this.$dispatch('UserSignOut');
         }
       },
-
 
       getUserInfo() {
         // console.log(this.user)
@@ -217,8 +234,16 @@
         return i.icon ? `https://bangumi-moe.phoenixstatic.com/${i.icon}` : require('../assets/akarin.jpg');
       },
 
+      formOpen() {
+        this.form.show = true;
+      },
+
+      formClosed() {
+        this.form.show = false;
+      },
     },
     components: {
+      'rin-modal': RinModal,
       'search-bar': NavToolbarSearch,
       'info-box': NavToolbarInfobox,
       tooltip: NavTooltip,

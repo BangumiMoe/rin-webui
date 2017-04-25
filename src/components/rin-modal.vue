@@ -1,13 +1,39 @@
+<style>
+  #rin-main {}
+</style>
+
 <style scoped lang="less">
   @import "../less/colors.less";
+  @alert-line-color-deg: 135deg;
+  @alert-line-color-size: 90px;
+  /*.modal-wrapper-other {
+    width: calc(~"100% - 128px");
+    z-index: -1;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.9);
+  }*/
+  
   .modal-wrapper {
     width: calc(~"100% - 128px");
     z-index: 99;
     height: 100%;
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.72);
     top: 0;
     left: 0;
+    background-color: rgba(240, 240, 240, 0.89);
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      filter: blur(20px);
+    }
     .rin-modal {
       overflow: hidden;
       width: 100%;
@@ -18,33 +44,35 @@
       transform: translateY(-50%);
       .alert-line {
         position: absolute;
-        width: 200%;
-        height: 30px;
+        width: 400%;
+        height: 1.2rem;
       }
       .black-yellow-up {
-        background: linear-gradient(135deg, yellow 25%, black 0, black 50%, yellow 0, yellow 75%, black 0);
-        background-size: 200px 200px;
+        background: linear-gradient(@alert-line-color-deg, yellow 25%, black 0, black 50%, yellow 0, yellow 75%, black 0);
+        background-size: @alert-line-color-size @alert-line-color-size;
       }
       .black-yellow-down {
-        background: linear-gradient(135deg, black 25%, yellow 0, yellow 50%, black 0, black 75%, yellow 0);
-        background-size: 200px 200px;
+        background: linear-gradient(@alert-line-color-deg, black 25%, yellow 0, yellow 50%, black 0, black 75%, yellow 0);
+        background-size: @alert-line-color-size @alert-line-color-size;
       }
       .black-red-up {
-        background: linear-gradient(135deg, red 25%, black 0, black 50%, red 0, red 75%, black 0);
-        background-size: 200px 200px;
+        background: linear-gradient(@alert-line-color-deg, red 25%, black 0, black 50%, red 0, red 75%, black 0);
+        background-size: @alert-line-color-size @alert-line-color-size;
       }
       .black-red-down {
-        background: linear-gradient(135deg, black 25%, red 0, red 50%, black 0, black 75%, red 0);
-        background-size: 200px 200px;
+        background: linear-gradient(@alert-line-color-deg, black 25%, red 0, red 50%, black 0, black 75%, red 0);
+        background-size: @alert-line-color-size @alert-line-color-size;
       }
       .clearfix {
         overflow: auto;
         zoom: 1;
       }
       .modal-content {
-        height: calc(~"100% - 100px");
-        width: calc(~"80% - 100px");
-        background: rgba(255, 255, 255, 0.5);
+        display: block;
+        height: 100%;
+        width: calc(~"100% - 256px");
+        /*background: rgba(255, 255, 255, 0.5);*/
+        background: @color-primary-4;
         padding: 50px;
         float: left;
         .modal-content-inner {
@@ -61,7 +89,7 @@
       .modal-button {
         float: left;
         height: 100%;
-        width: 10%;
+        width: 128px;
         border: none;
         outline: none;
       }
@@ -114,11 +142,11 @@
         bottom: 0;
       }
       .alert-line-scroll {
-        animation: line-scroll 2.5s linear infinite;
+        animation: line-scroll 1s linear infinite;
       }
       @keyframes line-scroll {
         from {
-          transform: translateX(-200px);
+          transform: translateX(-1 * @alert-line-color-size);
         }
         to {
           transform: translateX(0px);
@@ -201,37 +229,33 @@
 </style>
 
 <template>
-  <div class="modal-wrapper" v-show="modalCtrl.visible" transition="modal-animate">
-    <div  class="clearfix rin-modal" v-show="modalCtrl.visible" transition="modal-animate">
+  <div class="modal-wrapper" v-show="visiable" transition="modal-animate">
+    <div class="clearfix rin-modal" v-show="visiable" transition="modal-animate">
       <div class="alert-line alert-line-up alert-line-scroll" v-bind:class="[modalCtrl.danger ? 'black-red-up' : 'black-yellow-up' ]"></div>
       <div class="modal-content">
-          <div class="modal-content-inner">
-            <slot>
-            <h1>{{modalContent.title}}</h1>
-            <p v-html="modalContent.content"></p>
-          </slot>
-          </div>
+        <div class="modal-content-inner">
+          <slot name="title"></slot>
+          <slot name="content"></slot>
+        </div>
       </div>
-      <button type="button" name="button" class="modal-button modal-button-ok" v-bind:class="{'only-button':modalCtrl.noCancel}" v-on:click="doOK" vi-disabled="modalCtrl.loading">
+      <button type="button" name="button" class="modal-button modal-button-ok" v-bind:class="{'only-button':modalCtrl.noCancel}"
+        v-on:click="doOK" vi-disabled="modalCtrl.loading">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 135 135" overflow="visible" enable-background="new 0 0 135 135" width="50px" height="50px">
-       <circle v-bind:class="{'normal':!modalCtrl.loading}" fill="none" stroke-linecap="round" stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="65" r="58"></circle>
-       <circle class="animate" v-if="!modalCtrl.loading" fill="none" stroke-linecap="round"  stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="65" r="58"></circle>
-       <circle class="loading" transition="loading" v-if="modalCtrl.loading" fill="none" stroke-linecap="round" stroke="#51af61" stroke-width="15" stroke-miterlimit="15" cx="64.8" cy="65" r="58" stroke-dashoffset="900" stroke-dasharray="1000"></circle>
-   </svg>
-
+          <circle v-bind:class="{'normal':!modalCtrl.loading}" fill="none" stroke-linecap="round" stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="65" r="58"></circle>
+          <circle class="animate" v-if="!modalCtrl.loading" fill="none" stroke-linecap="round"  stroke="#66ccff" stroke-width="12" stroke-miterlimit="12" cx="64.8" cy="65" r="58"></circle>
+          <circle class="loading" transition="loading" v-if="modalCtrl.loading" fill="none" stroke-linecap="round" stroke="#51af61" stroke-width="15" stroke-miterlimit="15" cx="64.8" cy="65" r="58" stroke-dashoffset="900" stroke-dasharray="1000"></circle>
+        </svg>
       </button>
       <button type="button" name="button" class="modal-button modal-button-cancel" v-on:click="closeModal" v-if="!modalCtrl.noCancel">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 130 130" overflow="visible" enable-background="new 0 0 130 130" width="40px" height="40px">
-       <path class="normal" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M0 0 L130 130 M130 0 L0 130"></path>
-       <path class="animate cross-1" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M0 0 L130 130 "></path>
-       <path class="animate cross-2" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M130 0 L0 130"></path>
-
-   </svg>
+          <path class="normal" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M0 0 L130 130 M130 0 L0 130"></path>
+          <path class="animate cross-1" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M0 0 L130 130 "></path>
+          <path class="animate cross-2" fill="none" stroke="#FF7F00" stroke-width="12" stroke-miterlimit="12" d="M130 0 L0 130"></path>
+        </svg>
       </button>
       <div class="alert-line alert-line-down alert-line-scroll " v-bind:class="[modalCtrl.danger ? 'black-red-down' : 'black-yellow-down' ]"></div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -253,40 +277,15 @@
 
   export default {
     name: 'RinModal',
-    props: ['modal-id'],
+    props: ['visiable'],
     data() {
       return {
         modalCtrl: {
-          visible: false,
           danger: false,
           noCancel: false,
           loading: false,
         },
-        modalContent: {
-          title: 'Hello Modal',
-          content: 'Hi~~',
-        },
       };
-    },
-    events: {
-      'open-modal' (opt) {
-        // console.log(this.modalId,opt.modalId);
-        if (this.modalId === opt.modalId) {
-          this.openModal(opt);
-          // console.log('Ready2Show');
-        }
-      },
-      'close-modal' () {
-        this.closeModal();
-      },
-      'modal-start-loading' () {
-        // console.log('Ready2Loading');
-        this.startLoading();
-      },
-      'modal-stop-loading' () {
-        // console.log('Ready2StopLoading');
-        this.stopLoading();
-      },
     },
     methods: {
       startLoading() {
@@ -296,10 +295,10 @@
         this.modalCtrl.loading = false;
       },
       closeModal() {
-        this.modalCtrl.visible = false;
-        this.$dispatch('modal-closed');
+        this.$emit('modalClosed');
+
         setTimeout(() => {
-          this.$dispatch('close-modal-blur');
+          // this.$dispatch('close-modal-blur');
           this.modalCtrl.loading = false;
           this.modalCtrl.danger = false;
         }, 500);
@@ -313,8 +312,6 @@
           this.modalContent.title = opt.title;
           this.modalContent.content = opt.content;
         }
-        this.$dispatch('open-modal-blur');
-        this.modalCtrl.visible = true;
 
         document.body.addEventListener('keyup', this.keyListener = keyListener.bind(this));
       },
@@ -330,4 +327,5 @@
       },
     },
   };
+
 </script>
