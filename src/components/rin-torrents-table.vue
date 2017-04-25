@@ -7,7 +7,6 @@
   @column_four_width: 5rem;
   @column_six_width: 10rem;
   @column_seven_width: 10rem;
-
   .rin-table-wrapper {
     height: 100%;
     display: block;
@@ -17,7 +16,6 @@
   #loader {
     height: 256px;
   }
-  
   /*a:hover {
     text-shadow: 1px 1px rgba(99, 99, 99, 0.6);
   }*/
@@ -25,30 +23,24 @@
   .torrent {
     font-size: 12px;
     cursor: pointer;
-
     &:hover {
       color: white;
       background-color: @color-primary-4;
-
       a {
         color: white;
-
         &.rin-download,
         &.rin-magnet {
           color: @color-primary-0;
         }
       }
     }
-
     .label {
       font-size: 10px;
       padding: .3rem .6rem;
     }
-
     .rin-inline-tag {
       border: 1px solid @color-primary-0;
     }
-
     .rin-download,
     .rin-magnet {
       padding: 0 .3rem;
@@ -60,11 +52,6 @@
         background-color: #2199e8;
       }
     }
-    
-    /*.torrent-name {*/
-      /*color: black;*/
-    /*}*/
-
     .torrent-size,
     .torrent-status {
       font-family: monospace;
@@ -79,6 +66,7 @@
     margin: 0;
     table-layout: fixed;
     border-collapse: collapse;
+    div {}
     tbody td,
     tbody th {
       /* padding: .5rem .625rem .625rem; */
@@ -117,6 +105,11 @@
       tr {
         display: block;
         position: relative;
+        th {
+          color: @color-primary-4;
+          font-size: 0.8rem;
+          font-weight: normal;
+        }
       }
     }
     tbody {
@@ -165,7 +158,7 @@
           </td>
           <td>
             <div class="torrent-size">
-              <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{$t(((t.comments >1) ? 'Comments' :'Comment' ))}}</span> 
+              <span class="rin-table-comments" v-if='t.comments'>{{t.comments}} {{$t(((t.comments >1) ? 'Comments' :'Comment' ))}}</span>
               <span>{{t.size}}</span>
             </div>
             <div class="torrent-status">
