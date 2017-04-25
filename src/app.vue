@@ -7,9 +7,10 @@
     <router-view></router-view>
     <nav-toolbar></nav-toolbar>
     <nav-logo></nav-logo>
-    <rin-modal></rin-modal>
+
+    <!--<rin-modal></rin-modal>
     <rin-user></rin-user>
-    <modal-signin></modal-signin>
+    <modal-signin></modal-signin>-->
   </div>
 </template>
 
@@ -26,9 +27,9 @@
     components: {
       'nav-toolbar': require('./components/nav-toolbar'),
       'nav-logo': require('./components/nav-logo'),
-      'rin-modal': require('./components/rin-modal'),
-      'rin-user': require('./components/rin-user'),
-      'modal-signin': require('./components/modal-signin'),
+      // 'rin-modal': require('./components/rin-modal'),
+      // 'rin-user': require('./components/rin-user'),
+      // 'modal-signin': require('./components/modal-signin'),
     },
     methods: {
       updateLocales(lng) {
@@ -112,4 +113,5 @@
       document.title = this.$t('番組、萌え');
     },
   };
+
 </script>
