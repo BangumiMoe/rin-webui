@@ -1,9 +1,4 @@
-<!--
-    Rin Search Bar By LancerComet at 22:33, 2015.12.08.
-    # Carry Your World #
--->
-
-<!-- SearchBar 样式定义. -->
+<!-- Rin Search Bar By LancerComet at 22:33, 2015.12.08. # Carry Your World # -->
 <style scoped lang="less">
 @import "../less/colors.less";
 .search-bar {
@@ -29,6 +24,8 @@
       <input type="submit" class="button" @click.stop="searchSubmit">
     </div>
   </div>
+  <div class="tags">
+  </div>
 </div>
 </template>
 
@@ -38,6 +35,9 @@
     data() {
       return {
         query: '',
+        resources: {
+          suggest: this.$resource('https://bangumi.moe/api/v2/torrent/suggest'),
+        },
       };
     },
 
@@ -85,9 +85,19 @@
         const query = this.query;
         console.log(query);
       },
+      fetchSuggest() {
+        this.resources.suggest.get({
+          query: 'D',
+        }).then(
+          resp => {
+            console.log(resp);
+          }
+        );
+      },
     },
     mounted() {
       console.log('[NavToolbarSearch]loaded');
+      this.fetchSuggest();
     },
   };
 

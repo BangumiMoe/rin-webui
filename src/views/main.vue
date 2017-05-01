@@ -1,7 +1,6 @@
 <style scoped lang="less">
   @import "../less/colors.less";
   @import "../less/framework.less";
-
   #rin-main {
     height: 100%;
     overflow: hidden;
@@ -14,14 +13,11 @@
 </style>
 
 <template>
-<div id="rin-main" class="rin-col" style="width: calc(100% - 128px);">
-  <div id="rin-wrapper" class="rin-wrapper" transition="rin-fade">
-    <rin-torrents-table 
-      :torrents="torrents.data" :torrents_total="torrents.total"
-      :busy="busy" 
-      :need_more="fetch_next_torrents"></rin-torrents-table>
+  <div id="rin-main" class="rin-col" style="width: calc(100% - 128px);">
+    <div id="rin-wrapper" class="rin-wrapper" transition="rin-fade">
+      <rin-torrents-table :torrents="torrents.data" :torrents_total="torrents.total" :busy="busy" :need_more="fetch_next_torrents"></rin-torrents-table>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -97,38 +93,11 @@
       //   });
       // },
     },
-    components: {
-      RinTorrentsTable,
-    },
+    components: { RinTorrentsTable },
     mounted() {
       this.getTorrents(0);
-      console.log('[Main]loaded');
+      console.info('[Main]loaded');
     },
-    // route: {
-    //   data() {
-    //     switch (this.$route.mode) {
-    //       case 'normal':
-    //         this.currentPage = 1;
-    //         this.getTorrents();
-    //         break;
-    //       case 'page':
-    //         if ((this.$route.params.number === parseInt(this.$route.params.number, 0)) && parseInt(this.$route.params.number, 0) > 0) {
-    //           this.currentPage = parseInt(this.$route.params.number, 0);
-    //         }
-    //         this.getTorrents();
-    //         break;
-    //       case 'search':
-    //         // TODO:搜索处理
-    //         if ((this.$route.params.number === parseInt(this.$route.params.number, 0)) && parseInt(this.$route.params.number, 0) > 0) {
-    //           this.currentPage = parseInt(this.$route.params.number, 0);
-    //         }
-    //         // console.log('Search in process');
-    //         this.doSearch(this.$route.params.key);
-    //         break;
-    //       default:
-    //         this.getTorrents();
-    //     }
-    //   },
-    // },
   };
+
 </script>

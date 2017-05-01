@@ -1,6 +1,6 @@
 {
   "name": "rin-webui",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "new frontend design for rin-pr",
   "author": "BangumiMoe <prpr@bangumi.moe>",
   "private": true,
@@ -14,11 +14,13 @@
   },
   "dependencies": {
     "js-cookie": "^2.1.2",
+    "md5": "^2.2.1",
     "moment": "2.14.1",
     "spark-md5": "^2.0.2",
     "vue": "^2.2.1",
     "vue-i18n": "^5.0.3",
-    "vuex": "^2.2.1"
+    "vuex": "^2.2.1",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

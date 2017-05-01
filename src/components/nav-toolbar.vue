@@ -41,31 +41,37 @@
   }
 </style>
 
+<style lang="less">
+  .login-form {}
+</style>
+
 <template>
   <div id="rin-toolbar" class="rin-col">
 
-    <rin-modal :visiable="form.show" @modalClosed="formClosed">
+    <rin-modal :visiable="form.show" @modalConfirmed="formConfirmed" @modalClosed="formClosed">
       <h1 slot="title">登录</h1>
-      <form slot="content" @submit.prevent="userSignIn">
+      <form class="login-form" slot="content" @submit.prevent="userSignIn">
         <label>
           用户名/邮箱
           <input type="text" v-model="form.username" required>
         </label>
+        <p class="help-text" v-text="form.error" v-if="form.error"></p>
 
         <label>
           密码
-          <input type="text" v-model="form.password" required>
+          <input type="password" v-model="form.password" required>
         </label>
-
-        <button class="button" @click="login">登录</button>
       </form>
     </rin-modal>
 
     <a class="rin-button rin-user-face" @click.stop="formOpen">
-      <span>
-        <img :src="user|icon_url" v-if="user._id" />
-      </span>
-      <tooltip :info="$t('Login')"></tooltip>
+      <template v-if="user.isLogin()">
+        <span :style="{'background-image': `url(${user.get_icon()})`}"></span>
+      </template>
+      <template v-else>
+        <span :style="{'background-image': user.get_icon()}"></span>
+        <tooltip :info="$t('Login')"></tooltip>
+      </template>
     </a>
 
     <!--
@@ -121,7 +127,6 @@
 
     <!-- Search Added By LancerComet at 23:07, 2015.12.08. -->
     <!--<search-bar v-bind:class="{'show': searchBar.visible, 'fixed': searchBar.fixed, 'hide': !searchBar.visible && !searchBar.fixed}"></search-bar>-->
-
   </div>
 </template>
 
@@ -132,11 +137,13 @@
 
   import RinModal from './rin-modal';
 
+  import { user } from '../modules/user';
+
   export default {
     name: 'NavToolbar',
     data() {
       return {
-        user: {},
+        user,
         searchBar: {
           visible: false,
           fixed: false,
@@ -147,13 +154,13 @@
           username: '',
           password: '',
           show: false,
+          error: '',
+        },
+        resources: {
+          login: this.$resource('/api/user/signin'),
+          session: this.$resource('/api/v2/user/session'),
         },
       };
-    },
-    filter: {
-      icon_url(user) {
-        return `https://static.bangumi.moe/avatar/${user.emailHash}`;
-      },
     },
     methods: {
       // Definition: 搜索栏显示事件.
@@ -230,16 +237,29 @@
         });
       },
 
-      getIcon(i) {
-        return i.icon ? `https://bangumi-moe.phoenixstatic.com/${i.icon}` : require('../assets/akarin.jpg');
-      },
+      // getIcon(i) {
+      //   return i.icon ? `https://bangumi-moe.phoenixstatic.com/${i.icon}` : require('../assets/akarin.jpg');
+      // },
 
       formOpen() {
-        this.form.show = true;
+        if (!user.isLogin()) this.form.show = true;
       },
 
       formClosed() {
         this.form.show = false;
+      },
+
+      formConfirmed() {
+        this.form.error = '';
+        user.login(this.form.username, this.form.password).then(() => {
+          if (!user.isLogin()) {
+            this.form.error = 'login error';
+            return;
+          }
+
+          this.form.error = '';
+          this.form.show = false;
+        });
       },
     },
     components: {
@@ -247,22 +267,6 @@
       'search-bar': NavToolbarSearch,
       'info-box': NavToolbarInfobox,
       tooltip: NavTooltip,
-    },
-    events: {
-      UserSignInOK(user) {
-        this.user = user;
-        this.getUserInfo();
-        if (this.signin_form_opened) {
-          this.signin_form_opened = false;
-          // this.$dispatch('hideSigninForm');
-        }
-      },
-      UserSignInFailed() {
-        this.user = {};
-      },
-      UserSignOutOK() {
-        this.user = {};
-      },
     },
     watch: {
       '$route'() {

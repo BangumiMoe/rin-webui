@@ -316,14 +316,16 @@
         document.body.addEventListener('keyup', this.keyListener = keyListener.bind(this));
       },
       doOK() {
-        let evt = 'modal-ok-click';
-        if (this.modalCtrl.noCancel && !this.modalCtrl.loading) {
-          this.closeModal();
-        }
-        if (this.modalCtrl.loading) {
-          evt = 'modal-ok-click-loading';
-        }
-        this.$dispatch(evt);
+        this.$emit('modalConfirmed');
+
+        // let evt = 'modal-ok-click';
+        // if (this.modalCtrl.noCancel && !this.modalCtrl.loading) {
+        //   this.closeModal();
+        // }
+        // if (this.modalCtrl.loading) {
+        //   evt = 'modal-ok-click-loading';
+        // }
+        // this.$dispatch(evt);
       },
     },
   };

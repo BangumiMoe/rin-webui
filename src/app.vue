@@ -16,6 +16,7 @@
 
 <script>
   import Vue from 'vue';
+  import { user } from './modules/user';
 
   export default {
     name: 'RinWebApp',
@@ -86,6 +87,10 @@
     //     this.$emit('UserSignOutOK');
     //   },
     // },
+    mounted() {
+      user.check();
+      document.title = this.$t('番組、萌え');
+    },
     created() {
       let lang = localStorage.getItem('rin-locale');
       if (lang === null) {
@@ -108,9 +113,6 @@
       console.log(`[main.created]locale use ${lang}`);
       this.updateLocales(lang);
       this.$root.$on('LanguageSelected', this.updateLocales);
-    },
-    mounted() {
-      document.title = this.$t('番組、萌え');
     },
   };
 
