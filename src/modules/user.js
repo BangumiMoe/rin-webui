@@ -7,7 +7,7 @@ const default_icon = require('../assets/akarin.jpg');
 export class User {
   __urlLogin = '/api/user/signin';
   __urlCheck = '/api/v2/user/session';
-  __urlIcon = 'https://static.bangumi.moe/avatar/';
+  __urlIcon = 'https://static.bangumi.moe/avatar';
 
   username = null;
   email = null;
