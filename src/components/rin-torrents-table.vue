@@ -39,6 +39,7 @@
       padding: .3rem .6rem;
     }
     .rin-inline-tag {
+      vertical-align: bottom;
       border: 1px solid @color-primary-0;
     }
     .rin-download,
