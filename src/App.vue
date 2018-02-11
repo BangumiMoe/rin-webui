@@ -1,28 +1,40 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="grid-x">
+    <div class="cell auto main-content">
+      <SystemToolbar></SystemToolbar>
+
+      <router-view></router-view>
+    </div>
+
+    <SystemNavigation class="cell"></SystemNavigation>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { user } from "@/modules/user";
+
+import SystemNavigation from "@/components/SystemNavigation";
+import SystemToolbar from "@/components/SystemToolbar";
 
 export default {
-  name: 'app',
+  name: "app",
+  props: {
+    user
+  },
   components: {
-    HelloWorld
+    SystemNavigation,
+    SystemToolbar
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  /* from https://github.com/zenozeng/fonts.css */
+  font-family: -apple-system, "Helvetica Neue", Helvetica, "Nimbus Sans L",
+    Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB",
+    "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei",
+    "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei,
+    "WenQuanYi Zen Hei Sharp", sans-serif;
 }
 </style>

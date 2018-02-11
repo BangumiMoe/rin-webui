@@ -1,0 +1,142 @@
+import * as md5 from "md5";
+
+// const URL_HOST = "https://bangumi.moe";
+const URL_SIGIN = `/api/user/signin`;
+const URL_FETCH = `/api/user/fetch`;
+const DEFAULT_USERNAME = "Anonymous";
+
+const users = {};
+
+class User {
+  /*
+    SignIn API return intitial struct 
+    {
+        "_id":"566a6782c7a2fafb3c1aae30",
+        "username":"SCys",
+        "emailHash":"f8be07662cc444cdba3f84a2f82988b5",
+        "active":true,
+        "regDate":1449813890472,
+        "team_ids":null,
+        "group":"member"
+    }
+   */
+  constructor() {
+    this.emailHash = "";
+    this.regDate = new Date(1970, 1, 1);
+    this.active = false;
+    this.teamIds = [];
+    this.group = "unkown";
+
+    // username spec
+    this.name = DEFAULT_USERNAME;
+
+    this.busy = false;
+    this.isSignIn = false;
+  }
+
+  doSignOut() {
+    // TODO
+    this.emailHash = "";
+    this.name = DEFAULT_USERNAME;
+  }
+
+  doSignIn(password) {
+    return new Promise((resolve, reject) => {
+      if (this.busy) {
+        console.warn(`[user.doSignIn]${this.toString()} is busy`);
+        return;
+      }
+
+      if (!password) {
+        reject(false);
+        return;
+      }
+
+      this.busy = true;
+      this.isSignIn = false;
+
+      fetch(URL_SIGIN, {
+        method: "POST",
+        body: JSON.stringify({
+          password: md5(password),
+          username: this.name
+        })
+      }).then(resp => {
+        resp.json().then(data => {
+          this.busy = false;
+
+          const result = data.success;
+          if (!result) {
+            console.info(`[User.doSignIn]${this.toString()} failed`);
+            reject(false);
+            return;
+          }
+
+          const userInfo = data.user;
+          this.emailHash = userInfo.emailHash;
+          this.group = userInfo.group;
+          this.id = userInfo.id;
+          this.name = userInfo.username;
+          this.regDate = userInfo.regDate;
+          this.isSignIn = true;
+          console.info(`[User.doSignIn]${this.toString()} ok`);
+        });
+      });
+    });
+  }
+
+  toString() {
+    return `<User "${this.name}">`;
+  }
+
+  static fetch(id) {
+    return new Promise(resolve => {
+      fetch(URL_FETCH, {
+        method: "POST",
+        body: JSON.stringify({ _id: id })
+      })
+        .then(resp => resp.json())
+        .then(data => {
+          let user = users[id];
+          if (user === undefined) {
+            user = new User();
+            users[id] = user;
+          }
+
+          user.name = data.username;
+          user.emailHash = data.emailHash;
+          user.active = data.active;
+          user.regDate = Date.parse(data.regDate);
+          user.teamIds = data.teamIds;
+          user.group = data.group;
+          resolve(user);
+
+          console.info(`[User.fetch]${user.toString()} info`);
+        });
+    });
+  }
+
+  // promise<User>
+  static get(id, source) {
+    return new Promise(resolve => {
+      let user = users[id];
+      if (user !== undefined) {
+        resolve(user);
+        return;
+      }
+
+      user = new User();
+      user.emailHash = source.emailHash;
+      user.name = source.username;
+      user.id = source._id;
+
+      users[id] = user;
+
+      resolve(user);
+    });
+  }
+}
+
+const user = new User();
+
+export { user, User };
