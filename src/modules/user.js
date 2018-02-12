@@ -1,5 +1,5 @@
 import * as md5 from "md5";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 // const URL_HOST = "https://bangumi.moe";
 const URL_SIGIN = `/api/user/signin`;
@@ -84,8 +84,7 @@ class User {
       fetch(URL_SIGIN, {
         method: "POST",
         // credentials: "same-origin",
-        // credentials: "include",
-        credentials: "omit",
+        credentials: "include",
         body: JSON.stringify({
           password: md5(password),
           username: this.name
