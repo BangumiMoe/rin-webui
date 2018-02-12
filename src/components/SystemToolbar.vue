@@ -1,11 +1,14 @@
 <template>
   <div class="system-toolbar grid-x grid-padding-x">
     <div class="cell auto">
-      &nbsp;
+      <router-link :to="{ name: 'Index' }">Index</router-link>
     </div>
 
     <div class="cell medium-3 large-2 text-right">
-      <a>Sign In</a>
+
+      <router-link :to="{ name: 'UserSignIn' }" v-if="!user.isSignIn()">Sign In</router-link>
+      <!-- <router-link :to="{ name: 'UserProfile' }" v-if="user.isSignIn()">{{user.name}}</router-link> -->
+
       <span class="split">|</span>
       <a>Regsiter</a>
     </div>
@@ -13,9 +16,14 @@
 </template>
 
 <script>
+import { user } from "@/modules/user";
+
 export default {
   name: "SystemToolbar",
-  props: {}
+  props: {},
+  data() {
+    return { user };
+  }
 };
 </script>
 

@@ -1,8 +1,11 @@
 import * as md5 from "md5";
+import Cookies from 'js-cookie';
 
 // const URL_HOST = "https://bangumi.moe";
 const URL_SIGIN = `/api/user/signin`;
 const URL_FETCH = `/api/user/fetch`;
+const URL_SESSION = `/api/user/session`;
+
 const DEFAULT_USERNAME = "Anonymous";
 
 const users = {};
@@ -31,24 +34,48 @@ class User {
     this.name = DEFAULT_USERNAME;
 
     this.busy = false;
-    this.isSignIn = false;
   }
 
-  doSignOut() {
-    // TODO
-    this.emailHash = "";
-    this.name = DEFAULT_USERNAME;
+  isSignIn() {
+    return (
+      Cookies.get("koa:sess") !== undefined &&
+      Cookies.get("koa:sess.sig") !== undefined
+    );
+  }
+
+  checkSignIn() {
+    return new Promise(resolve => {
+      fetch(URL_SESSION)
+        .then(resp => resp.json())
+        .then(data => {
+          if (!data.result) {
+            resolve(null);
+            return;
+          }
+
+          const userInfo = data.user;
+          this.emailHash = userInfo.emailHash;
+          this.group = userInfo.group;
+          this.id = userInfo.id;
+          this.name = userInfo.username;
+          this.regDate = userInfo.regDate;
+          console.info(`[User.doSignIn]${this.toString()} ok`);
+
+          resolve(this);
+        });
+    });
   }
 
   doSignIn(password) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
       if (this.busy) {
         console.warn(`[user.doSignIn]${this.toString()} is busy`);
+        resolve(false);
         return;
       }
 
       if (!password) {
-        reject(false);
+        resolve(false);
         return;
       }
 
@@ -57,6 +84,9 @@ class User {
 
       fetch(URL_SIGIN, {
         method: "POST",
+        // credentials: "same-origin",
+        // credentials: "include",
+        credentials: "omit",
         body: JSON.stringify({
           password: md5(password),
           username: this.name
@@ -68,9 +98,11 @@ class User {
           const result = data.success;
           if (!result) {
             console.info(`[User.doSignIn]${this.toString()} failed`);
-            reject(false);
+            resolve(false);
             return;
           }
+
+          // TODO check cookie is updated
 
           const userInfo = data.user;
           this.emailHash = userInfo.emailHash;
@@ -78,8 +110,9 @@ class User {
           this.id = userInfo.id;
           this.name = userInfo.username;
           this.regDate = userInfo.regDate;
-          this.isSignIn = true;
           console.info(`[User.doSignIn]${this.toString()} ok`);
+
+          resolve(true);
         });
       });
     });

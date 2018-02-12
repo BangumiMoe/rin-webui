@@ -5,6 +5,7 @@ import Router from "vue-router";
 // import Hello from "@/components/HelloWorld";
 
 import Index from "@/components/Index";
+import UserSignIn from "@/components/UserSignIn";
 
 Vue.use(Router);
 
@@ -21,7 +22,12 @@ export default new Router({
     {
       path: "/",
       name: "Index",
-      component: Index,
+      component: Index
+    },
+    {
+      path: "/user/login",
+      name: "UserSignIn",
+      component: UserSignIn
     }
   ]
 });

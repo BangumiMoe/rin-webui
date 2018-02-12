@@ -23,6 +23,15 @@ export default {
   components: {
     SystemNavigation,
     SystemToolbar
+  },
+  mounted() {
+    if (user.isSignIn()) {
+      user.checkSignIn().then(user => {
+        if (user !== null) {
+          console.info(`${user} is sign in.`);
+        }
+      });
+    }
   }
 };
 </script>
