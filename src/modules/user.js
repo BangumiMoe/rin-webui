@@ -83,13 +83,19 @@ class User {
 
       fetch(URL_SIGIN, {
         method: "POST",
-        // credentials: "same-origin",
-        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Cache: "no-cache"
+        },
+        credentials: "same-origin",
+        // credentials: "include",
         body: JSON.stringify({
           password: md5(password),
           username: this.name
         })
       }).then(resp => {
+        console.log(resp.headers.get("set-cookie"));
         resp.json().then(data => {
           this.busy = false;
 
