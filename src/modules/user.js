@@ -80,7 +80,6 @@ class User {
       }
 
       this.busy = true;
-      this.isSignIn = false;
 
       fetch(URL_SIGIN, {
         method: "POST",
