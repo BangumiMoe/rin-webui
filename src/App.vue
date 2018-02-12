@@ -25,7 +25,7 @@ export default {
     SystemToolbar
   },
   mounted() {
-    if (user.isSignIn()) {
+    if (!user.isSignIn) {
       user.checkSignIn().then(user => {
         if (user !== null) {
           console.info(`${user} is sign in.`);

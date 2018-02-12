@@ -29,6 +29,11 @@ export default new Router({
       path: "/user/login",
       name: "UserSignIn",
       component: UserSignIn
-    }
+    },
+    {
+      path: "/user/profile",
+      name: "UserProfile",
+      component: UserSignIn
+    },
   ]
 });

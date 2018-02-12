@@ -1,5 +1,4 @@
 import * as md5 from "md5";
-import Cookies from "js-cookie";
 
 // const URL_HOST = "https://bangumi.moe";
 const URL_SIGIN = `/api/user/signin`;
@@ -34,31 +33,28 @@ class User {
     this.name = DEFAULT_USERNAME;
 
     this.busy = false;
-  }
-
-  isSignIn() {
-    return (
-      Cookies.get("koa:sess") !== undefined &&
-      Cookies.get("koa:sess.sig") !== undefined
-    );
+    this.isSignIn = false;
   }
 
   checkSignIn() {
     return new Promise(resolve => {
-      fetch(URL_SESSION)
+      fetch(URL_SESSION, {
+        credentials: "include"
+      })
         .then(resp => resp.json())
-        .then(data => {
-          if (!data.result) {
+        .then(userInfo => {
+          if (userInfo.emailHash === undefined) {
+            this.isSignIn = false;
             resolve(null);
             return;
           }
 
-          const userInfo = data.user;
           this.emailHash = userInfo.emailHash;
           this.group = userInfo.group;
           this.id = userInfo.id;
           this.name = userInfo.username;
           this.regDate = userInfo.regDate;
+          this.isSignIn = true;
           console.info(`[User.doSignIn]${this.toString()} ok`);
 
           resolve(this);
@@ -83,13 +79,13 @@ class User {
 
       fetch(URL_SIGIN, {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Cache: "no-cache"
-        },
-        credentials: "same-origin",
-        // credentials: "include",
+        // headers: {
+        //   Accept: "application/json",
+        //   "Content-Type": "application/json",
+        //   Cache: "no-cache"
+        // },
+        // credentials: "same-origin",
+        credentials: "include",
         body: JSON.stringify({
           password: md5(password),
           username: this.name
@@ -114,6 +110,7 @@ class User {
           this.id = userInfo.id;
           this.name = userInfo.username;
           this.regDate = userInfo.regDate;
+          this.isSignIn = true;
           console.info(`[User.doSignIn]${this.toString()} ok`);
 
           resolve(true);

@@ -44,11 +44,7 @@ export default {
           return;
         }
 
-        if (user.isSignIn()) {
-          console.log(`${user} is sign in ok.`);
-        } else {
-          console.log(`${user} is sign in, but cookie setup failed.`);
-        }
+        console.log(`${user} is sign in ok.`);
       });
     }
   }
