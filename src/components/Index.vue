@@ -1,7 +1,7 @@
 <template>
   <div class="index">
 
-    <div class="torrents-list">
+    <div class="torrents" :class="{'list-mode': true}">
       <div class="torrent grid-x" v-for="torrent in torrents" :key="torrent.id">
 
         <div class="cell categroy">
@@ -62,13 +62,13 @@ export default {
   data() {
     return {
       Torrent,
-      pageNum: 0,
+      pageNum: 1,
       pageCount: 0,
       pageTorrents: []
     };
   },
   mounted() {
-    Torrent.manager.fetchPage().then(pageData => {
+    Torrent.manager.fetchPage(this.pageNum).then(pageData => {
       this.pageNum = pageData.num;
       this.pageCount = pageData.count;
 
@@ -93,70 +93,83 @@ export default {
 
 .index {
   overflow: auto;
-  height: 100vh;
-  padding-top: 32px;
 
-  .torrent {
-    &:nth-child(even) {
-      background: #ffffff;
-    }
-    &:nth-child(odd) {
-      background: #f3f3f3;
-    }
+  &::-webkit-scrollbar-track {
+    // box-shadow: inset 0 0 .3rem @color-5;
+    background-color: @color-4 - #060606;
+  }
 
-    .cell {
-      line-height: @item_height;
+  &::-webkit-scrollbar {
+    width: .5rem;
+  }
 
-      &.categroy {
-        overflow: hidden;
-        width: 7rem;
-        text-align: center;
+  &::-webkit-scrollbar-thumb {
+    background-color: @color-5;
+  }
 
-        .label {
-          width: 5.6rem;
-        }
+  .list-mode {
+    .torrent {
+      &:nth-child(even) {
+        background: #ffffff;
+      }
+      &:nth-child(odd) {
+        background: #f3f3f3;
       }
 
-      // &.file-info {
-      //   font-family: "Audiowide", cursive;
-      //   font-size: 10px;
-      //   width: 10rem;
-      //   text-align: center;
+      .cell {
+        line-height: @item_height;
 
-      //   line-height: 10px;
-      //   padding: 1px;
-      // }
+        &.categroy {
+          overflow: hidden;
+          width: 7rem;
+          text-align: center;
 
-      &.uploader {
-        width: 8.5rem;
-        line-height: @item_height * 0.5;
-      }
-
-      &.title {
-        font-size: round(@item_height * 0.25);
-        line-height: @item_height * 0.68;
-
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        .file-info {
-          margin-top: -0.3rem;
-          line-height: @item_height * 0.28;
-
-          .breadcrumbs {
-            margin: 0;
-          }
-
-          span {
-            font-size: @item_height * 0.2;
-            color: #5e5e5e;
+          .label {
+            width: 5.6rem;
           }
         }
-      }
 
-      &.team {
-        width: 8.5rem;
+        // &.file-info {
+        //   font-family: "Audiowide", cursive;
+        //   font-size: 10px;
+        //   width: 10rem;
+        //   text-align: center;
+
+        //   line-height: 10px;
+        //   padding: 1px;
+        // }
+
+        &.uploader {
+          width: 8.5rem;
+          line-height: @item_height * 0.5;
+        }
+
+        &.title {
+          font-size: round(@item_height * 0.25);
+          line-height: @item_height * 0.68;
+
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          .file-info {
+            margin-top: -0.3rem;
+            line-height: @item_height * 0.28;
+
+            .breadcrumbs {
+              margin: 0;
+            }
+
+            span {
+              font-size: @item_height * 0.2;
+              color: #5e5e5e;
+            }
+          }
+        }
+
+        &.team {
+          width: 8.5rem;
+        }
       }
     }
   }

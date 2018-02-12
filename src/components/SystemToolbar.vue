@@ -23,10 +23,10 @@ export default {
 @import "../assets/color.less";
 
 .system-toolbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: calc(~"100vw - 64px");
+  // position: absolute;
+  // top: 0;
+  // left: 0;
+  // width: 100%;
 
   height: 32px;
   font-size: 16px;

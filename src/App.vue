@@ -1,9 +1,8 @@
 <template>
   <div id="app" class="grid-x">
     <div class="cell auto main-content">
-      <SystemToolbar></SystemToolbar>
-
-      <router-view></router-view>
+      <SystemToolbar class="toolbar"></SystemToolbar>
+      <router-view class="router-view"></router-view>
     </div>
 
     <SystemNavigation class="cell"></SystemNavigation>
@@ -28,7 +27,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less">
 body {
   /* from https://github.com/zenozeng/fonts.css */
   font-family: -apple-system, "Helvetica Neue", Helvetica, "Nimbus Sans L",
@@ -36,5 +35,13 @@ body {
     "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei",
     "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei,
     "WenQuanYi Zen Hei Sharp", sans-serif;
+}
+
+.toolbar {
+  height: 32px;
+}
+
+.router-view {
+  height: calc(~"100vh - 32px");
 }
 </style>
