@@ -12,12 +12,16 @@
           <div>
             <a :href="torrent.magnet" v-if="torrent.magnet"><i class="fa fa-magnet"></i></a>
 
+            <span>
+              <i class="fa-comments" :class="{fa: torrent.countInfo.comments, far: torrent.countInfo.comments===0}"></i>
+              <span v-if="torrent.countInfo.comments">{{torrent.countInfo.comments}}</span>
+            </span>
+
             <span>{{torrent.getTitle()}}</span>
           </div>
 
           <div class="file-info">
-
-            <nav aria-label="You are here:" role="navigation">
+            <nav role="navigation">
               <ul class="breadcrumbs">
                 <li><span>Size: {{torrent.size}}</span></li>
                 <li><span>Seeders: {{torrent.countInfo.seeders}}</span></li>
@@ -28,8 +32,8 @@
                 <li><span>Publish At: {{torrent.publishDate|date}}</span></li>
               </ul>
             </nav>
-
           </div>
+
           
         </div>
 
@@ -58,10 +62,56 @@ export default {
       Torrent,
       pageNum: 1,
       pageCount: 0,
-      pageTorrents: []
+      pageTorrents: [],
+
+      busy: false
     };
   },
+
+  methods: {
+    handleIndexScroll(ev) {
+      const y1 = ev.target.scrollTop;
+      const y2 = ev.target.scrollHeight - ev.target.clientHeight;
+
+      // console.log(y1, y2);
+
+      // TODO item height
+      if (y2 - y1 < 52 * 4) {
+        if (this.busy) {
+          return;
+        }
+
+        this.busy = true;
+
+        let pageNum = this.pageNum + 1;
+        if (pageNum >= this.pageCount) {
+          console.warn(`[Index.handleIndexScroll]all page is loaded:${pageNum} === ${this.pageCount}`);
+          return;
+        }
+
+        Torrent.manager.fetchPage(pageNum).then(pageData => {
+          // FIXME refresh when count changed
+          this.pageCount = pageData.count;
+
+          this.pageNum = pageData.num;
+
+          this.pageTorrents.push(...pageData.torrents);
+
+          this.busy = false;
+        });
+      }
+    }
+  },
+
+  umounted() {
+    const indexElm = document.getElementsByClassName("index")[0];
+    indexElm.removeEventListener("scroll");
+  },
+
   mounted() {
+    const indexElm = document.getElementsByClassName("index")[0];
+    indexElm.addEventListener("scroll", this.handleIndexScroll);
+
     Torrent.manager.fetchPage(this.pageNum).then(pageData => {
       this.pageNum = pageData.num;
       this.pageCount = pageData.count;
@@ -152,6 +202,7 @@ export default {
 
           .file-info {
             margin-top: -0.3rem;
+            height: @item_height * 0.28;
             line-height: @item_height * 0.28;
 
             .breadcrumbs {

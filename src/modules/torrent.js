@@ -88,6 +88,7 @@ class TorrentManager {
   }
 
   fetchPageByUser(num = 1, user) {
+    // TODO check user is sign in
     return new Promise((resolve, reject) => {
       if (this.busy) {
         console.error(`[TorrentManager.fetchPage]service busy`);
@@ -143,7 +144,7 @@ class TorrentManager {
     });
   }
 
-  fetchPage(num = 1) {
+  fetchPage(num = 1, limit=30) {
     return new Promise((resolve, reject) => {
       if (this.busy) {
         console.error(`[TorrentManager.fetchPage]service busy`);
@@ -166,7 +167,7 @@ class TorrentManager {
         }
       }
 
-      fetch(`${URL_TORRENT_PAGE}/${num}?limit=30`)
+      fetch(`${URL_TORRENT_PAGE}/${num}?limit=${limit}`)
         .then(resp => resp.json())
         .then(data => {
           // reset torrents when page count is changed
@@ -199,15 +200,13 @@ class TorrentManager {
     });
   }
 
-  fetchNextPage() {
-    let pageNum = this.pageCurrent + 1;
-    if (pageNum > this.pageCount) {
-      // TODO refresh pageCount
-      this.pageNum = this.pageCount - 1;
-    }
-  }
-
-  fetchPrevPage() {}
+  // fetchNextPage() {
+  //   let pageNum = this.pageCurrent + 1;
+  //   if (pageNum > this.pageCount) {
+  //     // TODO refresh pageCount
+  //     this.pageNum = this.pageCount - 1;
+  //   }
+  // }
 }
 
 const manager = new TorrentManager();

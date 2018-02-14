@@ -69,6 +69,12 @@ export default {
     };
   },
   mounted() {
+    if (!user.isSignIn) {
+      console.info(`[MyTorrents]user is not sign in.`)
+      this.$router.push({ name: "Index" });
+      return;
+    }
+
     Torrent.manager.fetchPageByUser(this.pageNum, user).then(pageData => {
       this.pageNum = pageData.num;
       this.pageCount = pageData.count;

@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url(https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css);
+@import url(https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome/web-fonts-with-css/css/fontawesome-all.min.css);
 
 body {
   /* from https://github.com/zenozeng/fonts.css */
