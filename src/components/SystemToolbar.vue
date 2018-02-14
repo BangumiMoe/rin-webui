@@ -2,6 +2,8 @@
   <div class="system-toolbar grid-x grid-padding-x">
     <div class="cell auto">
       <router-link :to="{ name: 'Index' }">Index</router-link>
+
+      <router-link :to="{name: 'MyTorrents'}" v-if="user.isSignIn">My Torrents</router-link>
     </div>
 
     <div class="cell right-bar text-right" v-if="!user.isSignIn">
@@ -12,8 +14,6 @@
 
     <div class="cell right-bar text-right" v-if="user.isSignIn">
       <UserLink :user="user"></UserLink>
-      <span class="split">|</span>
-      <a>Out</a>
     </div>
   </div>
 </template>

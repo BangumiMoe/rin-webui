@@ -8,12 +8,20 @@
           <span class="label">{{torrent.tag ? torrent.tag.getDisplay() : "Unkown"}}</span>
         </div>
 
-        <div class="cell auto title">
-          <div>
-            <a :href="torrent.magnet" v-if="torrent.magnet"><i class="fa fa-magnet"></i></a>
+        <!-- <div class="cell file-info">
 
-            <span>{{torrent.getTitle()}}</span>
+          <div>
+            {{torrent.countInfo.leechers}} 
+            {{torrent.countInfo.seeders}}
+            {{torrent.countInfo.downloads}}
+            {{torrent.countInfo.finished}}
           </div>
+          <div>{{torrent.size}}</div>
+
+        </div> -->
+        
+        <div class="cell auto title">
+          <div>{{torrent.getTitle()}}</div>
 
           <div class="file-info">
 
@@ -24,8 +32,6 @@
                 <li><span>Downloads: {{torrent.countInfo.downloads}}</span></li>
                 <li><span>Finished: {{torrent.countInfo.finished}}</span></li>
                 <li><span>Leechers: {{torrent.countInfo.leechers}}</span></li>
-
-                <li><span>Publish At: {{torrent.publishDate|date}}</span></li>
               </ul>
             </nav>
 
@@ -34,7 +40,7 @@
         </div>
 
         <div class="cell uploader">
-          <UploaderLink :uploader="torrent.uploader"></UploaderLink>
+          <UploaderLink :uploader="torrent.uploader" v-show="false"></UploaderLink>
           <TeamLink :team="torrent.team" v-show="torrent.team"></TeamLink>
         </div>
 
@@ -45,13 +51,14 @@
 </template>
 
 <script>
+import { user } from "@/modules/user";
 import { Torrent } from "@/modules/torrent";
 
 import UploaderLink from "@/components/UploaderLink";
 import TeamLink from "@/components/TeamLink";
 
 export default {
-  name: "Index",
+  name: "MyTorrents",
   components: { UploaderLink, TeamLink },
   data() {
     return {
@@ -62,7 +69,7 @@ export default {
     };
   },
   mounted() {
-    Torrent.manager.fetchPage(this.pageNum).then(pageData => {
+    Torrent.manager.fetchPageByUser(this.pageNum, user).then(pageData => {
       this.pageNum = pageData.num;
       this.pageCount = pageData.count;
 
@@ -74,14 +81,6 @@ export default {
   computed: {
     torrents() {
       return this.pageTorrents;
-    }
-  },
-
-  filters: {
-    date(value) {
-      if (!value) return "";
-
-      return value.toLocaleString();
     }
   }
 };
@@ -119,9 +118,7 @@ export default {
       }
 
       .cell {
-        height: @item_height;
         line-height: @item_height;
-        overflow: hidden;
 
         &.categroy {
           overflow: hidden;
@@ -133,13 +130,19 @@ export default {
           }
         }
 
+        // &.file-info {
+        //   font-family: "Audiowide", cursive;
+        //   font-size: 10px;
+        //   width: 10rem;
+        //   text-align: center;
+
+        //   line-height: 10px;
+        //   padding: 1px;
+        // }
+
         &.uploader {
           width: 8.5rem;
           line-height: @item_height * 0.5;
-
-          a {
-            float: left;
-          }
         }
 
         &.title {

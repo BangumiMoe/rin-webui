@@ -3,6 +3,7 @@ import Team from "@/modules/team";
 import Tag from "@/modules/tag";
 
 const URL_TORRENT_PAGE = `/api/v2/torrent/page`;
+const URL_TORRENT_USER = `/api/v2/torrent/user`;
 
 class Torrent {
   // manager is global var
@@ -36,7 +37,7 @@ class Torrent {
     this.uploaderID = source.uploader_id;
     this.id = source._id;
 
-    this.publishDate = Date.parse(source.publish_date);
+    this.publishDate = new Date(source.publish_time);
     // END }}}
 
     // inline data struct {{{
@@ -50,7 +51,7 @@ class Torrent {
     User.get(this.uploaderID, source.uploader).then(
       user => (this.uploader = user)
     );
-    
+
     if (source.team) {
       Team.get(source.team_id, source.team).then(team => {
         this.team = team;
@@ -84,6 +85,62 @@ class TorrentManager {
 
     this.lastFetchTimestamp = new Date(1970, 1, 1);
     this.busy = false;
+  }
+
+  fetchPageByUser(num = 1, user) {
+    return new Promise((resolve, reject) => {
+      if (this.busy) {
+        console.error(`[TorrentManager.fetchPage]service busy`);
+        reject("Service Busy");
+        return;
+      }
+
+      if (num instanceof Number) {
+        console.warn(
+          `[TorrentManager.fetchPage]invalid page num, reset to ZERO`
+        );
+        num = 1;
+      }
+
+      for (let pageData of this.torrents) {
+        if (pageData.num === num) {
+          resolve(pageData);
+          console.info(`[TorrentManager.fetchPage]get page data from cache`);
+          return;
+        }
+      }
+
+      fetch(`${URL_TORRENT_USER}/${user.id}?p=${num}limit=30`)
+        .then(resp => resp.json())
+        .then(data => {
+          // reset torrents when page count is changed
+          if (this.pageCount != data.page_count) {
+            this.torrents.splice(0);
+            console.debug(`[TorrentManager.fetchPage]reset loaded page data`);
+          }
+
+          this.pageCount = data.page_count;
+
+          const pageData = {
+            num: num,
+            count: 0,
+            torrents: []
+          };
+          data.torrents.forEach(entry =>
+            pageData.torrents.push(new Torrent(entry))
+          );
+          pageData.count = pageData.torrents.length;
+
+          this.torrents.push(pageData);
+          console.info(
+            `[TorrentManager.fetchPage]fetch page ${num} torrents count ${
+              pageData.count
+            }`
+          );
+
+          resolve(pageData);
+        });
+    });
   }
 
   fetchPage(num = 1) {

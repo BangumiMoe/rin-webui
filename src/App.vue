@@ -37,6 +37,8 @@ export default {
 </script>
 
 <style lang="less">
+@import url(https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css);
+
 body {
   /* from https://github.com/zenozeng/fonts.css */
   font-family: -apple-system, "Helvetica Neue", Helvetica, "Nimbus Sans L",
@@ -44,10 +46,6 @@ body {
     "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei",
     "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei,
     "WenQuanYi Zen Hei Sharp", sans-serif;
-}
-
-.toolbar {
-  height: 32px;
 }
 
 .router-view {
