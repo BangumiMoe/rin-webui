@@ -220,11 +220,10 @@ class TorrentManager {
 
       this.busy = true;
 
-      fetch(`${URL_TORRENT_SUGG}?query=${query}`)
+      fetch(`${URL_TORRENT_SUGG}?query=${query.trim()}`)
         .then(resp => resp.json())
         .then(data => {
           this.busy = false;
-          console.log(data);
           resolve(data);
         });
     });
@@ -233,14 +232,14 @@ class TorrentManager {
   searchPage(query, num = 1, limit = 30) {
     return new Promise((resolve, reject) => {
       if (this.busy) {
-        console.error(`[TorrentManager.fetchPage]service busy`);
+        console.error(`[TorrentManager.searchPage]service busy`);
         reject("Service Busy");
         return;
       }
 
       if (num instanceof Number) {
         console.warn(
-          `[TorrentManager.fetchPage]invalid page num, reset to ZERO`
+          `[TorrentManager.searchPage]invalid page num, reset to ZERO`
         );
         num = 1;
       }
@@ -251,7 +250,7 @@ class TorrentManager {
           // reset torrents when page count is changed
           if (this.pageCount != data.page_count) {
             this.torrents.splice(0);
-            console.debug(`[TorrentManager.fetchPage]reset loaded page data`);
+            console.debug(`[TorrentManager.searchPage]reset loaded page data`);
           }
 
           this.pageCount = data.page_count;

@@ -119,13 +119,18 @@ export default {
 
     this.query = this.$route.params.query;
 
-    Torrent.manager.searchPage(this.query, this.pageNum).then(pageData => {
-      this.pageNum = pageData.num;
-      this.pageCount = pageData.count;
+    Torrent.manager
+      .searchPage(this.query, this.pageNum)
+      .then(pageData => {
+        this.pageNum = pageData.num;
+        this.pageCount = pageData.count;
 
-      this.pageTorrents.splice(0);
-      this.pageTorrents.push(...pageData.torrents);
-    });
+        this.pageTorrents.splice(0);
+        this.pageTorrents.push(...pageData.torrents);
+      })
+      .catch(() => {
+        // TODO refresh page when needed?
+      });
   },
 
   computed: {
@@ -144,15 +149,21 @@ export default {
 
   watch: {
     "$route.params.query"(query) {
+      this.pageNum = 1;
       this.query = query;
 
-      Torrent.manager.searchPage(this.query, this.pageNum).then(pageData => {
-        this.pageNum = pageData.num;
-        this.pageCount = pageData.count;
+      Torrent.manager
+        .searchPage(this.query, this.pageNum)
+        .then(pageData => {
+          this.pageNum = pageData.num;
+          this.pageCount = pageData.count;
 
-        this.pageTorrents.splice(0);
-        this.pageTorrents.push(...pageData.torrents);
-      });
+          this.pageTorrents.splice(0);
+          this.pageTorrents.push(...pageData.torrents);
+        })
+        .catch(() => {
+          // TODO refresh page when needed?
+        });
     }
   }
 };

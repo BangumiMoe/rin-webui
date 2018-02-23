@@ -1,6 +1,6 @@
 <template>
   <span class="global-filter">
-    <input type="text" v-model="query">
+    <input type="text" v-model="query" @key.up="doSearch(query)">
 
     <div class="suggest-list">
       <a class="item" v-for="(item, index) of items" :key="index" @click="doSearch(item.query)">
@@ -26,22 +26,31 @@ export default {
       if (this.busy) {
         return;
       }
-      this.busy = true;
 
       if (val && val.length > 1) {
-        Torrent.manager.fetchSuggest(val).then(result => {
-          this.busy = false;
-          this.items.splice(0);
-          this.items.push(...result);
-        });
+        this.busy = true;
+
+        Torrent.manager
+          .fetchSuggest(val)
+          .then(result => {
+            this.busy = false;
+            this.items.splice(0);
+            this.items.push(...result);
+          })
+          .catch(() => {
+            this.busy = false;
+          });
       }
     }
   },
   methods: {
     doSearch(query) {
-      console.log(`[GlobalFilter.doSearch]update query:${query}`);
+      console.debug(`[GlobalFilter.doSearch]update query:${query}`);
+      this.busy = true;
+      this.query = query;
       this.$router.push({ name: "Search", params: { query } });
       this.items.splice(0);
+      this.busy = false;
     }
   }
 };
