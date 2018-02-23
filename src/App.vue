@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="grid-x">
-    <div class="cell auto main-content">
+    <div class="cell auto">
       <SystemToolbar class="toolbar"></SystemToolbar>
       <router-view class="router-view"></router-view>
     </div>
@@ -17,9 +17,6 @@ import SystemToolbar from "@/components/SystemToolbar";
 
 export default {
   name: "app",
-  props: {
-    user
-  },
   components: {
     SystemNavigation,
     SystemToolbar
@@ -38,6 +35,10 @@ export default {
 
 <style lang="less">
 @import url(https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome/web-fonts-with-css/css/fontawesome-all.min.css);
+
+.breadcrumbs li:not(:last-child)::after {
+  position: inherit;
+}
 
 body {
   /* from https://github.com/zenozeng/fonts.css */

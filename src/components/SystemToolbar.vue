@@ -1,9 +1,17 @@
 <template>
   <div class="system-toolbar grid-x grid-padding-x">
     <div class="cell auto">
-      <router-link :to="{ name: 'Index' }">Index</router-link>
+      <div class="grid-x">
 
-      <router-link :to="{name: 'MyTorrents'}" v-if="user.isSignIn">My Torrents</router-link>
+        <div class="cell link">
+          <router-link :to="{ name: 'Index' }">Index</router-link>
+          <router-link :to="{name: 'MyTorrents'}" v-if="user.isSignIn">My Torrents</router-link>
+        </div>
+
+        <GlobalFilter class="cell auto"></GlobalFilter>
+
+      </div>
+
     </div>
 
     <div class="cell right-bar text-right" v-if="!user.isSignIn">
@@ -21,10 +29,11 @@
 <script>
 import { user } from "@/modules/user";
 import UserLink from "@/components/UserLink";
+import GlobalFilter from "@/components/GlobalFilter";
 
 export default {
   name: "SystemToolbar",
-  components: { UserLink },
+  components: { UserLink, GlobalFilter },
   props: {},
   data() {
     return { user };
@@ -39,15 +48,9 @@ export default {
 @item_height: 22px;
 
 .system-toolbar {
-  // position: absolute;
-  // top: 0;
-  // left: 0;
-  // width: 100%;
-
   height: @bar_height;
   border-right: 0.5rem solid @color-4;
   box-shadow: inset 0px -2px 1px #efefef;
-  // border-bottom: 1px solid @color-1;
 
   .right-bar {
     width: 16rem;
@@ -58,12 +61,15 @@ export default {
     font-size: 16px;
     line-break: 32px;
   }
-  a {
+
+  .link {
     display: inline-block;
-    height: @item_height;
-    margin: 4px;
+    height: @bar_height;
     font-size: round(@item_height * 0.6);
-    line-height: @item_height;
+    line-height: @bar_height;
+    padding: 0 .5rem;
+    width: 6rem;
+
   }
 }
 </style>

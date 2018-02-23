@@ -54,12 +54,13 @@ import UploaderLink from "@/components/UploaderLink";
 import TeamLink from "@/components/TeamLink";
 
 export default {
-  name: "Index",
-  props: ["globalQuery"],
+  name: "Search",
   components: { UploaderLink, TeamLink },
   data() {
     return {
       Torrent,
+
+      query: "",
       pageNum: 1,
       pageCount: 0,
       pageTorrents: [],
@@ -93,7 +94,7 @@ export default {
           return;
         }
 
-        Torrent.manager.fetchPage(pageNum).then(pageData => {
+        Torrent.manager.searchPage(this.query, pageNum).then(pageData => {
           // FIXME refresh when count changed
           this.pageCount = pageData.count;
 
@@ -115,17 +116,15 @@ export default {
   mounted() {
     const indexElm = document.getElementsByClassName("index")[0];
     indexElm.addEventListener("scroll", this.handleIndexScroll);
-  },
 
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      Torrent.manager.fetchPage(vm.pageNum).then(pageData => {
-        vm.pageNum = pageData.num;
-        vm.pageCount = pageData.count;
+    this.query = this.$route.params.query;
 
-        vm.pageTorrents.splice(0);
-        vm.pageTorrents.push(...pageData.torrents);
-      });
+    Torrent.manager.searchPage(this.query, this.pageNum).then(pageData => {
+      this.pageNum = pageData.num;
+      this.pageCount = pageData.count;
+
+      this.pageTorrents.splice(0);
+      this.pageTorrents.push(...pageData.torrents);
     });
   },
 
@@ -144,8 +143,16 @@ export default {
   },
 
   watch: {
-    globalQuery(val) {
-      console.log(val);
+    "$route.params.query"(query) {
+      this.query = query;
+
+      Torrent.manager.searchPage(this.query, this.pageNum).then(pageData => {
+        this.pageNum = pageData.num;
+        this.pageCount = pageData.count;
+
+        this.pageTorrents.splice(0);
+        this.pageTorrents.push(...pageData.torrents);
+      });
     }
   }
 };

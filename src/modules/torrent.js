@@ -4,6 +4,8 @@ import Tag from "@/modules/tag";
 
 const URL_TORRENT_PAGE = `/api/v2/torrent/page`;
 const URL_TORRENT_USER = `/api/v2/torrent/user`;
+const URL_TORRENT_SUGG = `/api/v2/torrent/suggest`;
+const URL_TORRENT_SEAR = `/api/v2/torrent/search`;
 
 class Torrent {
   // manager is global var
@@ -78,6 +80,8 @@ class Torrent {
 
 class TorrentManager {
   constructor() {
+    this.query = "";
+
     this.pageCount = -1;
     this.pageCurrent = -1;
 
@@ -144,7 +148,7 @@ class TorrentManager {
     });
   }
 
-  fetchPage(num = 1, limit=30) {
+  fetchPage(num = 1, limit = 30) {
     return new Promise((resolve, reject) => {
       if (this.busy) {
         console.error(`[TorrentManager.fetchPage]service busy`);
@@ -200,13 +204,79 @@ class TorrentManager {
     });
   }
 
-  // fetchNextPage() {
-  //   let pageNum = this.pageCurrent + 1;
-  //   if (pageNum > this.pageCount) {
-  //     // TODO refresh pageCount
-  //     this.pageNum = this.pageCount - 1;
-  //   }
-  // }
+  fetchSuggest(query) {
+    return new Promise((resolve, reject) => {
+      if (query instanceof String) {
+        console.warn(`[TorrentManager.fetchPage]invalid query`);
+        reject("Invalid query");
+        return;
+      }
+
+      if (this.busy) {
+        console.error(`[TorrentManager.fetchSuggest]service busy`);
+        reject("Service Busy");
+        return;
+      }
+
+      this.busy = true;
+
+      fetch(`${URL_TORRENT_SUGG}?query=${query}`)
+        .then(resp => resp.json())
+        .then(data => {
+          this.busy = false;
+          console.log(data);
+          resolve(data);
+        });
+    });
+  }
+
+  searchPage(query, num = 1, limit = 30) {
+    return new Promise((resolve, reject) => {
+      if (this.busy) {
+        console.error(`[TorrentManager.fetchPage]service busy`);
+        reject("Service Busy");
+        return;
+      }
+
+      if (num instanceof Number) {
+        console.warn(
+          `[TorrentManager.fetchPage]invalid page num, reset to ZERO`
+        );
+        num = 1;
+      }
+
+      fetch(`${URL_TORRENT_SEAR}?p=${num}&limit=${limit}&query=${query}`)
+        .then(resp => resp.json())
+        .then(data => {
+          // reset torrents when page count is changed
+          if (this.pageCount != data.page_count) {
+            this.torrents.splice(0);
+            console.debug(`[TorrentManager.fetchPage]reset loaded page data`);
+          }
+
+          this.pageCount = data.page_count;
+
+          const pageData = {
+            num: num,
+            count: 0,
+            torrents: []
+          };
+          data.torrents.forEach(entry =>
+            pageData.torrents.push(new Torrent(entry))
+          );
+          pageData.count = pageData.torrents.length;
+
+          this.torrents.push(pageData);
+          console.info(
+            `[TorrentManager.searchPage]search ${query} page ${num} torrents count ${
+              pageData.count
+            }`
+          );
+
+          resolve(pageData);
+        });
+    });
+  }
 }
 
 const manager = new TorrentManager();
