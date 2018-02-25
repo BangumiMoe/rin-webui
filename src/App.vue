@@ -1,24 +1,20 @@
 <template>
-  <div id="app" class="grid-x">
-    <div class="cell auto">
-      <SystemToolbar class="toolbar"></SystemToolbar>
-      <router-view class="router-view"></router-view>
-    </div>
-
-    <SystemNavigation class="cell"></SystemNavigation>
+  <div id="app">
+    <SystemToolbar class="toolbar"></SystemToolbar>
+    <router-view class="main-content"></router-view>
   </div>
 </template>
 
 <script>
 import { user } from "@/modules/user";
 
-import SystemNavigation from "@/components/SystemNavigation";
+// import SystemNavigation from "@/components/SystemNavigation";
 import SystemToolbar from "@/components/SystemToolbar";
 
 export default {
   name: "app",
   components: {
-    SystemNavigation,
+    // SystemNavigation,
     SystemToolbar
   },
   mounted() {
@@ -49,7 +45,11 @@ body {
     "WenQuanYi Zen Hei Sharp", sans-serif;
 }
 
-.router-view {
-  height: calc(~"100vh - 32px");
+.toolbar {
+  z-index: 2;
+}
+.main-content {
+  z-index: 1;
+  height: calc(~"100vh - 6rem");
 }
 </style>

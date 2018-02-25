@@ -1,27 +1,19 @@
 <template>
   <div class="system-toolbar grid-x grid-padding-x">
-    <div class="cell auto">
-      <div class="grid-x">
 
-        <div class="cell link">
-          <router-link :to="{ name: 'Index' }">Index</router-link>
-          <router-link :to="{name: 'MyTorrents'}" v-if="user.isSignIn">My Torrents</router-link>
-        </div>
+    <div class="cell logo">
+      <router-link :to="{ name: 'Index' }">
+        <img src="@/assets/logo-20150506.png" alt="logo">
+      </router-link>
 
-        <GlobalFilter class="cell auto"></GlobalFilter>
-
-      </div>
-
+      <!-- <router-link :to="{name: 'MyTorrents'}" v-if="user.isSignIn">My Torrents</router-link> -->
     </div>
 
-    <div class="cell right-bar text-right" v-if="!user.isSignIn">
-      <router-link :to="{ name: 'UserSignIn' }">Sign In</router-link>
-      <span class="split">|</span>
-      <a>Regsiter</a>
-    </div>
+    <GlobalFilter class="cell auto"></GlobalFilter>
 
-    <div class="cell right-bar text-right" v-if="user.isSignIn">
-      <UserLink :user="user"></UserLink>
+    <div class="cell medium-4 right-bar text-right">
+        <router-link class="button small" :to="{ name: 'UserSignIn' }" v-if="!user.isSignIn">Sign In</router-link>
+        <UserLink :user="user" v-if="user.isSignIn"></UserLink>
     </div>
   </div>
 </template>
@@ -44,32 +36,27 @@ export default {
 <style lang="less" scoped>
 @import "../assets/color.less";
 
-@bar_height: 32px;
-@item_height: 22px;
+@bar_height: 6rem;
 
 .system-toolbar {
   height: @bar_height;
-  border-right: 0.5rem solid @color-4;
   box-shadow: inset 0px -2px 1px #efefef;
+  padding-top: @bar_height * 0.15;
+
+  .logo {
+    width: 12rem;
+    a {
+      img {
+        display: inline-block;
+        width: 100%;
+      }
+    }
+  }
 
   .right-bar {
-    width: 16rem;
-  }
-
-  .split {
-    height: 32px;
-    font-size: 16px;
-    line-break: 32px;
-  }
-
-  .link {
-    display: inline-block;
-    height: @bar_height;
-    font-size: round(@item_height * 0.6);
-    line-height: @bar_height;
-    padding: 0 .5rem;
-    width: 6rem;
-
+    .button {
+      margin: 0;
+    }
   }
 }
 </style>

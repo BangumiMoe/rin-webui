@@ -1,13 +1,13 @@
 <template>
-  <span class="global-filter">
+  <div class="global-filter">
     <input type="text" v-model="query" @key.up="doSearch(query)">
 
-    <div class="suggest-list">
+    <div class="suggest-list" v-show="items.length > 0">
       <a class="item" v-for="(item, index) of items" :key="index" @click="doSearch(item.query)">
         {{item.query}} <sup>{{ item.count }}</sup>
       </a>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
@@ -59,34 +59,38 @@ export default {
 <style lang="less" scoped>
 @import "../assets/color.less";
 
-@filter_height: 30px;
-@filter_width: 12rem;
+@filter_height: 6rem;
+@item_height: 2.3rem;
 
 .global-filter {
   position: relative;
+  padding-top: @item_height * 0.35rem;
 
   input {
     margin: 1px 0;
-    height: @filter_height - 2px;
-    line-height: @filter_height - 2px;
-
-    font-size: round(@filter_height * 0.5);
-
-    padding: 0 0.5rem;
+    height: @item_height;
+    line-height: @item_height;
+    font-size: @item_height * 0.5;
   }
 
   .suggest-list {
-    background: #fefefe;
     position: absolute;
-    width: 100%;
+    background: #fefefe;
+    width: calc(100% - 3.8rem);
+    margin-top: -1px;
+    border-left: 1px solid rgb(202, 202, 202);
+    border-right: 1px solid rgb(202, 202, 202);
+    border-bottom: 1px solid rgb(202, 202, 202);
 
     .item {
       display: inline-block;
       width: 100%;
       padding: 3px 0.5rem;
-      font-size: 0.8rem;
-      line-height: @filter_height - 6px;
-      height: @filter_height;
+      margin-right: -2rem;
+
+      height: @item_height;
+      line-height: @item_height;
+      font-size: @item_height * 0.4;
 
       &:hover {
         color: #fefefe;
