@@ -5,9 +5,11 @@
       @keyup.esc="resetSearch()"
       @keyup.enter="doSearch(query)">
 
+    <i class="busy float-right fas fa-spinner fa-pulse"></i>
+
     <div class="suggest-list" ref="suggests" v-show="items.length > 0">
       <a class="item" v-for="(item, index) of items" :key="index" @click="doSearch(item.query)">
-        {{item.query}} <sup>{{ item.count }}</sup>
+        {{item.query}} <span class="count float-right">{{ item.count }}</span>
       </a>
     </div>
   </div>
@@ -92,9 +94,16 @@ export default {
   input {
     display: inline-block;
     margin: 1px 0;
+    padding-right: 1.7rem;
     height: @item_height;
     line-height: @item_height;
     font-size: @item_height * 0.5;
+  }
+
+  i.busy {
+    margin-right: 0.6rem;
+    margin-top: -1 * @item_height;
+    line-height: @item_height;
   }
 
   .suggest-list {
@@ -119,6 +128,10 @@ export default {
       &:hover {
         color: #fefefe;
         background-color: #cecece;
+      }
+
+      .count {
+        font-size: 0.9rem;
       }
     }
   }

@@ -36,13 +36,17 @@ export default {
   position: inherit;
 }
 
-body {
-  /* from https://github.com/zenozeng/fonts.css */
+.font-hei() {
   font-family: -apple-system, "Helvetica Neue", Helvetica, "Nimbus Sans L",
     Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB",
     "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei",
     "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei,
     "WenQuanYi Zen Hei Sharp", sans-serif;
+}
+
+body {
+  /* from https://github.com/zenozeng/fonts.css */
+  font-family: font-hei();
 }
 
 .toolbar {
