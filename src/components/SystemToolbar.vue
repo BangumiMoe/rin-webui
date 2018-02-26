@@ -1,7 +1,7 @@
 <template>
   <div class="system-toolbar grid-x grid-padding-x">
 
-    <div class="cell logo">
+    <div class="cell logo small-12 medium-3 large-2">
       <router-link :to="{ name: 'Index' }">
         <img src="@/assets/logo-20150506.png" alt="logo">
       </router-link>
@@ -39,18 +39,29 @@ export default {
 @bar_height: 6rem;
 
 .system-toolbar {
-  height: @bar_height;
-  line-height: @bar_height;
-  box-shadow: inset 0px -2px 1px #efefef;
-  // padding-top: @bar_height * 0.35;
+  box-shadow: inset 0px -3px 6px #eee;
 
-  .logo {
-    width: 12rem;
-    a {
-      img {
-        display: inline-block;
-        width: 100%;
-      }
+  /* Small only */
+  @media screen and (max-width: 39.9375em) {
+    min-height: @bar_height * 2;
+    line-height: @bar_height;
+    padding-top: 2rem;
+
+    .logo a img {
+      width: 100%;
+      height: auto;
+      text-align: center;
+    }
+  }
+
+  /* Medium and up */
+  @media screen and (min-width: 40em) {
+    min-height: @bar_height;
+    line-height: @bar_height;
+
+    .logo a img {
+      display: inline-block;
+      height: @bar_height * 0.66;
     }
   }
 

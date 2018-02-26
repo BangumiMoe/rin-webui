@@ -1,8 +1,8 @@
 <template>
   <div class="global-filter">
-    <input type="text" v-model="query" @key.up="doSearch(query)">
+    <input type="text" ref="filter" v-model="query" @key.up="doSearch(query)">
 
-    <div class="suggest-list" v-show="items.length > 0">
+    <div class="suggest-list" ref="suggests" v-show="items.length > 0">
       <a class="item" v-for="(item, index) of items" :key="index" @click="doSearch(item.query)">
         {{item.query}} <sup>{{ item.count }}</sup>
       </a>
@@ -16,6 +16,8 @@ export default {
   name: "SystemToolbar",
   data() {
     return {
+      listener_resize: null,
+
       query: "",
       busy: false,
       items: []
@@ -52,6 +54,18 @@ export default {
       this.items.splice(0);
       this.busy = false;
     }
+  },
+  updated() {
+    this.$refs.suggests.style.width = `${this.$refs.filter.clientWidth + 2}px`;
+  },
+  umounted() {
+    window.removeEventListener("resize", this.listener_resize);
+    this.listener_resize = null;
+  },
+  mounted() {
+    this.listener_resize = window.addEventListener("resize", () => {
+      this.$refs.suggests.style.width = `${this.$refs.filter.clientWidth + 2}px`;
+    });
   }
 };
 </script>
@@ -64,6 +78,8 @@ export default {
 
 .global-filter {
   position: relative;
+  line-height: @item_height;
+  padding-top: (@filter_height - @item_height) /2;
 
   input {
     display: inline-block;
@@ -76,14 +92,14 @@ export default {
   .suggest-list {
     position: absolute;
     background: #fefefe;
-    width: calc(100% - 3.8rem);
+    // width: calc(100% - 20px);
     margin-top: -1px;
     border-left: 1px solid rgb(202, 202, 202);
     border-right: 1px solid rgb(202, 202, 202);
     border-bottom: 1px solid rgb(202, 202, 202);
 
     .item {
-      display: inline-block;
+      display: block;
       width: 100%;
       padding: 3px 0.5rem;
       margin-right: -2rem;
