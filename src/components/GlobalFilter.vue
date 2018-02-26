@@ -64,9 +64,9 @@ export default {
 
 .global-filter {
   position: relative;
-  padding-top: @item_height * 0.35rem;
 
   input {
+    display: inline-block;
     margin: 1px 0;
     height: @item_height;
     line-height: @item_height;

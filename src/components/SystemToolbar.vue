@@ -40,8 +40,9 @@ export default {
 
 .system-toolbar {
   height: @bar_height;
+  line-height: @bar_height;
   box-shadow: inset 0px -2px 1px #efefef;
-  padding-top: @bar_height * 0.15;
+  // padding-top: @bar_height * 0.35;
 
   .logo {
     width: 12rem;
