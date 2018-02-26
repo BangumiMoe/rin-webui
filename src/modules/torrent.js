@@ -1,3 +1,5 @@
+import "abortcontroller-polyfill";
+
 import { User } from "@/modules/user";
 import Team from "@/modules/team";
 import Tag from "@/modules/tag";
@@ -89,6 +91,9 @@ class TorrentManager {
 
     this.lastFetchTimestamp = new Date(1970, 1, 1);
     this.busy = false;
+
+    // controller for fetch handlers
+    this.controllerSearchPage = new AbortController();
   }
 
   fetchPageByUser(num = 1, user) {
@@ -232,9 +237,19 @@ class TorrentManager {
   searchPage(query, num = 1, limit = 30) {
     return new Promise((resolve, reject) => {
       if (this.busy) {
-        console.error(`[TorrentManager.searchPage]service busy`);
-        reject("Service Busy");
-        return;
+        if (this.controllerSearchPage !== null) {
+          this.controllerSearchPage.abort();
+          this.busy = false;
+
+          delete this.controllerSearchPage;
+          this.controllerSearchPage = new AbortController();
+
+          console.warn(`[TorrentManager.searchPage]abort prev connection`);
+        } else {
+          console.error(`[TorrentManager.searchPage]service busy`);
+          reject("service busy");
+          return;
+        }
       }
 
       if (num instanceof Number) {
@@ -244,7 +259,9 @@ class TorrentManager {
         num = 1;
       }
 
-      fetch(`${URL_TORRENT_SEAR}?p=${num}&limit=${limit}&query=${query}`)
+      fetch(`${URL_TORRENT_SEAR}?p=${num}&limit=${limit}&query=${query}`, {
+        signal: this.controllerSearchPage.signal
+      })
         .then(resp => resp.json())
         .then(data => {
           // reset torrents when page count is changed
@@ -273,7 +290,10 @@ class TorrentManager {
           );
 
           resolve(pageData);
-        });
+        })
+        .catch(reason =>
+          console.warn(`[TorrentManager.searchPage]catch exception:${reason}`)
+        );
     });
   }
 }

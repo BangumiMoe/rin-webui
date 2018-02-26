@@ -1,6 +1,9 @@
 <template>
   <div class="global-filter">
-    <input type="text" ref="filter" v-model="query" @key.up="doSearch(query)">
+    <input type="search" ref="filter" v-model="query" 
+      @key.up="doSearch(query)" 
+      @keyup.esc="resetSearch()"
+      @keyup.enter="doSearch(query)">
 
     <div class="suggest-list" ref="suggests" v-show="items.length > 0">
       <a class="item" v-for="(item, index) of items" :key="index" @click="doSearch(item.query)">
@@ -46,6 +49,10 @@ export default {
     }
   },
   methods: {
+    resetSearch() {
+      this.query = "";
+      this.items.splice(0);
+    },
     doSearch(query) {
       console.debug(`[GlobalFilter.doSearch]update query:${query}`);
       this.busy = true;
@@ -64,7 +71,8 @@ export default {
   },
   mounted() {
     this.listener_resize = window.addEventListener("resize", () => {
-      this.$refs.suggests.style.width = `${this.$refs.filter.clientWidth + 2}px`;
+      this.$refs.suggests.style.width = `${this.$refs.filter.clientWidth +
+        2}px`;
     });
   }
 };

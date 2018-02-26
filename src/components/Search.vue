@@ -32,8 +32,6 @@ export default {
       const y1 = ev.target.scrollTop;
       const y2 = ev.target.scrollHeight - ev.target.clientHeight;
 
-      // console.log(y1, y2);
-
       // TODO item height
       if (y2 - y1 < 52 * 4) {
         if (this.busy) {
