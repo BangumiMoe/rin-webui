@@ -168,13 +168,14 @@ class TorrentManager {
         num = 1;
       }
 
-      for (let pageData of this.torrents) {
-        if (pageData.num === num) {
-          resolve(pageData);
-          console.info(`[TorrentManager.fetchPage]get page data from cache`);
-          return;
-        }
-      }
+      // TODO cache
+      // for (let pageData of this.torrents) {
+      //   if (pageData.num === num) {
+      //     resolve(pageData);
+      //     console.info(`[TorrentManager.fetchPage]get page data from cache`);
+      //     return;
+      //   }
+      // }
 
       fetch(`${URL_TORRENT_PAGE}/${num}?limit=${limit}`)
         .then(resp => resp.json())
