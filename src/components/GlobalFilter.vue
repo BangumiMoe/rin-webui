@@ -5,7 +5,7 @@
       @keyup.esc="resetSearch()"
       @keyup.enter="doSearch(query)">
 
-    <i class="busy float-right fas fa-spinner fa-pulse"></i>
+    <i class="busy float-right fas fa-spinner fa-pulse" v-show="busy"></i>
 
     <div class="suggest-list" ref="suggests" v-show="items.length > 0">
       <a class="item" v-for="(item, index) of items" :key="index" @click="doSearch(item.query)">
