@@ -44,7 +44,8 @@ export default {
           return;
         }
 
-        console.log(`${user} is sign in ok.`);
+        console.info(`${user} is sign in ok.`);
+        this.$router.push({ name: "Index" });
       });
     }
   }
