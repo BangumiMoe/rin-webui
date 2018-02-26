@@ -11,7 +11,7 @@
 
     <GlobalFilter class="cell auto"></GlobalFilter>
 
-    <div class="cell medium-4 right-bar text-right">
+    <div class="cell hide-for-small-only medium-4 right-bar text-right">
         <router-link class="button small" :to="{ name: 'UserSignIn' }" v-if="!user.isSignIn">Sign In</router-link>
         <UserLink :user="user" v-if="user.isSignIn"></UserLink>
     </div>
@@ -46,6 +46,7 @@ export default {
     min-height: @bar_height * 2;
     line-height: @bar_height;
     padding-top: 2rem;
+    margin-bottom: 1rem;
 
     .logo a img {
       width: 100%;
