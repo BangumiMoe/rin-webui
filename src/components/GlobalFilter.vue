@@ -118,7 +118,10 @@ export default {
 
       const q = this.buildQuery(query);
       this.query = query;
-      this.$router.push({ name: "Search", params: { query: q } });
+
+      if (q.length > 0)
+        this.$router.push({ name: "Search", params: { query: q } });
+      else this.$router.push({ name: "Index" });
 
       this.items.splice(0);
       this.busy = false;
