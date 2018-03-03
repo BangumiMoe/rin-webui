@@ -97,9 +97,9 @@ export default {
       width: 8.5rem;
       line-height: @item_height * 0.5;
 
-      // a {
-      //   float: left;
-      // }
+      a {
+        float: left;
+      }
     }
 
     &.title {

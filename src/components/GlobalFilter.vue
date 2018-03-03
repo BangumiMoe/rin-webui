@@ -1,8 +1,8 @@
 <template>
   <div class="global-filter">
 
-    <input type="search" ref="filter" v-model="query" 
-      @key.up="doSearch(query)" 
+    <input type="search" ref="filter" 
+      v-model="query"
       @keyup.esc="resetSearch()"
       @keyup.enter="doSearch(query)"
       @focus="setFocus()"
@@ -137,6 +137,8 @@ export default {
       }
 
       this.updateSuggest();
+
+      this.doSearch(this.query);
     },
     toggleTag(name, conflictTags) {
       const idx = this.tags.indexOf(name);
@@ -158,6 +160,8 @@ export default {
       }
 
       this.updateSuggest();
+
+      this.doSearch(this.query);
     },
     showTag(name) {
       return this.tags.includes(name);
@@ -171,6 +175,26 @@ export default {
         this.$refs.filter.style.paddingLeft = `${width}px`;
       });
     },
+    // updateQuery(ev) {
+    //   const query = ev.target.value;
+    //   const code = ev.keyCode;
+
+    //   console.info(`[GlobalFilter.updateQuery]event:${code} ${query}`);
+
+    //   let isSearch = true;
+    //   // listen on left and right and backspace
+    //   switch (code) {
+    //     case 37:
+    //     case 39:
+    //     case 8:
+    //       isSearch = false;
+    //       return;
+    //   }
+
+    //   if (!this.busy && isSearch && this.query != query) {
+    //     this.$nextTick(() => this.doSearch(query));
+    //   }
+    // },
     buildQuery(query) {
       // build query
       let q = "";
@@ -184,7 +208,7 @@ export default {
         q = `${q}${query}`;
       }
 
-      return q.replace(/\s+/g, ' ').trim()
+      return q.replace(/\s+/g, " ").trim();
     }
   },
   updated() {
