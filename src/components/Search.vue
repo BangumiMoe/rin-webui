@@ -105,8 +105,16 @@ export default {
 
   watch: {
     "$route.params.query"(query) {
+      this.query = query.trim();
+
       this.pageNum = 1;
-      this.query = query;
+      this.pageCount = 0;
+      this.pageTorrents.splice(0);
+
+      if (this.query.length === 0) {
+        this.$router.push(["/"]);
+        return;
+      }
 
       Torrent.manager
         .searchPage(this.query, this.pageNum)
