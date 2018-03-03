@@ -1,14 +1,42 @@
 <template>
   <div class="global-filter">
+
     <input type="search" ref="filter" v-model="query" 
       @key.up="doSearch(query)" 
       @keyup.esc="resetSearch()"
-      @keyup.enter="doSearch(query)">
+      @keyup.enter="doSearch(query)"
+      @focus="setFocus()"
+      @mouseover="setFocus()" 
+      @mousemove="setFocus()"
+      @mouseout="clearFocus()">
+
+    <div class="tags" ref="tags">
+      <span class="label tag" v-show="showTag('720')" @click="toggleTag('1080')">
+        <i class="fa">HD</i>
+      </span>
+
+      <span class="label tag" v-show="showTag('1080')" @click="toggleTag('1080')">
+        <i class="fa">FullHD</i>
+      </span>
+
+      <template v-for="team in teams">
+        <TeamLink class="team" :team="team" :key="team.id"></TeamLink>
+      </template>
+    </div>
 
     <i class="busy float-right fas fa-spinner fa-pulse" v-show="busy"></i>
 
-    <div class="suggest-list" ref="suggests" v-show="items.length > 0">
-      <a class="item" v-for="(item, index) of items" :key="index" @click="doSearch(item.query)">
+    <div class="suggest-list" ref="suggests" 
+      v-show="showSuggest()" 
+      @focus="updateFocus()"
+      @mouseover="updateFocus()" 
+      @mousemove="updateFocus()"
+      @mouseout="clearFocus()">
+      
+      <a class="tag button tiny" @click="toggleTag('720', ['1080'])">720p(HD)</a>
+      <a class="tag button tiny" @click="toggleTag('1080', ['720'])">1080p(Full HD)</a>
+
+      <a class="item" v-for="(item, index) of items" :key="index" @click="doSearch(item.query)" v-show="items.length > 0">
         {{item.query}} <span class="count float-right">{{ item.count }}</span>
       </a>
     </div>
@@ -17,15 +45,25 @@
 
 <script>
 import { Torrent } from "@/modules/torrent";
+import { EventBus } from "@/modules/event-bus";
+
+import TeamLink from "@/components/TeamLink";
+
 export default {
   name: "SystemToolbar",
+  components: { TeamLink },
   data() {
     return {
       listener_resize: null,
 
       query: "",
       busy: false,
-      items: []
+      items: [],
+      teams: [],
+      tags: [],
+
+      isFocus: false,
+      idFocus: null
     };
   },
   watch: {
@@ -34,7 +72,7 @@ export default {
         return;
       }
 
-      if (val && val.length > 1) {
+      if (val && val.length > 0) {
         this.busy = true;
 
         Torrent.manager
@@ -51,21 +89,104 @@ export default {
     }
   },
   methods: {
+    setFocus() {
+      if (this.idFocus !== null) clearTimeout(this.idFocus);
+      this.isFocus = true;
+    },
+    clearFocus() {
+      if (this.idFocus !== null) clearTimeout(this.idFocus);
+      this.idFocus = setTimeout(() => (this.isFocus = false), 300);
+    },
+    updateFocus() {
+      this.isFocus = true;
+
+      if (this.idFocus !== null) clearTimeout(this.idFocus);
+      this.idFocus = setTimeout(() => (this.isFocus = false), 5000);
+    },
     resetSearch() {
       this.query = "";
       this.items.splice(0);
+      this.clearFocus();
+      this.tags.splice(0);
+      this.teams.splice(0);
     },
     doSearch(query) {
       console.debug(`[GlobalFilter.doSearch]update query:${query}`);
       this.busy = true;
+
+      const q = this.buildQuery(query);
       this.query = query;
-      this.$router.push({ name: "Search", params: { query } });
+      this.$router.push({ name: "Search", params: { query: q } });
+
       this.items.splice(0);
       this.busy = false;
+    },
+    searchTeam(team) {
+      console.debug(`[GlobalFilter.searchTeam]team id ${team.id} ${team.name}`);
+
+      const idx = this.teams.indexOf(team);
+      if (idx > -1) {
+        this.teams.splice(idx, 1);
+      } else {
+        if (this.teams.length > 2) {
+          this.teams.shift();
+        }
+        this.teams.push(team);
+      }
+
+      this.updateSuggest();
+    },
+    toggleTag(name, conflictTags) {
+      const idx = this.tags.indexOf(name);
+
+      if (idx !== -1) {
+        this.tags.splice(idx, 1);
+      } else {
+        if (conflictTags !== undefined) {
+          this.tags.forEach((tag, idx) => {
+            if (conflictTags.includes(tag)) {
+              this.tags.splice(idx, 1);
+            }
+          });
+        }
+
+        if (!this.query.includes(name)) {
+          this.tags.push(name);
+        }
+      }
+
+      this.updateSuggest();
+    },
+    showTag(name) {
+      return this.tags.includes(name);
+    },
+    showSuggest() {
+      return this.isFocus;
+    },
+    updateSuggest() {
+      this.$nextTick(() => {
+        let width = this.$refs.tags.clientWidth + 5;
+        this.$refs.filter.style.paddingLeft = `${width}px`;
+      });
+    },
+    buildQuery(query) {
+      // build query
+      let q = "";
+
+      this.teams.forEach(team => (q += `${team.name} `));
+      this.tags.forEach(tag => (q += `${tag} `));
+
+      if (query.length > 0 && q.length > 0) {
+        q += ` ${query}`;
+      } else if (q.length == 0 || query.length == 0) {
+        q = `${q}${query}`;
+      }
+
+      return q.trim();
     }
   },
   updated() {
-    this.$refs.suggests.style.width = `${this.$refs.filter.clientWidth + 2}px`;
+    this.$refs.suggests.style.width = `${this.$refs.filter.clientWidth + 1}px`;
   },
   umounted() {
     window.removeEventListener("resize", this.listener_resize);
@@ -73,9 +194,11 @@ export default {
   },
   mounted() {
     this.listener_resize = window.addEventListener("resize", () => {
-      this.$refs.suggests.style.width = `${this.$refs.filter.clientWidth +
-        2}px`;
+      const width = this.$refs.filter.clientWidth + 1;
+      this.$refs.suggests.style.width = `${width}px`;
     });
+
+    EventBus.$on("searchTeam", this.searchTeam);
   }
 };
 </script>
@@ -100,6 +223,21 @@ export default {
     font-size: @item_height * 0.5;
   }
 
+  .tags {
+    position: absolute;
+    padding-left: 0.5rem;
+    margin-top: -1.04 * @item_height;
+
+    .tag,
+    .team {
+      margin-right: 0.1rem;
+    }
+
+    .tag {
+      border-radius: 5px;
+    }
+  }
+
   i.busy {
     margin-right: 0.6rem;
     margin-top: -1 * @item_height;
@@ -114,6 +252,12 @@ export default {
     border-left: 1px solid rgb(202, 202, 202);
     border-right: 1px solid rgb(202, 202, 202);
     border-bottom: 1px solid rgb(202, 202, 202);
+
+    .tag {
+      margin-left: 0.5rem;
+      margin-bottom: 3px;
+      border-radius: 5px;
+    }
 
     .item {
       display: block;

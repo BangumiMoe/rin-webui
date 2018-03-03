@@ -1,20 +1,27 @@
 <template>
-  <a class="team-link">
+  <a class="team-link" @click="searchTeam(team)">
       <img :src="iconUrl || require('@/assets/akarin.jpg')">
       <span>{{name}}</span>
   </a>
 </template>
 
 <script>
+import { EventBus } from "@/modules/event-bus";
+
 export default {
   name: "TeamLink",
-  props: ["team"],
+  props: ["team", "disabledSearch"],
   computed: {
     name() {
       return this.team ? this.team.name : "";
     },
     iconUrl() {
       return this.team ? this.team.iconUrl : null;
+    }
+  },
+  methods: {
+    searchTeam(team) {
+      EventBus.$emit("searchTeam", team);
     }
   }
 };

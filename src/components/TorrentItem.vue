@@ -35,7 +35,7 @@
         </div>
 
         <div class="cell uploader">
-            <UploaderLink :uploader="torrent.uploader"></UploaderLink>
+            <UploaderLink :uploader="torrent.uploader" @click="searchTeam(torrent.uploader)"></UploaderLink>
             <TeamLink :team="torrent.team" v-show="torrent.team"></TeamLink>
         </div>
 
@@ -55,7 +55,7 @@ export default {
   data() {
     return { Torrent };
   },
-  
+
   filters: {
     date(value) {
       if (!value) return "";
@@ -99,9 +99,9 @@ export default {
       width: 8.5rem;
       line-height: @item_height * 0.5;
 
-      a {
-        float: left;
-      }
+      // a {
+      //   float: left;
+      // }
     }
 
     &.title {
