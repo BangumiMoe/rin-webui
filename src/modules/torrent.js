@@ -72,7 +72,7 @@ class Torrent {
   }
 
   getTitle() {
-    return this.title.replace("【", "[").replace("】", "]");
+    return this.title.replace(/【/g, "[").replace(/】/g, "]");
   }
 
   getUploader() {
