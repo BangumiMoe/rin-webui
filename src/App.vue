@@ -30,23 +30,22 @@ export default {
 </script>
 
 <style lang="less">
+@import url(https://cdn.jsdelivr.net/npm/foundation-sites@6.4.4-rc1/dist/css/foundation.min.css);
 @import url(https://cdn.jsdelivr.net/gh/FortAwesome/Font-Awesome/web-fonts-with-css/css/fontawesome-all.min.css);
+@import url(//fonts.googleapis.com/earlyaccess/notosansscsliced.css);
+@import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
 
 .breadcrumbs li:not(:last-child)::after {
   position: inherit;
 }
 
-.font-hei() {
-  font-family: -apple-system, "Helvetica Neue", Helvetica, "Nimbus Sans L",
+body {
+  /* google font early access Noto Chinese(TC,SC) with https://github.com/zenozeng/fonts.css */
+  font-family: 'Noto Sans TC', 'Noto Sans SC', -apple-system, "Helvetica Neue", Helvetica, "Nimbus Sans L",
     Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB",
     "Source Han Sans CN", "Source Han Sans SC", "Microsoft YaHei",
     "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei,
     "WenQuanYi Zen Hei Sharp", sans-serif;
-}
-
-body {
-  /* from https://github.com/zenozeng/fonts.css */
-  font-family: font-hei();
 }
 
 .toolbar {
