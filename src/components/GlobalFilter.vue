@@ -11,13 +11,11 @@
       @mouseout="clearFocus()">
 
     <div class="tags" ref="tags">
-      <span class="label tag" v-show="showTag('720')" @click="toggleTag('1080')">
-        <i class="fa">HD</i>
-      </span>
+      
+      <TagLink class="tag" :tag="user.name" v-show="showTag(user.name)" @click="toggleTag(user.name)"></TagLink>
 
-      <span class="label tag" v-show="showTag('1080')" @click="toggleTag('1080')">
-        <i class="fa">FullHD</i>
-      </span>
+      <TagLink class="tag" :tag="'HD'" v-show="showTag('720')" @click="toggleTag('720')"></TagLink>
+      <TagLink class="tag" :tag="'Full HD'" v-show="showTag('1080')" @click="toggleTag('1080')"></TagLink>
 
       <template v-for="team in teams">
         <TeamLink class="team" :team="team" :key="team.id"></TeamLink>
@@ -33,8 +31,9 @@
       @mousemove="updateFocus()"
       @mouseout="clearFocus()">
       
-      <a class="tag button tiny" @click="toggleTag('720', ['1080'])">720p(HD)</a>
-      <a class="tag button tiny" @click="toggleTag('1080', ['720'])">1080p(Full HD)</a>
+      <TagLink class="tag" :tag="'My Torrents'" @click="toggleTag(user.name)" v-if="user.isSignIn"></TagLink>
+      <TagLink class="tag" :tag="'HD'" @click="toggleTag('720', ['1080'])">HD</TagLink>
+      <TagLink class="tag" :tag="'Full HD'" @click="toggleTag('1080', ['720'])">Full HD</TagLink>
 
       <a class="item" v-for="(item, index) of items" :key="index" @click="doSearch(item.query)" v-show="items.length > 0">
         {{item.query}} <span class="count float-right">{{ item.count }}</span>
@@ -46,14 +45,17 @@
 <script>
 import { Torrent } from "@/modules/torrent";
 import { EventBus } from "@/modules/event-bus";
+import { user } from "@/modules/user";
 
 import TeamLink from "@/components/TeamLink";
+import TagLink from "@/components/TagLink";
 
 export default {
   name: "SystemToolbar",
-  components: { TeamLink },
+  components: { TeamLink, TagLink },
   data() {
     return {
+      user,
       listener_resize: null,
 
       query: "",
@@ -182,7 +184,7 @@ export default {
         q = `${q}${query}`;
       }
 
-      return q.trim();
+      return q.replace(/\s+/g, ' ').trim()
     }
   },
   updated() {
@@ -208,6 +210,7 @@ export default {
 
 @filter_height: 6rem;
 @item_height: 2.3rem;
+@tag_height: 22px;
 
 .global-filter {
   position: relative;
@@ -220,21 +223,17 @@ export default {
     padding-right: 1.7rem;
     height: @item_height;
     line-height: @item_height;
-    font-size: @item_height * 0.5;
+    font-size: @item_height * 0.43;
   }
 
   .tags {
     position: absolute;
     padding-left: 0.5rem;
-    margin-top: -1.04 * @item_height;
+    margin-top: -1.1 * @item_height;
 
     .tag,
     .team {
       margin-right: 0.1rem;
-    }
-
-    .tag {
-      border-radius: 5px;
     }
   }
 
@@ -255,7 +254,7 @@ export default {
 
     .tag {
       margin-left: 0.5rem;
-      margin-bottom: 3px;
+      margin-bottom: 10px;
       border-radius: 5px;
     }
 

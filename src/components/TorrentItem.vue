@@ -6,32 +6,30 @@
         </div>
 
         <div class="cell auto title">
-            <div>
+          <div class="title-main">
             <a :href="torrent.magnet" v-if="torrent.magnet"><i class="fa fa-magnet"></i></a>
 
-            <span>
+            <span class="comments">
                 <i class="fa-comments" :class="{fa: torrent.countInfo.comments, far: torrent.countInfo.comments===0}"></i>
                 <span v-if="torrent.countInfo.comments">{{torrent.countInfo.comments}}</span>
             </span>
 
-            <span>{{torrent.getTitle()}}</span>
-            </div>
+            <span class="title-string">{{torrent.getTitle()}}</span>
+          </div>
 
-            <div class="file-info">
+          <div class="file-info">
             <nav role="navigation">
                 <ul class="breadcrumbs">
-                <li><span>Size: {{torrent.size}}</span></li>
-                <li><span>Seeders: {{torrent.countInfo.seeders}}</span></li>
-                <li><span>Downloads: {{torrent.countInfo.downloads}}</span></li>
-                <li><span>Finished: {{torrent.countInfo.finished}}</span></li>
-                <li><span>Leechers: {{torrent.countInfo.leechers}}</span></li>
+                  <li><span>Size: {{torrent.size}}</span></li>
+                  <li><span>Seeders: {{torrent.countInfo.seeders}}</span></li>
+                  <li><span>Downloads: {{torrent.countInfo.downloads}}</span></li>
+                  <li><span>Finished: {{torrent.countInfo.finished}}</span></li>
+                  <li><span>Leechers: {{torrent.countInfo.leechers}}</span></li>
 
-                <li><span>Publish At: {{torrent.publishDate|date}}</span></li>
+                  <li><span>Publish At: {{torrent.publishDate|date}}</span></li>
                 </ul>
             </nav>
-            </div>
-
-            
+          </div>
         </div>
 
         <div class="cell uploader">
@@ -111,6 +109,16 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+
+      .title-main {
+        a {
+          margin-right: .6rem;
+        }
+
+        .comments {
+          margin-right: .6rem;
+        }
+      }
 
       .file-info {
         margin-top: -0.3rem;
